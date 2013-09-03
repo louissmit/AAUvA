@@ -12,12 +12,17 @@ public class HuntController {
 	}
 
 	public void run() {
-		for(int i = 0; i < runs; i++) {
+		int i = 0;
+		boolean running = true;
+		while(i < 0 && running) {
+			List<Position> newpos = new List<Position>;
+			
 			for(Predator pred : board.getPredators()) {
-				if(board.getPrey().getNextPosition() != pred.getNextPosition()) {
-					
+				if(board.getPrey().getNextPosition() == pred.getNextPosition()) {
+					running = false;
 				}
 			}
+			i++;
 		}
 	}
 
