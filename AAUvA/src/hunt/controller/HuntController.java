@@ -4,19 +4,21 @@ import hunt.model.*;
 
 public class HuntController {
 	
-	public void addPredator(AbstractPredator randomPredator, int i, int j) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void addPrey(AbstractPrey randomPrey, int i, int j) {
-		// TODO Auto-generated method stub
-		
+	private Board board;
+	private int runs = 100;
+	
+	public HuntController(Board board) {
+		this.board = board;
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		for(int i = 0; i < runs; i++) {
+			for(Predator pred : board.getPredators()) {
+				if(board.getPrey().getNextPosition() != pred.getNextPosition()) {
+					
+				}
+			}
+		}
 	}
 
 }
