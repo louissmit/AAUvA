@@ -15,7 +15,7 @@ public class RandomPredator extends AbstractPredator {
 	}
 	@Override
 	public int move() {
-		// TODO Auto-generated method stub
+		
 		double randomNumber=generator.nextDouble();
 		if(randomNumber<=0.2)
 		{
