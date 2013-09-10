@@ -2,6 +2,7 @@ package hunt.model.board;
 
 import hunt.model.AbstractPredator;
 import hunt.model.AbstractPrey;
+import hunt.model.HuntState;
 
 import java.util.List;
 
@@ -55,6 +56,11 @@ public class Board {
 	
 	public Position getPredatorPosition() {
 		return predatorPosition;
+	}
+
+	public HuntState getState() {
+		// TODO Auto-generated method stub
+		return new HuntState(preyPosition, predatorPosition);
 	}
 	
 }

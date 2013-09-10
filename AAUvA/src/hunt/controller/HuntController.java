@@ -1,9 +1,8 @@
 package hunt.controller;
 
-import java.util.ArrayList;
-
-import hunt.model.*;
-import hunt.model.board.*;
+import hunt.model.HuntState;
+import hunt.model.board.Board;
+import hunt.model.board.Position;
 
 public class HuntController {
 	
@@ -17,22 +16,20 @@ public class HuntController {
 
 	public void run() {
 		int i = 0;
-		HuntState currentState = new HuntState(
-			new Position(0, 0),
-			new Position(5, 5)
-		);
 		
-		while(i < 0 && running) {
+		HuntState currentState = board.getState();
+		
+		while(i < runs && running) {
 			currentState = transition(currentState);
-			System.out.println("Preditor("+board.getPredatorPosition()+", Prey("+board.getPreyPosition()+")");
+			System.out.println("Preditor("+board.getPredatorPosition().toString()+", Prey("+board.getPreyPosition().toString()+")");
 			System.out.println("runs: " + i);			i++;
-
 		}
 	}
 	
 	public HuntState transition(HuntState s) {
 		
-		Position newPredPos = board.getPredator().move(s);
+		Position newPredPos = board.getPredator().move(s, board);
+		
 		if(newPredPos.isEqual(board.getPreyPosition())) running = false;
 		Position newPreyPos = board.getPrey().move(s);
 		
