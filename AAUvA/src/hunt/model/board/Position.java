@@ -49,4 +49,26 @@ public class Position {
 		return this.y;
 	}
 	
+	public Position add(Position p) {
+		this.x += p.x;
+		this.y += p.y;
+		return this;
+	}
+	
+	public Position cap(Board board) {
+
+		this.x = x % board.getWidth();
+		this.y = y % board.getHeight();
+		
+		return this;
+	}
+	
+	public boolean isEqual(Position p) {
+		return (p.x == this.x) && (p.y == this.y);
+	}
+	
+	public String toString(){
+		return "("+this.x+", "+this.y+")";
+	}
+	
 }

@@ -1,6 +1,7 @@
 package hunt.model;
 
 import hunt.controller.Move;
+import hunt.model.board.Position;
 
 import java.util.Random;
 
@@ -15,27 +16,29 @@ public class RandomPrey extends AbstractPrey {
 		generator=new Random();
 	}
 	@Override
-	public int move() {
-		double randomNumber=generator.nextDouble();
+	public Position move(HuntState state) {
+		Position current = state.getPredatorPosition();
+		double randomNumber = generator.nextDouble();
+		
 		if(randomNumber<=0.8)
 		{
-			return Move.WAIT;
+			return current.add(Move.WAIT);
 		}
 		else if(randomNumber<=0.85)
 		{
-			return Move.EAST;
+			return current.add(Move.EAST);
 		}
 		else if(randomNumber<=0.9)
 		{
-			return Move.NORTH;
+			return current.add(Move.NORTH);
 		}
 		else if(randomNumber<=0.95)
 		{
-			return Move.SOUTH;
+			return current.add(Move.SOUTH);
 		}
 		else
 		{
-			return Move.WEST;
+			return current.add(Move.WEST);
 		}
 			
 	}

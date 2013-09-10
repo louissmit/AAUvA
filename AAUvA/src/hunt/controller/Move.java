@@ -1,11 +1,12 @@
 package hunt.controller;
 
+import hunt.model.board.Position;
+
 public interface Move {
 
-	public static final int WAIT = 0;
-	public static final int NORTH = 1;
-	public static final int EAST = 2;
-	public static final int SOUTH = 3;
-	public static final int WEST = 4;
-
+	public static final Position WAIT = new Position(0, 0);
+	public static final Position NORTH = new Position(0, -1);
+	public static final Position SOUTH = new Position(0, 1);
+	public static final Position EAST = new Position(1, 0);
+	public static final Position WEST = new Position(-1, 0);
 }
