@@ -22,23 +22,23 @@ public class RandomPredator extends AbstractPredator {
 		
 		if(randomNumber<=0.2)
 		{
-			return current.add(Move.WAIT).cap(b);
+			return current.update(Move.WAIT, b);
 		}
 		else if(randomNumber<=0.4)
 		{
-			return current.add(Move.EAST).cap(b);
+			return current.update(Move.EAST, b);
 		}
 		else if(randomNumber<=0.6)
 		{
-			return current.add(Move.NORTH).cap(b);
+			return current.update(Move.NORTH, b);
 		}
 		else if(randomNumber<=0.8)
 		{
-			return current.add(Move.SOUTH).cap(b);
+			return current.update(Move.SOUTH, b);
 		}
 		else
 		{
-			return current.add(Move.WEST).cap(b);
+			return current.update(Move.WEST, b);
 		}
 			
 	}
