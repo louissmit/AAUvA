@@ -19,5 +19,45 @@ public class HuntState {
 	public Position getPredatorPosition() {
 		return predatorPosition;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((predatorPosition == null) ? 0 : predatorPosition.hashCode());
+		result = prime * result
+				+ ((preyPosition == null) ? 0 : preyPosition.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof HuntState))
+			return false;
+		HuntState other = (HuntState) obj;
+		if (predatorPosition == null) {
+			if (other.predatorPosition != null)
+				return false;
+		} else if (!predatorPosition.equals(other.predatorPosition))
+			return false;
+		if (preyPosition == null) {
+			if (other.preyPosition != null)
+				return false;
+		} else if (!preyPosition.equals(other.preyPosition))
+			return false;
+		return true;
+	}
 }
 
