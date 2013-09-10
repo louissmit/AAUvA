@@ -29,9 +29,14 @@ public class HuntController {
 	public HuntState transition(HuntState s) {
 		
 		Position newPredPos = board.getPredator().move(s, board);
+		Position newPreyPos = board.getPreyPosition();
 		
-		if(newPredPos.isEqual(board.getPreyPosition())) running = false;
-		Position newPreyPos = board.getPrey().move(s);
+		if(newPredPos.isEqual(board.getPreyPosition())){
+			board.getPredator().giveReward();
+			running = false;
+		} else {
+			newPreyPos = board.getPrey().move(s, board);
+		}
 		
 		HuntState sPrime = new HuntState(newPreyPos, newPredPos);
 		
