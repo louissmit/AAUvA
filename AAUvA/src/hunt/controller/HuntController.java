@@ -1,6 +1,9 @@
 package hunt.controller;
 
+import java.util.ArrayList;
+
 import hunt.model.*;
+import hunt.model.board.*;
 
 public class HuntController {
 	
@@ -12,12 +15,12 @@ public class HuntController {
 	}
 
 	public void run() {
-		for(int i = 0; i < runs; i++) {
-			for(Predator pred : board.getPredators()) {
-				if(board.getPrey().getNextPosition() != pred.getNextPosition()) {
-					
-				}
-			}
+		int i = 0;
+		boolean running = true;
+		while(i < 0 && running) {
+//			System.out.println("Preditor("+preditorPosition+", Prey("+board.getPreyPosition()+")");
+//			System.out.println("runs: " + i);			i++;
+
 		}
 	}
 
