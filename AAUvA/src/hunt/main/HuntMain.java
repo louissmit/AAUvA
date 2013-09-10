@@ -2,6 +2,7 @@ package hunt.main;
 
 import hunt.controller.HuntController;
 import hunt.model.*;
+import hunt.model.board.Board;
 
 public class HuntMain {
 
@@ -12,7 +13,7 @@ public class HuntMain {
 		// TODO Auto-generated method stub
 		Board board = new Board(11, 11);
 		board.addPredator(new RandomPredator(),0,0);
-		board.addPrey(new RandomPrey(),5,5);
+		board.setPrey(new RandomPrey(),5,5);
 		HuntController cont = new HuntController(board);
 
 		cont.run();
