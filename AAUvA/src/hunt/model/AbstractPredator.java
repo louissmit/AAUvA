@@ -1,7 +1,9 @@
 package hunt.model;
 
+import hunt.model.board.Position;
+
 public abstract class AbstractPredator {
 	
-	public abstract int move();
+	public abstract Position move(HuntState s);
 
 }

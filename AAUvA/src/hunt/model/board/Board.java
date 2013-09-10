@@ -10,8 +10,10 @@ public class Board {
 	private int width;
 	private int height;
 	
-	private List<Position> predators;
-	private Position prey;
+	private AbstractPredator predator;
+	private AbstractPrey prey;
+	private Position preyPosition;
+	private Position predatorPosition;
 	
 	public Board(int width, int height) {
 		this.width = width;
@@ -19,21 +21,26 @@ public class Board {
 	}
 	
 	public void addPredator(AbstractPredator predator, int x, int y) {
-		predators.add(new Position(x, y));
+		this.predatorPosition = new Position(x, y);
+		this.predator = predator;
 	}
 	
-	public void setPredators(List<Position> predators) {
-		this.predators = predators; 
+	public void setPredators(AbstractPredator pred) {
+		this.predator = pred; 
 	}
 	
 	public void setPrey(AbstractPrey prey, int x, int y) {
-		this.prey = new Position(x, y);
+		this.preyPosition = new Position(x, y);
+		this.prey = prey;
 	}
 	
-	public List<Position> getPredators() {
-		return predators;
+	public AbstractPredator getPredator() {
+		return predator;
 	}
 	
+	public AbstractPrey getPrey() {
+		return prey;
+	}	
 	public int getWidth() {
 		return width;
 	}
@@ -43,7 +50,11 @@ public class Board {
 	}
 
 	public Position getPreyPosition() {
-		return prey;
+		return preyPosition;
 	}
-
+	
+	public Position getPredatorPosition() {
+		return predatorPosition;
+	}
+	
 }
