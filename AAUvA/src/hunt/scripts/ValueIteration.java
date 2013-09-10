@@ -11,21 +11,27 @@ import java.util.List;
 import hunt.controller.HuntController;
 import hunt.controller.Move;
 import hunt.model.*;
+import hunt.model.board.Position;
 
+///Value Iteration- 1.4
 public class ValueIteration {
 
 	private HuntController controller;
-	private final double minTheta=0.1;
+	private final double minTheta=0.01;
 	private double gamma;
 
 	public Hashtable<HuntState, Double> stateValues;
+	public Hashtable<HuntState,Position> policy;
 	
 	public ValueIteration(HuntController _controller,double _gamma)
 	{
 		this.controller=_controller;
 		this.gamma=_gamma;
 	}
-	
+
+	/**
+	 * Calculates values for each state and stores them in the stateValues field
+	 */
 	public void Iterate()
 	{
 		List<HuntState> states=HuntController.getAllStates();
@@ -65,7 +71,7 @@ public class ValueIteration {
 		}
 	}
 	
-	private double CalculateValueForAction(int move,HuntState state)
+	private double CalculateValueForAction(Position move,HuntState state)
 	{
 		double value=0;
 		List<HuntState> nextStates=controller.getNextStates(move,state);
@@ -76,6 +82,52 @@ public class ValueIteration {
 			value+=probability*(reward+gamma*stateValues.get(nextState));
 		}
 		return value;
+	}
+	
+	/*
+	 * Calculate optimal policy for current stateValues and saves result in the policy field.
+	 * policy SHOULD be encapsulated to a separate class "Policy". Instances of predators
+	 * should have reference to the Policy class.
+	 */
+	public void CalculateOptimalPolicyForCurrentValues()
+	{
+		List<HuntState> states=HuntController.getAllStates();
+		for(int i=0;i<states.size();i++)
+		{
+			HuntState localState=states.get(i);
+
+			double lastCalculatedValue=-10000;
+			Position lastMove=Move.WAIT;
+			
+			double calculatedValue=CalculateValueForAction(Move.EAST, localState);
+			if(calculatedValue>lastCalculatedValue)
+			{
+				lastMove=Move.EAST;
+				lastCalculatedValue=calculatedValue;
+			}
+			
+			calculatedValue=CalculateValueForAction(Move.WEST, localState);
+			if(calculatedValue>lastCalculatedValue)
+			{
+				lastMove=Move.WEST;
+				lastCalculatedValue=calculatedValue;
+			}
+			
+			calculatedValue=CalculateValueForAction(Move.NORTH, localState);
+			if(calculatedValue>lastCalculatedValue)
+			{
+				lastMove=Move.NORTH;
+				lastCalculatedValue=calculatedValue;
+			}
+			
+			calculatedValue=CalculateValueForAction(Move.SOUTH, localState);
+			if(calculatedValue>lastCalculatedValue)
+			{
+				lastMove=Move.SOUTH;
+				lastCalculatedValue=calculatedValue;
+			}			
+			policy.put(localState, lastMove);
+		}
 	}
 
 	
