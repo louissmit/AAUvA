@@ -37,22 +37,21 @@ public class RandomPrey extends AbstractPrey {
 			moves.remove(adj);
 			range = 0.2 / 3;
 		}
-		if(randomNumber<=0.8)
-		{
-			return current.update(Move.WAIT, b);
-		}
-		else if(randomNumber <= 0.8 + range){
+		
+		if(randomNumber <= range){
 			return current.update(moves.get(0), b);
 		}
-		else if(randomNumber <= 0.8 + 2*range){
+		else if(randomNumber <= 2*range){
 			return current.update(moves.get(1), b);
 		}
-		else if(randomNumber <= 0.8 + 3*range){
+		else if(randomNumber <= 3*range){
 			return current.update(moves.get(2), b);
 		}
-		else {
-			return current.update(moves.get(2), b);
-		}		
+		else if(randomNumber <= 4*range && moves.size() > 3){
+			return current.update(moves.get(3), b);
+		} else {
+			return current.update(Move.WAIT, b);
+		}
 	}
 
 }
