@@ -1,5 +1,8 @@
 package hunt.model.board;
 
+import hunt.model.AbstractPredator;
+import hunt.model.AbstractPrey;
+
 import java.util.List;
 
 public class Board {
@@ -15,7 +18,7 @@ public class Board {
 		this.height = height;
 	}
 	
-	public void addPredator(int x, int y) {
+	public void addPredator(AbstractPredator predator, int x, int y) {
 		predators.add(new Position(x, y));
 	}
 	
@@ -23,16 +26,12 @@ public class Board {
 		this.predators = predators; 
 	}
 	
-	public void setPrey(int x, int y) {
-		prey = new Position(x, y);
+	public void setPrey(AbstractPrey prey, int x, int y) {
+		this.prey = new Position(x, y);
 	}
 	
 	public List<Position> getPredators() {
 		return predators;
-	}
-	
-	public Position getPrey() {
-		return prey;
 	}
 	
 	public int getWidth() {
@@ -41,6 +40,10 @@ public class Board {
 	
 	public int getHeight() {
 		return height;
+	}
+
+	public Position getPreyPosition() {
+		return prey;
 	}
 
 }
