@@ -1,5 +1,7 @@
 package hunt.model;
 import hunt.controller.Move;
+import hunt.model.board.Board;
+import hunt.model.board.Position;
 
 import java.util.Random;
 
@@ -11,31 +13,32 @@ public class RandomPredator extends AbstractPredator {
 	
 	public RandomPredator()
 	{
-		generator=new Random();
+		generator = new Random();
 	}
 	@Override
-	public int move() {
-		// TODO Auto-generated method stub
-		double randomNumber=generator.nextDouble();
+	public Position move(HuntState state, Board b) {
+		Position current = state.getPredatorPosition();
+		double randomNumber = generator.nextDouble();
+		
 		if(randomNumber<=0.2)
 		{
-			return Move.WAIT;
+			return current.update(Move.WAIT, b);
 		}
 		else if(randomNumber<=0.4)
 		{
-			return Move.EAST;
+			return current.update(Move.EAST, b);
 		}
 		else if(randomNumber<=0.6)
 		{
-			return Move.NORTH;
+			return current.update(Move.NORTH, b);
 		}
 		else if(randomNumber<=0.8)
 		{
-			return Move.SOUTH;
+			return current.update(Move.SOUTH, b);
 		}
 		else
 		{
-			return Move.WEST;
+			return current.update(Move.WEST, b);
 		}
 			
 	}
