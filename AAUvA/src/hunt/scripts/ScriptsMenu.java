@@ -1,9 +1,9 @@
 package hunt.scripts;
 
 import hunt.model.HuntState;
-import hunt.model.Predator;
 import hunt.model.board.Board;
 import hunt.model.board.Position;
+import hunt.model.predator.PredatorPolicy;
 import hunt.model.predator.RandomPredatorPolicy;
 
 import java.util.ArrayList;
@@ -106,7 +106,52 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			ValueIteration valIter = new ValueIteration(new RandomPredator(), 0.1);
+			ValueIteration valIter = new ValueIteration(new PredatorPolicy() {
+				
+				@Override
+				public Position move(HuntState state, Board b) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public double getTransitionProbability(HuntState oldState,
+						HuntState newState, Position action) {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+				
+				@Override
+				public double getReward(HuntState oldState, HuntState newState,
+						Position action) {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+				
+				@Override
+				public List<HuntState> getNextStates(HuntState oldState, Position action) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public List<HuntState> getAllStates() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public List<Position> getActions(HuntState oldState) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+				
+				@Override
+				public double getActionProbability(HuntState oldState, Position action) {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+			}, 0.1);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
 

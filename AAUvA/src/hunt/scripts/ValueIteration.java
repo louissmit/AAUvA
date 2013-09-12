@@ -12,20 +12,21 @@ import hunt.controller.HuntController;
 import hunt.controller.Move;
 import hunt.model.*;
 import hunt.model.board.Position;
+import hunt.model.predator.PredatorPolicy;
 
 ///Value Iteration- 1.4
 public class ValueIteration {
 
-	private AbstractPredator predator;
+	private PredatorPolicy policy;
 	private final double minTheta=0.01;
 	private double gamma;
 
 	public Hashtable<HuntState, Double> stateValues;
-	public Hashtable<HuntState,Position> policy;
+	public Hashtable<HuntState,Position> optimalPolicy;
 	
-	public ValueIteration(AbstractPredator _predator,double _gamma)
+	public ValueIteration(PredatorPolicy _policy,double _gamma)
 	{
-		this.predator=_predator;
+		this.policy=_policy;
 		this.gamma=_gamma;
 	}
 
@@ -34,7 +35,7 @@ public class ValueIteration {
 	 */
 	public void Iterate()
 	{
-		List<HuntState> states=predator.getAllStates();
+		List<HuntState> states=policy.getAllStates();
 		for(int i=0;i<states.size();i++)
 		{
 			stateValues.put(states.get(i), 0.0);
@@ -74,11 +75,11 @@ public class ValueIteration {
 	private double CalculateValueForAction(Position move,HuntState state)
 	{
 		double value=0;
-		List<HuntState> nextStates=predator.getNextStates(state, move);
+		List<HuntState> nextStates=policy.getNextStates(state, move);
 		for(HuntState nextState:nextStates)
 		{
-			double probability=predator.getTransitionProbability(state,nextState,move);
-			double reward=predator.getReward(state,nextState,move);
+			double probability=policy.getTransitionProbability(state,nextState,move);
+			double reward=policy.getReward(state,nextState,move);
 			value+=probability*(reward+gamma*stateValues.get(nextState));
 		}
 		return value;
@@ -91,7 +92,7 @@ public class ValueIteration {
 	 */
 	public void CalculateOptimalPolicyForCurrentValues()
 	{
-		List<HuntState> states=predator.getAllStates();
+		List<HuntState> states=policy.getAllStates();
 		for(int i=0;i<states.size();i++)
 		{
 			HuntState localState=states.get(i);
@@ -126,7 +127,7 @@ public class ValueIteration {
 				lastMove=Move.SOUTH;
 				lastCalculatedValue=calculatedValue;
 			}			
-			policy.put(localState, lastMove);
+			optimalPolicy.put(localState, lastMove);
 		}
 	}
 
