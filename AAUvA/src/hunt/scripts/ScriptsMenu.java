@@ -2,6 +2,7 @@ package hunt.scripts;
 
 import hunt.model.HuntState;
 import hunt.model.RandomPredator;
+import hunt.model.board.Board;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
@@ -12,13 +13,15 @@ import java.util.Scanner;
 public class ScriptsMenu {
 
 	protected List<Command> commands;
-	
+	protected int width=11;
+	protected int height=11;
 	protected boolean exit;
 	
 	public ScriptsMenu() {
 		commands = new ArrayList<Command>();
 		commands.add(new ExitCommand());
 		commands.add(new PolicyEvaluationCommand());
+		commands.add(new ValueIterationCommand());
 	}
 
 	public void run() {
@@ -92,6 +95,37 @@ public class ScriptsMenu {
 			}
 			
 			System.out.println("Amount of iterations required: " + eval.getIterations());
+		}
+		
+	}
+	private class ValueIterationCommand implements Command {
+
+		public String getCommand() {
+			return "valueIteration";
+		}
+
+		public void execute(String[] args) {
+			ValueIteration valIter = new ValueIteration(new RandomPredator(), 0.1);
+			valIter.Iterate();
+			Map<HuntState, Double> result = valIter.stateValues;
+
+			
+			List<HuntState> states = new ArrayList<HuntState>();
+			Position preyPos=new Position(5,5);
+			Board board=new Board(width,height);
+			for(int i=0;i<board.getWidth();i++)
+			{
+				for(int j=0;j<board.getHeight();j++)
+				{
+					states.add(new HuntState(preyPos, new Position(i,j)));
+				}
+			}
+
+			for (HuntState state : states) {
+				System.out.println("Value for " + state.toString() + ": " + result.get(state));
+			}
+			
+			//System.out.println("Amount of iterations required: " + eval.getIterations());
 		}
 		
 	}

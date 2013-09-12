@@ -16,16 +16,16 @@ import hunt.model.board.Position;
 ///Value Iteration- 1.4
 public class ValueIteration {
 
-	private HuntController controller;
+	private AbstractPredator predator;
 	private final double minTheta=0.01;
 	private double gamma;
 
 	public Hashtable<HuntState, Double> stateValues;
 	public Hashtable<HuntState,Position> policy;
 	
-	public ValueIteration(HuntController _controller,double _gamma)
+	public ValueIteration(AbstractPredator _predator,double _gamma)
 	{
-		this.controller=_controller;
+		this.predator=_predator;
 		this.gamma=_gamma;
 	}
 
@@ -34,7 +34,7 @@ public class ValueIteration {
 	 */
 	public void Iterate()
 	{
-		List<HuntState> states=HuntController.getAllStates();
+		List<HuntState> states=predator.getAllStates();
 		for(int i=0;i<states.size();i++)
 		{
 			stateValues.put(states.get(i), 0.0);
@@ -74,11 +74,11 @@ public class ValueIteration {
 	private double CalculateValueForAction(Position move,HuntState state)
 	{
 		double value=0;
-		List<HuntState> nextStates=controller.getNextStates(move,state);
+		List<HuntState> nextStates=predator.getNextStates(state, move);
 		for(HuntState nextState:nextStates)
 		{
-			double probability=controller.getTransitionProbability(state,nextState,move);
-			double reward=controller.getReward(state,nextState,move);
+			double probability=predator.getTransitionProbability(state,nextState,move);
+			double reward=predator.getReward(state,nextState,move);
 			value+=probability*(reward+gamma*stateValues.get(nextState));
 		}
 		return value;
@@ -91,7 +91,7 @@ public class ValueIteration {
 	 */
 	public void CalculateOptimalPolicyForCurrentValues()
 	{
-		List<HuntState> states=HuntController.getAllStates();
+		List<HuntState> states=predator.getAllStates();
 		for(int i=0;i<states.size();i++)
 		{
 			HuntState localState=states.get(i);
