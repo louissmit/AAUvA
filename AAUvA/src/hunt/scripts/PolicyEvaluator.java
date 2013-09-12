@@ -39,13 +39,13 @@ public class PolicyEvaluator {
 				Double oldValue = entry.getValue();
 				
 				double updatedValue = 0;
-				for (Position action : HuntController.getActions(oldState)) {
+				for (Position action : policy.getActions(oldState)) {
 					double actionProbability = policy.getActionProbability(oldState, action);
 					double actionValue = 0;
 					
-					for (HuntState newState : HuntController.getNextStates(oldState, action)) {
-						double transitionProbability = HuntController.getTransitionProbability(oldState, newState, action);
-						double transitionReward = HuntController.getReward(oldState, newState, action);
+					for (HuntState newState : policy.getNextStates(oldState, action)) {
+						double transitionProbability = policy.getTransitionProbability(oldState, newState, action);
+						double transitionReward = policy.getReward(oldState, newState, action);
 						double newStateValue = values.get(newState);
 						
 						actionValue += transitionProbability * (transitionReward + GAMMA * newStateValue); 
@@ -62,8 +62,10 @@ public class PolicyEvaluator {
 	}
 	
 	public void init() {
-		for (HuntState state : HuntController.getAllStates()) {
-			values.put(state, new Double(0));
+		for (HuntState state : policy.getAllStates()) {
+			if (!values.containsKey(state)) { 
+				values.put(state, new Double(0));
+			}
 		}
 	}
 	
