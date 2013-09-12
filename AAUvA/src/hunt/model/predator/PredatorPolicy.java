@@ -1,18 +1,14 @@
-package hunt.model;
+package hunt.model.predator;
 
 import java.util.List;
 
+import hunt.model.HuntState;
 import hunt.model.board.Board;
 import hunt.model.board.Position;
 
-public abstract class AbstractPredator {
-	private int reward = 0;
+public interface PredatorPolicy {
 	
 	public abstract Position move(HuntState state, Board b);
-
-	public void giveReward() {
-		this.reward = 10;
-	}
 
 	/**
 	 * Return all moves a predator can make given a certain state

@@ -7,7 +7,7 @@ import hunt.model.board.Position;
 public class HuntController {
 	
 	private Board board;
-	private int runs = 100;
+	private int runs = 400;
 	boolean running = true;
 	
 	public HuntController(Board board) {
