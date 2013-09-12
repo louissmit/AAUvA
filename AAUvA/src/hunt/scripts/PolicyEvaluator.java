@@ -1,26 +1,25 @@
 package hunt.scripts;
 
-import hunt.controller.HuntController;
-import hunt.model.AbstractPredator;
+import hunt.model.Predator;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
+import hunt.model.predator.PredatorPolicy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class PolicyEvaluator {
 	
 	protected Map<HuntState, Double> values;
-	protected AbstractPredator policy;
+	protected PredatorPolicy policy;
 	
 	protected int iterations;
 	
 	public static final double THRESHOLD = 0.001;
 	public static final double GAMMA = 0.8;
 	
-	public PolicyEvaluator(AbstractPredator policy) {
+	public PolicyEvaluator(PredatorPolicy policy) {
 		values = new HashMap<HuntState, Double>();
 		this.policy = policy;
 	}

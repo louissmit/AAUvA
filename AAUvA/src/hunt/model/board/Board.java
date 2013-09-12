@@ -1,6 +1,6 @@
 package hunt.model.board;
 
-import hunt.model.AbstractPredator;
+import hunt.model.Predator;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 
@@ -11,7 +11,7 @@ public class Board {
 	private int width;
 	private int height;
 	
-	private AbstractPredator predator;
+	private Predator predator;
 	private AbstractPrey prey;
 	private Position preyPosition;
 	private Position predatorPosition;
@@ -21,12 +21,12 @@ public class Board {
 		this.height = height;
 	}
 	
-	public void addPredator(AbstractPredator predator, int x, int y) {
+	public void addPredator(Predator predator, int x, int y) {
 		this.predatorPosition = new Position(x, y);
 		this.predator = predator;
 	}
 	
-	public void setPredators(AbstractPredator pred) {
+	public void setPredators(Predator pred) {
 		this.predator = pred; 
 	}
 	
@@ -35,7 +35,7 @@ public class Board {
 		this.prey = prey;
 	}
 	
-	public AbstractPredator getPredator() {
+	public Predator getPredator() {
 		return predator;
 	}
 	
