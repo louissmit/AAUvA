@@ -21,24 +21,25 @@ public class HuntController {
 		
 		while(i < runs && running) {
 			currentState = transition(currentState);
-			System.out.println("Preditor("+board.getPredatorPosition().toString()+", Prey("+board.getPreyPosition().toString()+")");
-			System.out.println("runs: " + i);			i++;
+			System.out.println("Preditor("+board.getPredator().getPosition().toString()
+					+", Prey("+board.getPrey().getPosition().toString()+")");
+			i++;
 		}
-	}
+		System.out.println("runs: " + i);	}
 	
 	public HuntState transition(HuntState s) {
 		
-		Position newPredPos = board.getPredator().move(s, board);
-		Position newPreyPos = board.getPreyPosition();
+		board.movePredator();
+		Position predatorPosition = board.getPredator().getPosition();
+		Position preyPosition = board.getPrey().getPosition();
 		
-		if(newPredPos.isEqual(board.getPreyPosition())){
-			board.getPredator().giveReward();
+		if(predatorPosition.isEqual(preyPosition)){
 			running = false;
 		} else {
-			newPreyPos = board.getPrey().move(s, board);
+			board.movePrey();
 		}
 		
-		HuntState sPrime = new HuntState(newPreyPos, newPredPos);
+		HuntState sPrime = board.getState();
 		
 		return sPrime;
 	}

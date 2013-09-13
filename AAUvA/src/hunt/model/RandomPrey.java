@@ -7,7 +7,6 @@ import hunt.model.board.Position;
 
 import java.util.Random;
 
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 public class RandomPrey extends AbstractPrey {
 
@@ -18,8 +17,8 @@ public class RandomPrey extends AbstractPrey {
 		generator=new Random();
 	}
 	@Override
-	public Position move(HuntState state, Board b) {
-		Position current = state.getPreyPosition();
+	public void move(Board board) {
+		Position current = this.getPosition();
 		
 		//there must be a better way + testing
 		ArrayList<Position> moves = new ArrayList<Position>();
@@ -30,7 +29,7 @@ public class RandomPrey extends AbstractPrey {
 		
 		double randomNumber = generator.nextDouble();
 		double range = 0.05;
-		Position adj = current.isAdjacent(b.getPredatorPosition());
+		Position adj = current.isAdjacent(board.getPredator().getPosition());
 
 		
 		if(moves.contains(adj)) {
@@ -39,18 +38,18 @@ public class RandomPrey extends AbstractPrey {
 		}
 		
 		if(randomNumber <= range){
-			return current.update(moves.get(0), b);
+			board.updatePrey(moves.get(0));
 		}
 		else if(randomNumber <= 2*range){
-			return current.update(moves.get(1), b);
+			board.updatePrey(moves.get(1));
 		}
 		else if(randomNumber <= 3*range){
-			return current.update(moves.get(2), b);
+			board.updatePrey(moves.get(2));
 		}
 		else if(randomNumber <= 4*range && moves.size() > 3){
-			return current.update(moves.get(3), b);
+			board.updatePrey(moves.get(3));
 		} else {
-			return current.update(Move.WAIT, b);
+			board.updatePrey(Move.WAIT);
 		}
 	}
 
