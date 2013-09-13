@@ -8,7 +8,7 @@ import hunt.model.board.Position;
 
 public interface PredatorPolicy {
 	
-	public abstract Position move(HuntState state, Board b);
+	public abstract void move(Board b);
 
 	/**
 	 * Return all moves a predator can make given a certain state
@@ -57,6 +57,7 @@ public interface PredatorPolicy {
 	 * Returns a list of all possible states
 	 * @return
 	 */
-	public abstract List<HuntState> getAllStates();
+	public abstract List<HuntState> getAllStates(Board board);
+
 
 }

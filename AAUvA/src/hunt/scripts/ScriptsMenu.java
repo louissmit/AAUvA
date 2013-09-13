@@ -1,8 +1,6 @@
 package hunt.scripts;
 
 import hunt.model.HuntState;
-import hunt.model.Predator;
-import hunt.model.board.Board;
 import hunt.model.board.Position;
 import hunt.model.predator.RandomPredatorPolicy;
 
@@ -71,7 +69,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy(new Board(11, 11)));
+			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy());
 			eval.run();
 			Map<HuntState, Double> result = eval.getValues();
 			

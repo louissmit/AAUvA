@@ -13,42 +13,35 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 
 	private Random generator;
 	
-	private Board board;
-	
 	public RandomPredatorPolicy()
 	{
 		generator = new Random();
 	}
-	
-	public RandomPredatorPolicy(Board b) {
-		this.board = b;
-		generator = new Random();
-	}
+
 	
 	@Override
-	public Position move(HuntState state, Board b) {
-		Position current = state.getPredatorPosition();
+	public void move(Board board) {
 		double randomNumber = generator.nextDouble();
 		
 		if(randomNumber<=0.2)
 		{
-			return current.update(Move.WAIT, b);
+			board.updatePredator(Move.WAIT);
 		}
 		else if(randomNumber<=0.4)
 		{
-			return current.update(Move.EAST, b);
+			board.updatePredator(Move.EAST);
 		}
 		else if(randomNumber<=0.6)
 		{
-			return current.update(Move.NORTH, b);
+			board.updatePredator(Move.NORTH);
 		}
 		else if(randomNumber<=0.8)
 		{
-			return current.update(Move.SOUTH, b);
+			board.updatePredator(Move.SOUTH);
 		}
 		else
 		{
-			return current.update(Move.WEST, b);
+			board.updatePredator(Move.WEST);
 		}
 	}
 	@Override
@@ -73,7 +66,6 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 	public List<HuntState> getNextStates(HuntState oldState, Position action) {
 		Position predPosition = oldState.getPredatorPosition();
 		Position preyPosition = oldState.getPreyPosition();
-		predPosition.update(action, this.board);
 		// Apply possible prey moves to its position
 		// Generate next states
 		// TODO Auto-generated method stub
@@ -84,7 +76,6 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 			HuntState newState, Position action) {
 		Position predPositionOld = oldState.getPredatorPosition();
 		Position predPositionNew = newState.getPredatorPosition();
-		predPositionOld.update(action, this.board);
 		if (predPositionOld.equals(predPositionNew)) {
 			// Calculate prey move between old and new state
 			// Calucalte probability of moving
@@ -102,15 +93,15 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		return result;
 	}
 	@Override
-	public List<HuntState> getAllStates() {
+	public List<HuntState> getAllStates(Board board) {
 		List<HuntState> result = new ArrayList<HuntState>();
 		
 		// Predator position
-		for (int i = 0; i < this.board.getWidth(); i++) {
-			for (int j = 0; j < this.board.getHeight(); j++) {
+		for (int i = 0; i < board.getWidth(); i++) {
+			for (int j = 0; j < board.getHeight(); j++) {
 				// Prey position
-				for (int k = 0; k < this.board.getWidth(); k++) {
-					for (int l = 0; l < this.board.getHeight(); l++) {
+				for (int k = 0; k < board.getWidth(); k++) {
+					for (int l = 0; l < board.getHeight(); l++) {
 						result.add(new HuntState(new Position(i,j), new Position(k,l)));
 					}
 				}
