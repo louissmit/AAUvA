@@ -53,10 +53,9 @@ public class RandomPrey extends AbstractPrey {
 		}
 	}
 	@Override
-	public double GetProbabilityOfAction(HuntState state,Position move, Board b) {
+	public double GetProbabilityOfAction(Position current,Position move, Board b) {
 		
-		Position current = state.getPreyPosition();
-		
+	
 		//there must be a better way + testing
 		ArrayList<Position> moves = new ArrayList<Position>();
 		moves.add(Move.SOUTH);

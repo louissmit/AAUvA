@@ -75,14 +75,13 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		Position preyPosition = oldState.getPreyPosition();
 		predPosition.update(action, this.board);
 		List<HuntState> states=new ArrayList<HuntState>();
-		HuntState currentState=new HuntState(preyPosition, predPosition);
-		if(board.getPrey().GetProbabilityOfAction(currentState, Move.EAST, this.board)>0)
+		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.EAST, this.board)>0)
 			states.add(new HuntState(oldState.getPreyPosition().update(Move.EAST,board), predPosition));
-		if(board.getPrey().GetProbabilityOfAction(currentState, Move.WEST, this.board)>0)
+		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.WEST, this.board)>0)
 			states.add(new HuntState(oldState.getPreyPosition().update(Move.WEST,board), predPosition));
-		if(board.getPrey().GetProbabilityOfAction(currentState, Move.NORTH, this.board)>0)
+		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.NORTH, this.board)>0)
 			states.add(new HuntState(oldState.getPreyPosition().update(Move.NORTH,board), predPosition));
-		if(board.getPrey().GetProbabilityOfAction(currentState, Move.SOUTH, this.board)>0)
+		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.SOUTH, this.board)>0)
 			states.add(new HuntState(oldState.getPreyPosition().update(Move.SOUTH,board), predPosition));
 		states.add(new HuntState(oldState.getPreyPosition().update(Move.WAIT,board), predPosition));
 		// Apply possible prey moves to its position
@@ -95,10 +94,15 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 			HuntState newState, Position action) {
 		Position predPositionOld = oldState.getPredatorPosition();
 		Position predPositionNew = newState.getPredatorPosition();
+		
+		Position preyPositionOld = oldState.getPreyPosition();
+		Position preyPositionNew = newState.getPreyPosition();
 		predPositionOld.update(action, this.board);
 		if (predPositionOld.equals(predPositionNew)) {
-			// Calculate prey move between old and new state
-			// Calucalte probability of moving
+			preyPositionOld.update(action, this.board);
+			if(preyPositionOld.equals(preyPositionNew)){
+				return this.board.getPrey().GetProbabilityOfAction(oldState.getPredatorPosition(), action, this.board);
+			}
 		}
 		// TODO Auto-generated method stub
 		return 0;
