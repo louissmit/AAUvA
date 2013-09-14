@@ -1,6 +1,8 @@
 package hunt.scripts;
 
 import hunt.model.HuntState;
+import hunt.model.Predator;
+import hunt.model.RandomPrey;
 import hunt.model.board.Board;
 import hunt.model.board.Position;
 import hunt.model.predator.PredatorPolicy;
@@ -17,6 +19,7 @@ public class ScriptsMenu {
 	protected int width=11;
 	protected int height=11;
 	protected boolean exit;
+
 	
 	public ScriptsMenu() {
 		commands = new ArrayList<Command>();
@@ -26,6 +29,8 @@ public class ScriptsMenu {
 	}
 
 	public void run() {
+		
+		
 		exit = false;
 		Scanner s = new Scanner(System.in);
 		while (!exit) { 
@@ -73,7 +78,10 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy(new Board(11, 11)));
+			Board board = new Board(11, 11);
+			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
+			board.setPrey(new RandomPrey(),5,5);
+			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy(board));
 			eval.run();
 			Map<HuntState, Double> result = eval.getValues();
 			
@@ -102,18 +110,20 @@ public class ScriptsMenu {
 	private class ValueIterationCommand implements Command {
 
 		public String getCommand() {
-			return "valueIteration";
+			return "valueiteration";
 		}
 
 		public void execute(String[] args) {
-			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(), 0.1);
+			Board board = new Board(11, 11);
+			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
+			board.setPrey(new RandomPrey(),5,5);
+			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(board), 0.1);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
 
 			
 			List<HuntState> states = new ArrayList<HuntState>();
 			Position preyPos=new Position(5,5);
-			Board board=new Board(width,height);
 			for(int i=0;i<board.getWidth();i++)
 			{
 				for(int j=0;j<board.getHeight();j++)

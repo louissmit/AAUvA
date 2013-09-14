@@ -28,6 +28,8 @@ public class ValueIteration {
 	{
 		this.policy=_policy;
 		this.gamma=_gamma;
+		stateValues=new Hashtable<HuntState,Double>();
+		optimalPolicy=new Hashtable<HuntState,Position>();
 	}
 
 	/**
