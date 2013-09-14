@@ -106,52 +106,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			ValueIteration valIter = new ValueIteration(new PredatorPolicy() {
-				
-				@Override
-				public Position move(HuntState state, Board b) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-				@Override
-				public double getTransitionProbability(HuntState oldState,
-						HuntState newState, Position action) {
-					// TODO Auto-generated method stub
-					return 0;
-				}
-				
-				@Override
-				public double getReward(HuntState oldState, HuntState newState,
-						Position action) {
-					// TODO Auto-generated method stub
-					return 0;
-				}
-				
-				@Override
-				public List<HuntState> getNextStates(HuntState oldState, Position action) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-				@Override
-				public List<HuntState> getAllStates() {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-				@Override
-				public List<Position> getActions(HuntState oldState) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-				
-				@Override
-				public double getActionProbability(HuntState oldState, Position action) {
-					// TODO Auto-generated method stub
-					return 0;
-				}
-			}, 0.1);
+			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(), 0.1);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
 

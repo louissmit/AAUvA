@@ -13,11 +13,11 @@ public class HuntState {
 	}
 	
 	public Position getPreyPosition() {
-		return preyPosition;
+		return new Position(this.preyPosition.getX(),this.preyPosition.getY());
 	}
 	
 	public Position getPredatorPosition() {
-		return predatorPosition;
+		return new Position(this.predatorPosition.getX(),this.predatorPosition.getY());
 	}
 
 	/* (non-Javadoc)
