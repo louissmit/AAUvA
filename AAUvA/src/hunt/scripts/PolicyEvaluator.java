@@ -61,11 +61,11 @@ public class PolicyEvaluator {
 	}
 	
 	public void init() {
-		for (HuntState state : policy.getAllStates()) {
-			if (!values.containsKey(state)) { 
-				values.put(state, new Double(0));
-			}
-		}
+//		for (HuntState state : policy.getAllStates()) {
+//			if (!values.containsKey(state)) { 
+//				values.put(state, new Double(0));
+//			}
+//		}
 	}
 	
 	public Map<HuntState, Double> getValues() {

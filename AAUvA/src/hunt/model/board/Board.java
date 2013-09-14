@@ -4,8 +4,6 @@ import hunt.model.Predator;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 
-import java.util.List;
-
 public class Board {
 	
 	private int width;
@@ -13,25 +11,17 @@ public class Board {
 	
 	private Predator predator;
 	private AbstractPrey prey;
-	private Position preyPosition;
-	private Position predatorPosition;
 	
 	public Board(int width, int height) {
 		this.width = width;
 		this.height = height;
 	}
 	
-	public void addPredator(Predator predator, int x, int y) {
-		this.predatorPosition = new Position(x, y);
+	public void addPredator(Predator predator) {
 		this.predator = predator;
 	}
 	
-	public void setPredators(Predator pred) {
-		this.predator = pred; 
-	}
-	
-	public void setPrey(AbstractPrey prey, int x, int y) {
-		this.preyPosition = new Position(x, y);
+	public void setPrey(AbstractPrey prey) {
 		this.prey = prey;
 	}
 	
@@ -50,17 +40,54 @@ public class Board {
 		return height;
 	}
 
-	public Position getPreyPosition() {
-		return preyPosition;
-	}
-	
-	public Position getPredatorPosition() {
-		return predatorPosition;
-	}
-
 	public HuntState getState() {
 		// TODO Auto-generated method stub
-		return new HuntState(preyPosition, predatorPosition);
+		return new HuntState(predator.getPosition(), prey.getPosition());
+	}
+	
+	public Position update(Position p, Position move) {
+		int newX = clamp(p.getX() + move.getX(), this.getWidth());
+		int newY = clamp(p.getY() + move.getY(), this.getHeight());
+		return p.set(newX, newY);
+	}
+	
+	private int clamp(int x, int n) {
+		int res;
+		if(x < 0) {
+			res = x + n;
+		} else {
+			res = x % n;
+		}	
+		return res;
+	}
+
+	/**
+	 * @return
+	 */
+	public void movePredator() {
+		this.predator.move(this);
+	}
+
+	/**
+	 * @return
+	 */
+	public void updatePredator(Position move) {
+		this.update(this.predator.getPosition(), move);
+	}
+	/**
+	 * 
+	 */
+	public void movePrey() {
+		this.prey.move(this);
+	}
+
+	/**
+	 * @param position
+	 * @return
+	 */
+	public void updatePrey(Position move) {
+		// TODO Auto-generated method stub
+		this.update(this.prey.getPosition(), move);
 	}
 	
 }

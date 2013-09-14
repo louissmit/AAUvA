@@ -51,26 +51,7 @@ public class Position {
 		return this.y;
 	}
 	
-	public Position update(Position move, Board board) {
-		update(this, move, board);
-		return this;
-	}
-	
-	public Position update(Position p, Position move, Board board) {
-		p.x = clamp(p.x + move.x, board.getWidth());
-		p.y = clamp(p.y + move.y, board.getHeight());
-		return p;
-	}
-	
-	private int clamp(int x, int n) {
-		int res;
-		if(x < 0) {
-			res = x + n;
-		} else {
-			res = x % n;
-		}	
-		return res;
-	}
+
 	
 	public boolean isEqual(Position p) {
 		return (p.x == this.x) && (p.y == this.y);
@@ -92,6 +73,18 @@ public class Position {
 	
 	public String toString(){
 		return "("+this.x+", "+this.y+")";
+	}
+
+	/**
+	 * @param newX
+	 * @param newY
+	 * @return
+	 */
+	public Position set(int newX, int newY) {
+		// TODO Auto-generated method stub
+		this.x = newX;
+		this.y = newY;
+		return this;
 	}
 	
 }
