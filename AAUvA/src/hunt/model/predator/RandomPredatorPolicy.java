@@ -76,19 +76,36 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		predPosition.update(action, this.board);
 		List<HuntState> states=new ArrayList<HuntState>();
 		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.EAST, this.board)>0)
-			states.add(new HuntState(oldState.getPreyPosition().update(Move.EAST,board), predPosition));
+		{
+			HuntState local=new HuntState(oldState.getPreyPosition().update(Move.EAST,board), predPosition);
+			if(!states.contains(local))
+				states.add(local);
+		}
 		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.WEST, this.board)>0)
-			states.add(new HuntState(oldState.getPreyPosition().update(Move.WEST,board), predPosition));
+		{
+			HuntState local=new HuntState(oldState.getPreyPosition().update(Move.WEST,board), predPosition);
+			if(!states.contains(local))
+				states.add(local);
+		}
 		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.NORTH, this.board)>0)
-			states.add(new HuntState(oldState.getPreyPosition().update(Move.NORTH,board), predPosition));
+		{
+			HuntState local=new HuntState(oldState.getPreyPosition().update(Move.NORTH,board), predPosition);
+			if(!states.contains(local))
+				states.add(local);
+		}
 		if(board.getPrey().GetProbabilityOfAction(preyPosition, Move.SOUTH, this.board)>0)
-			states.add(new HuntState(oldState.getPreyPosition().update(Move.SOUTH,board), predPosition));
+		{
+			HuntState local=new HuntState(oldState.getPreyPosition().update(Move.SOUTH,board), predPosition);
+			if(!states.contains(local))
+				states.add(local);
+		}		
 		states.add(new HuntState(oldState.getPreyPosition().update(Move.WAIT,board), predPosition));
 		// Apply possible prey moves to its position
 		// Generate next states
 		// TODO Auto-generated method stub
 		return states;
 	}
+	//This method must be reimplemented in the new representation
 	@Override
 	public double getTransitionProbability(HuntState oldState,
 			HuntState newState, Position action) {
@@ -97,6 +114,8 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		
 		Position preyPositionOld = oldState.getPreyPosition();
 		Position preyPositionNew = newState.getPreyPosition();
+		
+		
 		predPositionOld.update(action, this.board);
 		if (predPositionOld.equals(predPositionNew)) {
 			Position preyMove=preyPositionOld.substract(preyPositionNew, this.board);

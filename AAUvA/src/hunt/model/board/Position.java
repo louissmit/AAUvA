@@ -92,8 +92,17 @@ public class Position {
 	
 	public Position substract(Position p,Board board)
 	{
-		Position move = new Position(clamp(p.x - this.x,board.getWidth()) , clamp(p.y - this.y,board.getHeight()));
+		Position move = new Position(edges(p.x - this.x,board.getWidth()) , edges(p.y - this.y,board.getHeight()));
 		return move;
+	}
+	
+	public int edges(int x,int maxX)
+	{
+		if(x==maxX-1)
+			return -1;
+		if(x==-(maxX-1))
+			return 1;
+		else return x;
 	}
 	
 	public String toString(){

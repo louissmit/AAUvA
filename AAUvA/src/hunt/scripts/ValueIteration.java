@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.hamcrest.core.IsEqual;
+
 import hunt.controller.HuntController;
 import hunt.controller.Move;
 import hunt.model.*;
@@ -18,8 +20,8 @@ import hunt.model.predator.PredatorPolicy;
 public class ValueIteration {
 
 	private PredatorPolicy policy;
-	public int numberOfIterations;
-	private final double minTheta=0.01;
+	private int numberOfIterations;
+	private final double minTheta=0.001;
 	private double gamma;
 
 	public Hashtable<HuntState, Double> stateValues;
@@ -52,31 +54,35 @@ public class ValueIteration {
 			for(int i=0;i<states.size();i++)
 			{
 				HuntState localState=states.get(i);
-				double oldValue=stateValues.get(localState);
-				List<Double> valuesForAction=new ArrayList<Double>();
-				double calculatedValue=CalculateValueForAction(Move.EAST, localState);
-				valuesForAction.add(calculatedValue);
-				
-				calculatedValue=CalculateValueForAction(Move.WEST, localState);
-				valuesForAction.add(calculatedValue);
-				
-				calculatedValue=CalculateValueForAction(Move.NORTH, localState);
-				valuesForAction.add(calculatedValue);
-				
-				calculatedValue=CalculateValueForAction(Move.SOUTH, localState);
-				valuesForAction.add(calculatedValue);
-				
-				calculatedValue=CalculateValueForAction(Move.WAIT, localState);
-				valuesForAction.add(calculatedValue);
-				
-				double maxValue=Collections.max(valuesForAction);
-				stateValues.put(localState, maxValue);
-				delta=Math.max(delta, Math.abs(oldValue-maxValue));
+				if(!localState.getPredatorPosition().isEqual(localState.getPreyPosition()))
+				{
+					double oldValue=stateValues.get(localState);
+					List<Double> valuesForAction=new ArrayList<Double>();
+					double calculatedValue=CalculateValueForAction(Move.EAST, localState);
+					valuesForAction.add(calculatedValue);
+					
+					calculatedValue=CalculateValueForAction(Move.WEST, localState);
+					valuesForAction.add(calculatedValue);
+					
+					calculatedValue=CalculateValueForAction(Move.NORTH, localState);
+					valuesForAction.add(calculatedValue);
+					
+					calculatedValue=CalculateValueForAction(Move.SOUTH, localState);
+					valuesForAction.add(calculatedValue);
+					
+					calculatedValue=CalculateValueForAction(Move.WAIT, localState);
+					valuesForAction.add(calculatedValue);
+					
+					double maxValue=Collections.max(valuesForAction);
+					stateValues.put(localState, maxValue);
+					delta=Math.max(delta, Math.abs(oldValue-maxValue));
+				}
 			}
 			iterations++;
 		}
 		this.numberOfIterations=iterations;
 	}
+	
 	
 	private double CalculateValueForAction(Position move,HuntState state)
 	{
@@ -135,6 +141,10 @@ public class ValueIteration {
 			}			
 			optimalPolicy.put(localState, lastMove);
 		}
+	}
+	public int getIterations()
+	{
+		return this.numberOfIterations;
 	}
 
 	

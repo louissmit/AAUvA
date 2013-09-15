@@ -116,7 +116,7 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			Board board = new Board(11, 11);
 			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
-			board.setPrey(new RandomPrey(),1,1);
+			board.setPrey(new RandomPrey(),5,5);
 			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(board), 0.1);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
@@ -128,6 +128,15 @@ public class ScriptsMenu {
 			{
 				for(int j=0;j<board.getHeight();j++)
 				{
+					/*
+					for(int k=0;k<board.getWidth();k++)
+					{
+						for(int l=0;l<board.getHeight();l++)
+						{
+							states.add(new HuntState(new Position(l,k), new Position(i,j)));
+						}
+					}
+					*/
 					states.add(new HuntState(preyPos, new Position(i,j)));
 				}
 			}
@@ -136,7 +145,7 @@ public class ScriptsMenu {
 				System.out.println("Value for " + state.toString() + ": " + result.get(state));
 			}
 			
-			//System.out.println("Amount of iterations required: " + eval.getIterations());
+			System.out.println("Amount of iterations required: " + valIter.getIterations());
 		}
 		
 	}
