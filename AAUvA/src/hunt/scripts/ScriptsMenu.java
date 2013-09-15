@@ -116,7 +116,7 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			Board board = new Board(11, 11);
 			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
-			board.setPrey(new RandomPrey(),5,5);
+			board.setPrey(new RandomPrey(),1,1);
 			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(board), 0.1);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;

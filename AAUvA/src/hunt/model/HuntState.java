@@ -19,6 +19,13 @@ public class HuntState {
 	public Position getPredatorPosition() {
 		return new Position(this.predatorPosition.getX(),this.predatorPosition.getY());
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "prey:("+this.preyPosition.getX()+","+this.preyPosition.getY()+") predator:("+this.predatorPosition.getX()+","+this.predatorPosition.getY()+")";
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()

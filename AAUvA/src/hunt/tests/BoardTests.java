@@ -46,9 +46,9 @@ public class BoardTests {
 	
 	@Test
 	public void testAdjacent() {
-		assertTrue(c1.isAdjacent(c2).isEqual(Move.SOUTH));	
-		assertTrue(c1.isAdjacent(c3).isEqual(Move.NORTH));	
-		assertTrue(c1.isAdjacent(c4).isEqual(Move.WEST));	
+		assertTrue(c1.isAdjacent(c2,b).isEqual(Move.SOUTH));	
+		assertTrue(c1.isAdjacent(c3,b).isEqual(Move.NORTH));	
+		assertTrue(c1.isAdjacent(c4,b).isEqual(Move.WEST));	
 	}
 
 }

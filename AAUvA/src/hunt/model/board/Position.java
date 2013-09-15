@@ -76,8 +76,8 @@ public class Position {
 		return (p.x == this.x) && (p.y == this.y);
 	}
 	
-	public Position isAdjacent(Position p) {
-		Position move = new Position(p.x - this.x , p.y - this.y);
+	public Position isAdjacent(Position p,Board board) {
+		Position move = new Position(clamp(p.x - this.x,board.getWidth()) , clamp(p.y - this.y,board.getHeight()));
 		if(move.isEqual(Move.EAST)) {
 			return Move.EAST;
 		} else if (move.isEqual(Move.WEST)) {
@@ -88,6 +88,12 @@ public class Position {
 			return Move.SOUTH;		
 		}
 		return Move.WAIT;
+	}
+	
+	public Position substract(Position p,Board board)
+	{
+		Position move = new Position(clamp(p.x - this.x,board.getWidth()) , clamp(p.y - this.y,board.getHeight()));
+		return move;
 	}
 	
 	public String toString(){

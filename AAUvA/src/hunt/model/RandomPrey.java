@@ -30,7 +30,7 @@ public class RandomPrey extends AbstractPrey {
 		
 		double randomNumber = generator.nextDouble();
 		double range = 0.05;
-		Position adj = current.isAdjacent(b.getPredatorPosition());
+		Position adj = current.isAdjacent(b.getPredatorPosition(),b);
 		
 		if(moves.contains(adj)) {
 			moves.remove(adj);
@@ -64,13 +64,13 @@ public class RandomPrey extends AbstractPrey {
 		moves.add(Move.EAST);
 		
 		double range = 0.05;
-		Position adj = current.isAdjacent(b.getPredatorPosition());
+		Position adj = current.isAdjacent(b.getPredatorPosition(),b);
 		if(moves.contains(adj)) {
 			range = 0.2 / 3;
 		}
-		if(move==Move.WAIT)
+		if(move.isEqual(Move.WAIT))
 			return 0.8;
-		else if(move==adj)
+		else if(move.isEqual(adj) || (!moves.contains(move)))
 			return 0;
 		else
 			return range;

@@ -99,10 +99,8 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		Position preyPositionNew = newState.getPreyPosition();
 		predPositionOld.update(action, this.board);
 		if (predPositionOld.equals(predPositionNew)) {
-			preyPositionOld.update(action, this.board);
-			if(preyPositionOld.equals(preyPositionNew)){
-				return this.board.getPrey().GetProbabilityOfAction(oldState.getPredatorPosition(), action, this.board);
-			}
+			Position preyMove=preyPositionOld.substract(preyPositionNew, this.board);
+			return this.board.getPrey().GetProbabilityOfAction(oldState.getPreyPosition(), preyMove, this.board);
 		}
 		// TODO Auto-generated method stub
 		return 0;

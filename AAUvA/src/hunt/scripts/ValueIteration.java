@@ -18,6 +18,7 @@ import hunt.model.predator.PredatorPolicy;
 public class ValueIteration {
 
 	private PredatorPolicy policy;
+	public int numberOfIterations;
 	private final double minTheta=0.01;
 	private double gamma;
 
@@ -43,9 +44,11 @@ public class ValueIteration {
 			stateValues.put(states.get(i), 0.0);
 		}
 		
-		double delta=0;
+		double delta=minTheta;
+		int iterations=0;
 		while(!(delta<minTheta))
 		{
+			delta=0;
 			for(int i=0;i<states.size();i++)
 			{
 				HuntState localState=states.get(i);
@@ -70,8 +73,9 @@ public class ValueIteration {
 				stateValues.put(localState, maxValue);
 				delta=Math.max(delta, Math.abs(oldValue-maxValue));
 			}
-			
+			iterations++;
 		}
+		this.numberOfIterations=iterations;
 	}
 	
 	private double CalculateValueForAction(Position move,HuntState state)
