@@ -60,4 +60,13 @@ public abstract class AbstractPrey {
 	 */
 	public abstract Position getAction(HuntState s);
 
+	/**
+	 * Return the probability of taking a certain action given a certain state
+	 * @param state - the current state
+	 * @param action - the action
+	 * @return the probability of taking action in state
+	 */
+	public abstract double getProbabilityOfAction(HuntState state,
+			Position action);
+
 }

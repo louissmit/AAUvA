@@ -74,5 +74,18 @@ public class RandomPrey extends AbstractPrey {
 		
 		return action;
 	}
+	@Override
+	public double getProbabilityOfAction(HuntState state, Position action) {
+		double result;
+		if (action.equals(Move.WAIT)) {
+			// Wait has given probability
+			result = 0.8;
+		} else {
+			// Divide leftover probability over available actions (minus 1 to compensate for Move.WAIT)
+			result = 0.2 / (this.getActions(state).size() - 1);
+		}
+		
+		return result;
+	}
 
 }

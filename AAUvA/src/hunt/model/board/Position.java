@@ -137,5 +137,15 @@ public class Position {
 	public Position copy() {
 		return new Position(this.x, this.y);
 	}
+
+	/**
+	 * Subtract a position from this position
+	 * @param pos - the other position
+	 * @return this
+	 */
+	public Position substract(Position pos) {
+		Position posInverse = new Position(-pos.x, -pos.y);
+		return this.add(posInverse);
+	}
 	
 }

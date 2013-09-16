@@ -109,6 +109,9 @@ public class ScriptsMenu {
 		}
 	}
 	
+	/**
+	 * Perform policy evaluation of the random predator policy 
+	 */
 	private class PolicyEvaluationCommand implements Command {
 
 		public String getCommand() {
@@ -116,7 +119,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy());
+			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy().setPrey(new RandomPrey()));
 			eval.run();
 			Map<HuntState, Double> result = eval.getValues();
 			
@@ -133,6 +136,7 @@ public class ScriptsMenu {
 			states.add(new HuntState(pos2_3, pos5_4));
 			states.add(new HuntState(pos2_10, pos10_0));
 			states.add(new HuntState(pos10_10, pos0_0));
+			states.add(new HuntState(pos10_10, pos10_0));
 			
 			for (HuntState state : states) {
 				System.out.println("Value for " + state.toString() + ": " + result.get(state));
