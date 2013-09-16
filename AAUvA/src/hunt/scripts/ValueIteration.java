@@ -21,7 +21,7 @@ public class ValueIteration {
 
 	private PredatorPolicy policy;
 	private int numberOfIterations;
-	private final double minTheta=0.001;
+	private final double minTheta=0.0001;
 	private double gamma;
 
 	public Hashtable<HuntState, Double> stateValues;

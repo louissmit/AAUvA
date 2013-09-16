@@ -117,10 +117,20 @@ public class ScriptsMenu {
 			Board board = new Board(11, 11);
 			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
 			board.setPrey(new RandomPrey(),5,5);
-			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(board), 0.1);
+			double gamma=0.1;
+			runValueIteration(board, gamma);
+			gamma=0.5;
+			runValueIteration(board, gamma);
+			gamma=0.7;
+			runValueIteration(board, gamma);
+			gamma=0.9;
+			runValueIteration(board, gamma);
+		}
+
+		private void runValueIteration(Board board, double gamma) {
+			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy(board), gamma);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
-
 			
 			List<HuntState> states = new ArrayList<HuntState>();
 			Position preyPos=new Position(5,5);
@@ -137,15 +147,13 @@ public class ScriptsMenu {
 						}
 					}
 					*/
-					states.add(new HuntState(preyPos, new Position(i,j)));
+					//states.add(new HuntState(preyPos, new Position(i,j)));
 				}
 			}
-
 			for (HuntState state : states) {
 				System.out.println("Value for " + state.toString() + ": " + result.get(state));
 			}
-			
-			System.out.println("Amount of iterations required: " + valIter.getIterations());
+			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
 		}
 		
 	}
