@@ -2,7 +2,13 @@ package hunt.model.board;
 
 import hunt.controller.Move;
 
+/**
+ * A combination of an x-coordinate and a y-coordinate in the grid-world
+ */
 public class Position {
+	
+	public static final int BHEIGHT = 11;
+	public static final int BWIDTH = 11;
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -35,9 +41,20 @@ public class Position {
 		return true;
 	}
 
+	/**
+	 * X coordinate
+	 */
 	private int x;
+	/**
+	 * Y coordinate
+	 */
 	private int y;
 
+	/**
+	 * Create a new position
+	 * @param x - x coordinate
+	 * @param y - y coordinate
+	 */
 	public Position(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -71,8 +88,9 @@ public class Position {
 		return Move.WAIT;
 	}
 	
+	@Override
 	public String toString(){
-		return "("+this.x+", "+this.y+")";
+		return this.x + ", " + this.y;
 	}
 
 	/**
@@ -85,6 +103,39 @@ public class Position {
 		this.x = newX;
 		this.y = newY;
 		return this;
+	}
+
+	/**
+	 * Add the values in another Position to this Position 
+	 * @param pos - the other position
+	 * @return this
+	 */
+	public Position add(Position pos) {
+		this.x = mod((this.x + pos.x), BWIDTH);
+		this.y = mod((this.y + pos.y), BHEIGHT); 
+		return this;
+	}
+
+	/**
+	 * Produces a correct modulo, taking negative numbers into account
+	 * @param x - the input
+	 * @param n - the number to take the modulo over
+	 * @return x modulo n
+	 */
+	private int mod(int x, int n) {
+		int i = x % n;
+		if (i < 0) {
+			i += n;
+		}
+		return i;
+	}
+
+	/**
+	 * Create an identical move object
+	 * @return a copy of this move object
+	 */
+	public Position copy() {
+		return new Position(this.x, this.y);
 	}
 	
 }

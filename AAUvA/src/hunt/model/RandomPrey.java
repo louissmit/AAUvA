@@ -2,6 +2,8 @@ package hunt.model;
 
 import hunt.controller.Move;
 import java.util.ArrayList;
+import java.util.List;
+
 import hunt.model.board.Board;
 import hunt.model.board.Position;
 
@@ -51,6 +53,26 @@ public class RandomPrey extends AbstractPrey {
 		} else {
 			board.updatePrey(Move.WAIT);
 		}
+	}
+	@Override
+	public Position getAction(HuntState s) {
+		Position action;
+		
+		// Decide on move or wait
+		double randomNumber = generator.nextDouble();
+		if (randomNumber < 0.8) {
+			action = Move.WAIT;
+		} else {
+			List<Position> actions = this.getActions(s);
+			actions.remove(Move.WAIT);
+			
+			// Pick an action
+			randomNumber = generator.nextDouble();
+			int index = (int) (randomNumber * actions.size());
+			action = actions.get(index);
+		}
+		
+		return action;
 	}
 
 }

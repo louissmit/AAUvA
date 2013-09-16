@@ -12,8 +12,8 @@ public interface PredatorPolicy {
 
 	/**
 	 * Return all moves a predator can make given a certain state
-	 * @param oldState
-	 * @return
+	 * @param oldState - the state where the predator needs to make a move
+	 * @return all allowed actions in the given state
 	 */
 	public abstract List<Position> getActions(HuntState oldState);
 
@@ -58,6 +58,13 @@ public interface PredatorPolicy {
 	 * @return
 	 */
 	public abstract List<HuntState> getAllStates(Board board);
+
+	/**
+	 * Decides on a move given a state
+	 * @param s - the current state
+	 * @return the move the predator will make
+	 */
+	public abstract Position getAction(HuntState s);
 
 
 }

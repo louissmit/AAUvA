@@ -111,4 +111,18 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		return result;
 	}
 
+
+	@Override
+	public Position getAction(HuntState s) {
+		// Alowed actions
+		List<Position> actions = this.getActions(s);
+		
+		// Get a number between 0 and 1
+		double randomNumber = generator.nextDouble();
+		// Get a number between 0 and the amount of actions
+		int index = (int) (randomNumber * actions.size());
+		// Use the number to pick a random action
+		return actions.get(index);
+	}
+
 }

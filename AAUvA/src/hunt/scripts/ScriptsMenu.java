@@ -1,6 +1,7 @@
 package hunt.scripts;
 
 import hunt.model.HuntState;
+import hunt.model.RandomPrey;
 import hunt.model.board.Position;
 import hunt.model.predator.RandomPredatorPolicy;
 
@@ -9,18 +10,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Collection and basic user interface for different script created during the 
+ * Autonomous Agents course 
+ */
 public class ScriptsMenu {
 
+	/**
+	 * Available commands
+	 */
 	protected List<Command> commands;
 	
+	/**
+	 * Determines whether to continue running or not.
+	 */
 	protected boolean exit;
 	
+	/**
+	 * Constructor, populates the list of commands
+	 */
 	public ScriptsMenu() {
 		commands = new ArrayList<Command>();
 		commands.add(new ExitCommand());
+		commands.add(new SimulatorCommand());
 		commands.add(new PolicyEvaluationCommand());
 	}
 
+	/**
+	 * Perform input-script execution cycles
+	 */
 	public void run() {
 		exit = false;
 		Scanner s = new Scanner(System.in);
@@ -45,12 +63,22 @@ public class ScriptsMenu {
 		s.close();
 	}
 	
+	/**
+	 * Interface for available commands 
+	 */
 	private interface Command {
+		/**
+		 * The command
+		 * @return the command that invokes this script
+		 */
 		public String getCommand(); 
 		
 		public void execute(String[] args);
 	}
 	
+	/**
+	 * Stop running
+	 */
 	private class ExitCommand implements Command {
 		
 		public String getCommand() {
@@ -59,6 +87,25 @@ public class ScriptsMenu {
 		
 		public void execute(String[] args) {
 			exit = true;
+		}
+	}
+	
+	/**
+	 * Perform game simulations using random policies 
+	 */
+	private class SimulatorCommand implements Command {
+		
+		public String getCommand() {
+			return "simulator";
+		}
+		
+		public void execute(String[] args) {
+			Simulator sim = new Simulator();
+			HuntState startState = new HuntState(new Position(5,5), new Position(0,0));
+			sim.setState(startState);
+			sim.setPredatorPolicy(new RandomPredatorPolicy());
+			sim.setPrey(new RandomPrey());
+			sim.run();
 		}
 	}
 	
