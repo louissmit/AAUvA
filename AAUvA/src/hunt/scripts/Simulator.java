@@ -49,7 +49,8 @@ public class Simulator {
 	public HuntState transition(HuntState s) {
 		// Update predator
 		Position predatorAction = predPolicy.getAction(s);
-		s.getPredatorPosition().add(predatorAction);
+		
+		s = new HuntState(s.getPredatorPosition().add(predatorAction), s.getPreyPosition());
 		
 		// Check for end state
 		if (s.isTerminal()) {
@@ -57,7 +58,8 @@ public class Simulator {
 		} else {
 			// Update prey
 			Position preyAction = preyPolicy.getAction(s);
-			s.getPreyPosition().add(preyAction);
+			System.out.println(preyAction);
+			s = new HuntState(s.getPredatorPosition(), s.getPreyPosition().add(preyAction));
 		}
 		
 		return s;
