@@ -49,17 +49,17 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		if (!oldState.isTerminal()) {
 			// Update predator position and state
 			Position predatorPosition = oldState.getPredatorPosition().copy().add(action);
-			HuntState midState = new HuntState(predatorPosition, oldState.getPreyPosition().copy());
+			HuntState midState = new HuntState(oldState.getPreyPosition().copy(), predatorPosition);
 			
 			if (!midState.isTerminal()) {
 				Position preyPositionOld = oldState.getPreyPosition();
 				for (Position preyAction : this.prey.getActions(midState)) {
 					// Update prey position and state
 					Position preyPositionNew = preyPositionOld.copy().add(preyAction);
-					states.add(new HuntState(predatorPosition.copy(),preyPositionNew));
+					states.add(new HuntState(preyPositionNew, predatorPosition.copy()));
 				}
 			} else {
-				states.add(new HuntState(oldState.getPreyPosition().copy(), oldState.getPredatorPosition().copy()));
+				states.add(midState);
 			}
 		} else {
 			states.add(new HuntState(oldState.getPreyPosition().copy(), oldState.getPredatorPosition().copy()));
@@ -83,11 +83,15 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 				// State after predator takes a turn
 				HuntState midState = new HuntState(predPositionNew.copy(), preyPositionOld);
 				
-				// Inferred prey action
-				Position preyAction = preyPositionNew.copy().substract(preyPositionOld);
-				
-				// Determine probability of prey taking this action given the intermediate state
-				result = this.prey.getProbabilityOfAction(midState, preyAction);
+				if (!midState.isTerminal()) {
+					// Inferred prey action
+					Position preyAction = preyPositionNew.copy().substract(preyPositionOld);
+					
+					// Determine probability of prey taking this action given the intermediate state
+					result = this.prey.getProbabilityOfAction(midState, preyAction);
+				} else {
+					result = 1;
+				}
 			}
 		} else {
 			result = 1;

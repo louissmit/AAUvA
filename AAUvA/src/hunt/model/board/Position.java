@@ -9,6 +9,8 @@ public class Position {
 	
 	public static final int BHEIGHT = 11;
 	public static final int BWIDTH = 11;
+//	public static final int BHEIGHT = 3;
+//	public static final int BWIDTH = 3;
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
