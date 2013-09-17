@@ -183,12 +183,15 @@ public class ScriptsMenu {
 			{
 				for(int j=0;j<Position.BHEIGHT;j++)
 				{
-					states.add(new HuntState(preyPos, new Position(i,j)));
+					//states.add();
+					HuntState state=new HuntState(preyPos, new Position(i,j));
+					Position predPos=new Position(i,j);
+					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):" + result.get(state));
 				}
 			}
-			for (HuntState state : states) {
-				System.out.println("Value for " + state.toString() + ": " + result.get(state));
-			}
+			//for (HuntState state : states) {
+				
+			//}
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
 		}
 
