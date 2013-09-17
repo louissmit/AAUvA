@@ -80,12 +80,12 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		
 		// Terminal states always have probability 1 of looping back
 		if (!oldState.isTerminal()) {
-			
-			// Apply predator action
-			HuntState midState = oldState.movePredator(action);
-			
-			// Check action leads to the correct next state
-			if (midState.equals(newState)) {
+			// Make sure action is allowed; should never fail, really
+			if (this.getActions(oldState).contains(action)) {
+
+				// Apply predator action
+				HuntState midState = oldState.movePredator(action);
+				
 				if (!midState.isTerminal()) {
 					// Inferred prey action
 					Position preyAction = newState.getPreyAction(midState);
