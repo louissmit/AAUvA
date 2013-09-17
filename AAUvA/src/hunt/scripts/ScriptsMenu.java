@@ -114,9 +114,9 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			Board board = new Board(11, 11);
+			Board board = new Board(3, 3);
 			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
-			board.setPrey(new RandomPrey(),5,5);
+			board.setPrey(new RandomPrey(),2,2);
 			double gamma=0.1;
 			runValueIteration(board, gamma);
 			gamma=0.5;
@@ -133,7 +133,7 @@ public class ScriptsMenu {
 			Map<HuntState, Double> result = valIter.stateValues;
 			
 			List<HuntState> states = new ArrayList<HuntState>();
-			Position preyPos=new Position(5,5);
+			Position preyPos=new Position(2,2);
 			for(int i=0;i<board.getWidth();i++)
 			{
 				for(int j=0;j<board.getHeight();j++)
@@ -147,7 +147,7 @@ public class ScriptsMenu {
 						}
 					}
 					*/
-					//states.add(new HuntState(preyPos, new Position(i,j)));
+					states.add(new HuntState(preyPos, new Position(i,j)));
 				}
 			}
 			for (HuntState state : states) {
