@@ -40,7 +40,8 @@ public interface HuntState {
 	public abstract boolean predatorWins();
 
 	/**
-	 * Returns the action the prey has taken to reach this state given the previous state
+	 * Returns the action the prey has taken to reach this state given the previous state.
+	 * Note that this will fail if oldState is not of the same type as this object
 	 * @param oldState - the previous state of the program
 	 * @return
 	 */

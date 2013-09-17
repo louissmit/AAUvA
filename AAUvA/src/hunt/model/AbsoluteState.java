@@ -109,21 +109,17 @@ public class AbsoluteState implements HuntState {
 
 	@Override
 	public boolean predatorWins() {
-		boolean result = false;
-		if (this.getPredatorPosition().equals(this.getPreyPosition())) {
-			result = true;
-		}
-		return result;
+		return this.getPredatorPosition().equals(this.getPreyPosition());
 	}
 
 	@Override
 	public Position getPreyAction(HuntState oldState) {
 		if (!(oldState instanceof HuntState)) {
-			throw new IllegalArgumentException("Incomparable objects");
+			throw new IllegalArgumentException("oldState must be of type AbsoluteState");
 		}
 		AbsoluteState old = (AbsoluteState) oldState;
 		
-		return this.getPreyPosition().substract(old.getPreyPosition());
+		return this.getPreyPosition().subtract(old.getPreyPosition());
 	}
 }
 

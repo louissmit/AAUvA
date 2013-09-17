@@ -132,7 +132,7 @@ public class Position {
 	 * @param pos - the other position
 	 * @return this
 	 */
-	public Position substract(Position pos) {
+	public Position subtract(Position pos) {
 		Position posInverse = new Position(-pos.x, -pos.y);
 		return this.add(posInverse);
 	}
