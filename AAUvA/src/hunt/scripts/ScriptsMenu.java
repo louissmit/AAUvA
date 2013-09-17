@@ -1,5 +1,6 @@
 package hunt.scripts;
 
+import hunt.model.AbsoluteState;
 import hunt.model.HuntState;
 import hunt.model.RandomPrey;
 import hunt.model.board.Position;
@@ -102,7 +103,7 @@ public class ScriptsMenu {
 		
 		public void execute(String[] args) {
 			Simulator sim = new Simulator();
-			HuntState startState = new HuntState(new Position(5,5), new Position(0,0));
+			HuntState startState = new AbsoluteState(new Position(5,5), new Position(0,0));
 			sim.setState(startState);
 			sim.setPredatorPolicy(new RandomPredatorPolicy());
 			sim.setPrey(new RandomPrey());
@@ -133,11 +134,11 @@ public class ScriptsMenu {
 			Position pos10_10 = new Position(10,10);
 			
 			List<HuntState> states = new ArrayList<HuntState>();
-			states.add(new HuntState(pos0_0, pos5_5));
-			states.add(new HuntState(pos2_3, pos5_4));
-			states.add(new HuntState(pos2_10, pos10_0));
-			states.add(new HuntState(pos10_10, pos0_0));
-			states.add(new HuntState(pos10_10, pos10_0));
+			states.add(new AbsoluteState(pos0_0, pos5_5));
+			states.add(new AbsoluteState(pos2_3, pos5_4));
+			states.add(new AbsoluteState(pos2_10, pos10_0));
+			states.add(new AbsoluteState(pos10_10, pos0_0));
+			states.add(new AbsoluteState(pos10_10, pos10_0));
 			
 			for (HuntState state : states) {
 				System.out.println("Value for " + state.toString() + ": " + result.get(state));
@@ -184,7 +185,7 @@ public class ScriptsMenu {
 				for(int j=0;j<Position.BHEIGHT;j++)
 				{
 					//states.add();
-					HuntState state=new HuntState(preyPos, new Position(i,j));
+					HuntState state=new AbsoluteState(preyPos, new Position(i,j));
 					Position predPos=new Position(i,j);
 					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):" + result.get(state));
 				}

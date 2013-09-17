@@ -1,6 +1,7 @@
 package hunt.model.predator;
 
 import hunt.controller.Move;
+import hunt.model.AbsoluteState;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -56,21 +57,18 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		// In terminal states, loop to self
 		if (!oldState.isTerminal()) {
 			// Update predator position and state
-			Position predatorPosition = oldState.getPredatorPosition().copy().add(action);
-			HuntState midState = new HuntState(oldState.getPreyPosition().copy(), predatorPosition);
+			HuntState midState = oldState.movePredator(action);
 			
 			if (!midState.isTerminal()) {
-				Position preyPositionOld = oldState.getPreyPosition();
 				for (Position preyAction : this.prey.getActions(midState)) {
 					// Update prey position and state
-					Position preyPositionNew = preyPositionOld.copy().add(preyAction);
-					states.add(new HuntState(preyPositionNew, predatorPosition.copy()));
+					states.add(midState.movePrey(preyAction));
 				}
 			} else {
 				states.add(midState);
 			}
 		} else {
-			states.add(new HuntState(oldState.getPreyPosition().copy(), oldState.getPredatorPosition().copy()));
+			states.add(oldState.copy());
 		}
 		
 		return states;
@@ -82,18 +80,15 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		
 		// Terminal states always have probability 1 of looping back
 		if (!oldState.isTerminal()) {
-			Position predPositionNew = newState.getPredatorPosition();
 			
-			Position preyPositionOld = oldState.getPreyPosition();
-			Position preyPositionNew = newState.getPreyPosition();
-	
-			if (this.getActions(oldState).contains(action)) {
-				// State after predator takes a turn
-				HuntState midState = new HuntState(preyPositionOld, predPositionNew.copy());
-				
+			// Apply predator action
+			HuntState midState = oldState.movePredator(action);
+			
+			// Check action leads to the correct next state
+			if (midState.equals(newState)) {
 				if (!midState.isTerminal()) {
 					// Inferred prey action
-					Position preyAction = preyPositionNew.copy().substract(preyPositionOld);
+					Position preyAction = newState.getPreyAction(midState);
 					
 					// Determine probability of prey taking this action given the intermediate state
 					result = this.prey.getProbabilityOfAction(midState, preyAction);
@@ -114,7 +109,7 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		
 		// Terminal states can no longer get rewards
 		if (!oldState.isTerminal()) {
-			if (newState.getPredatorPosition().equals(newState.getPreyPosition())) {
+			if (newState.isTerminal() && newState.predatorWins()) {
 				result = 10;
 			}
 		}
@@ -131,7 +126,7 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 				// Prey position
 				for (int k = 0; k < Position.BWIDTH; k++) {
 					for (int l = 0; l < Position.BHEIGHT; l++) {
-						result.add(new HuntState(new Position(i,j), new Position(k,l)));
+						result.add(new AbsoluteState(new Position(i,j), new Position(k,l)));
 					}
 				}
 			}

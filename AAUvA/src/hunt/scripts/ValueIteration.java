@@ -74,7 +74,7 @@ public class ValueIteration {
 			for(int i=0;i<states.size();i++)
 			{
 				HuntState localState=states.get(i);
-				if(!localState.getPredatorPosition().isEqual(localState.getPreyPosition()))
+				if(!localState.isTerminal())
 				{
 					double oldValue=stateValues.get(localState);
 					List<Double> valuesForAction=new ArrayList<Double>();

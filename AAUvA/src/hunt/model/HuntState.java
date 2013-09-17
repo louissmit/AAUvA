@@ -3,96 +3,46 @@ package hunt.model;
 import hunt.model.board.Position;
 
 /**
- * Representation of the current layout of the grid world 
+ * A state representation for the model
  */
-public class HuntState {
-	
-	/**
-	 * Position of the prey in the grid world
-	 */
-	private Position preyPosition;
-	/**
-	 * Position of the predator in the grid world
-	 */
-	private Position predatorPosition;
-	
-	/**
-	 * Constructor with fields initialized
-	 * @param preyPosition - the position of the prey
-	 * @param predatorPosition - the position of the predator
-	 */
-	public HuntState(Position preyPosition, Position predatorPosition) {
-		this.preyPosition = preyPosition;
-		this.predatorPosition = predatorPosition;
-	}
-	
-	@Override
-	public String toString() {
-		return "Predator(" + predatorPosition + "), Prey(" + preyPosition + ")";
-	}
-	
-	/**
-	 * Return the position of the prey
-	 * @return the position of the prey
-	 */
-	public Position getPreyPosition() {
-		return preyPosition.copy();
-	}
-	
-	/**
-	 * Return the position of the predator
-	 * @return the position of the predator
-	 */
-	public Position getPredatorPosition() {
-		return predatorPosition.copy();
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime
-				* result
-				+ ((predatorPosition == null) ? 0 : predatorPosition.hashCode());
-		result = prime * result
-				+ ((preyPosition == null) ? 0 : preyPosition.hashCode());
-		return result;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof HuntState))
-			return false;
-		HuntState other = (HuntState) obj;
-		if (predatorPosition == null) {
-			if (other.predatorPosition != null)
-				return false;
-		} else if (!predatorPosition.equals(other.predatorPosition))
-			return false;
-		if (preyPosition == null) {
-			if (other.preyPosition != null)
-				return false;
-		} else if (!preyPosition.equals(other.preyPosition))
-			return false;
-		return true;
-	}
+public interface HuntState {
 
 	/**
 	 * Finds out whether this is a terminal state
 	 * @return true if this is a terminal state, false otherwise
 	 */
-	public boolean isTerminal() {
-		return this.predatorPosition.equals(this.preyPosition);
-	}
-}
+	public abstract boolean isTerminal();
+	
+	/**
+	 * Creates a new HuntState wherein the predator has taken an action
+	 * @param action - the predator's action
+	 * @return the new HuntState
+	 */
+	public abstract HuntState movePredator(Position action);
+	
+	/**
+	 * Creates a new HuntState wherein the prey has taken an action
+	 * @param action - the prey action
+	 * @return the new HuntState
+	 */
+	public abstract HuntState movePrey(Position action);
+	
+	/**
+	 * Copies the information in this HuntState
+	 * @return a new HuntState identical to this one
+	 */
+	public abstract HuntState copy();
 
+	/**
+	 * Whether the predators won
+	 * @return true if the prey has been caught, false otherwise
+	 */
+	public abstract boolean predatorWins();
+
+	/**
+	 * Returns the action the prey has taken to reach this state given the previous state
+	 * @param oldState - the previous state of the program
+	 * @return
+	 */
+	public abstract Position getPreyAction(HuntState oldState);
+}

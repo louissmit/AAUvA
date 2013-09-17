@@ -26,9 +26,9 @@ public abstract class AbstractPrey {
 		
 		// Take only moves that do not lead to predators
 		List<Position> result = new ArrayList<Position>();
-		Position preyPosition = s.getPreyPosition();
 		for (Position move : moves) {
-			if (!preyPosition.copy().add(move).equals(s.getPredatorPosition())) {
+			HuntState newState = s.movePrey(move);
+			if (!newState.predatorWins()) {
 				result.add(move);
 			}
 		}
