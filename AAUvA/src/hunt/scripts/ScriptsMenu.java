@@ -3,8 +3,9 @@ package hunt.scripts;
 import hunt.model.AbsoluteState;
 import hunt.model.HuntState;
 import hunt.model.RandomPrey;
+import hunt.model.TemporalState;
 import hunt.model.board.Position;
-import hunt.model.predator.RandomPredatorPolicy;
+import hunt.model.predator.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,10 @@ public class ScriptsMenu {
 		 */
 		public String getCommand(); 
 		
+		/**
+		 * Execute this command
+		 * @param args user-inputted arguments for the command. args[0] is equal to getCommand
+		 */
 		public void execute(String[] args);
 	}
 	
@@ -121,7 +126,15 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy().setPrey(new RandomPrey()));
+			boolean smartMode = args.length > 1 && args[1].equals("smart");
+			PlannerPredatorPolicy policy;
+			if (smartMode) {
+				policy = new TemporalRandomPredatorPolicy();
+			} else {
+				policy = new RandomPredatorPolicy();
+			}
+			policy.setPrey(new RandomPrey());
+			PolicyEvaluator eval = new PolicyEvaluator(policy);
 			eval.run();
 			Map<HuntState, Double> result = eval.getValues();
 			
@@ -133,15 +146,19 @@ public class ScriptsMenu {
 			Position pos10_0 = new Position(10,0);
 			Position pos10_10 = new Position(10,10);
 			
-			List<HuntState> states = new ArrayList<HuntState>();
+			List<AbsoluteState> states = new ArrayList<AbsoluteState>();
 			states.add(new AbsoluteState(pos0_0, pos5_5));
 			states.add(new AbsoluteState(pos2_3, pos5_4));
 			states.add(new AbsoluteState(pos2_10, pos10_0));
 			states.add(new AbsoluteState(pos10_10, pos0_0));
 			states.add(new AbsoluteState(pos10_10, pos10_0));
 			
-			for (HuntState state : states) {
-				System.out.println("Value for " + state.toString() + ": " + result.get(state));
+			for (AbsoluteState state : states) {
+				HuntState finalState = state;
+				if (smartMode) {
+					finalState = new TemporalState(state.getPreyPosition().copy().subtract(state.getPredatorPosition()));
+				}
+				System.out.println("Value for " + finalState.toString() + ": " + result.get(finalState));
 			}
 			
 			System.out.println("Amount of iterations required: " + eval.getIterations());
@@ -153,12 +170,16 @@ public class ScriptsMenu {
 	 * Perform value iteration for the random policy
 	 */
 	private class ValueIterationCommand implements Command {
+		
+		private boolean smartMode = false;
 
 		public String getCommand() {
 			return "valueiteration";
 		}
 
 		public void execute(String[] args) {
+			this.smartMode = args.length > 1 && args[1].equals("smart");
+			
 			double gamma=0.1;
 			runValueIteration(gamma);
 			gamma=0.5;
@@ -174,7 +195,14 @@ public class ScriptsMenu {
 		 * @param gamma - the discount factor for this value iteration
 		 */
 		private void runValueIteration(double gamma) {
-			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy().setPrey(new RandomPrey()), gamma);
+			PlannerPredatorPolicy policy;
+			if (smartMode) {
+				policy = new TemporalRandomPredatorPolicy();
+			} else {
+				policy = new RandomPredatorPolicy();
+			}
+			policy.setPrey(new RandomPrey());
+			ValueIteration valIter = new ValueIteration(policy, gamma);
 			valIter.Iterate();
 			Map<HuntState, Double> result = valIter.stateValues;
 
@@ -185,9 +213,15 @@ public class ScriptsMenu {
 				for(int j=0;j<Position.BHEIGHT;j++)
 				{
 					//states.add();
-					HuntState state=new AbsoluteState(preyPos, new Position(i,j));
-					Position predPos=new Position(i,j);
-					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):" + result.get(state));
+					Position predPos = new Position(i,j);
+					HuntState state;
+					if (smartMode) {
+						state = new TemporalState(preyPos.copy().subtract(predPos)); 
+						System.out.println(state + ": " + result.get(state));
+					} else {
+						state=new AbsoluteState(preyPos, predPos);
+						System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):" + result.get(state));
+					}
 				}
 			}
 			//for (HuntState state : states) {

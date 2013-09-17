@@ -1,11 +1,18 @@
 package hunt.model.predator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import hunt.model.HuntState;
 import hunt.model.board.Position;
 
-public interface PredatorPolicy {
+public abstract class PredatorPolicy {
+	
+	/**
+	 * A mapping from states to actions to the probabilit of taking that action in that state
+	 */
+	protected Map<HuntState, HashMap<Position, Double>> probabilities;
 	
 	/**
 	 * Return all moves a predator can make given a certain state
@@ -61,6 +68,5 @@ public interface PredatorPolicy {
 	 * @return the move the predator will make
 	 */
 	public abstract Position getAction(HuntState s);
-
 
 }

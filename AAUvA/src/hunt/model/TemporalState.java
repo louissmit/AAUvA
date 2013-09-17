@@ -62,5 +62,42 @@ public class TemporalState implements HuntState {
 	private Position getDistance() {
 		return distance.copy();
 	}
+	
+	@Override
+	public String toString() {
+		return "Distance to prey: (" + distance + ")";
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((distance == null) ? 0 : distance.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof TemporalState))
+			return false;
+		TemporalState other = (TemporalState) obj;
+		if (distance == null) {
+			if (other.distance != null)
+				return false;
+		} else if (!distance.equals(other.distance))
+			return false;
+		return true;
+	}
 
 }
