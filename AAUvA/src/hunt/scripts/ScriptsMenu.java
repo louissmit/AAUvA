@@ -178,8 +178,8 @@ public class ScriptsMenu {
 			Map<HuntState, Double> result = valIter.stateValues;
 
 			List<HuntState> states = new ArrayList<HuntState>();
-//			Position preyPos=new Position(5,5);
-			Position preyPos=new Position(2,2);
+			Position preyPos=new Position(5,5);
+//			Position preyPos=new Position(2,2);
 			for(int i=0;i<Position.BWIDTH;i++)
 			{
 				for(int j=0;j<Position.BHEIGHT;j++)
