@@ -8,8 +8,6 @@ import hunt.model.board.Position;
 
 public interface PredatorPolicy {
 	
-	public abstract void move(Board b);
-
 	/**
 	 * Return all moves a predator can make given a certain state
 	 * @param oldState - the state where the predator needs to make a move

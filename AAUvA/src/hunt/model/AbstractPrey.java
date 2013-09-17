@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hunt.controller.Move;
-import hunt.model.board.Board;
 import hunt.model.board.Position;
 
 public abstract class AbstractPrey {
 
 	private Position position;
-	
-	public abstract void move(Board b);
 
 	/**
 	 * @return the position

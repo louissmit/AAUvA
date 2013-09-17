@@ -36,7 +36,7 @@ public class HuntState {
 	 * @return the position of the prey
 	 */
 	public Position getPreyPosition() {
-		return preyPosition;
+		return preyPosition.copy();
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class HuntState {
 	 * @return the position of the predator
 	 */
 	public Position getPredatorPosition() {
-		return predatorPosition;
+		return predatorPosition.copy();
 	}
 
 	/* (non-Javadoc)

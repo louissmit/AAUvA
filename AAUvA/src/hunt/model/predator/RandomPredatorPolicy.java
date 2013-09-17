@@ -23,32 +23,6 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 		generator = new Random();
 	}
 
-	
-	@Override
-	public void move(Board board) {
-		double randomNumber = generator.nextDouble();
-		
-		if(randomNumber<=0.2)
-		{
-			board.updatePredator(Move.WAIT);
-		}
-		else if(randomNumber<=0.4)
-		{
-			board.updatePredator(Move.EAST);
-		}
-		else if(randomNumber<=0.6)
-		{
-			board.updatePredator(Move.NORTH);
-		}
-		else if(randomNumber<=0.8)
-		{
-			board.updatePredator(Move.SOUTH);
-		}
-		else
-		{
-			board.updatePredator(Move.WEST);
-		}
-	}
 	@Override
 	public List<Position> getActions(HuntState oldState) {
 		List<Position> result = new ArrayList<Position>();
@@ -77,11 +51,15 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 			Position predatorPosition = oldState.getPredatorPosition().copy().add(action);
 			HuntState midState = new HuntState(predatorPosition, oldState.getPreyPosition().copy());
 			
-			Position preyPositionOld = oldState.getPreyPosition();
-			for (Position preyAction : this.prey.getActions(midState)) {
-				// Update prey position and state
-				Position preyPositionNew = preyPositionOld.copy().add(preyAction);
-				states.add(new HuntState(predatorPosition.copy(),preyPositionNew));
+			if (!midState.isTerminal()) {
+				Position preyPositionOld = oldState.getPreyPosition();
+				for (Position preyAction : this.prey.getActions(midState)) {
+					// Update prey position and state
+					Position preyPositionNew = preyPositionOld.copy().add(preyAction);
+					states.add(new HuntState(predatorPosition.copy(),preyPositionNew));
+				}
+			} else {
+				states.add(new HuntState(oldState.getPreyPosition().copy(), oldState.getPredatorPosition().copy()));
 			}
 		} else {
 			states.add(new HuntState(oldState.getPreyPosition().copy(), oldState.getPredatorPosition().copy()));

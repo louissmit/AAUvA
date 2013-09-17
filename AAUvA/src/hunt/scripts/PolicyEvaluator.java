@@ -56,8 +56,8 @@ public class PolicyEvaluator {
 		this.iterations = 0;
 		
 		// Sweeps
-		double debug;
-		HuntState debugState = new HuntState(new Position(0,0), new Position(0,1));
+//		double debug;
+//		HuntState debugState = new HuntState(new Position(0,0), new Position(0,1));
 		while (difference > THRESHOLD) {
 			iterations++;
 			difference = 0;
@@ -94,8 +94,8 @@ public class PolicyEvaluator {
 				difference = Math.max(difference, Math.abs(oldValue - updatedValue));
 			}
 			
-			debug = this.values.get(debugState);
-			System.out.println(debug);
+//			debug = this.values.get(debugState);
+//			System.out.println(debug);
 		}
 	}
 	

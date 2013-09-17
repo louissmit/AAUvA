@@ -34,6 +34,7 @@ public class ScriptsMenu {
 		commands.add(new ExitCommand());
 		commands.add(new SimulatorCommand());
 		commands.add(new PolicyEvaluationCommand());
+		commands.add(new ValueIterationCommand());
 	}
 
 	/**
@@ -145,6 +146,61 @@ public class ScriptsMenu {
 			System.out.println("Amount of iterations required: " + eval.getIterations());
 		}
 		
+	}
+	
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class ValueIterationCommand implements Command {
+
+		public String getCommand() {
+			return "valueiteration";
+		}
+
+		public void execute(String[] args) {
+//			Board board = new Board(11, 11);
+//			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
+//			board.setPrey(new RandomPrey(),5,5);
+			
+			double gamma=0.1;
+			runValueIteration(gamma);
+			gamma=0.5;
+			runValueIteration(gamma);
+			gamma=0.7;
+			runValueIteration(gamma);
+			gamma=0.9;
+			runValueIteration(gamma);
+		}
+
+		private void runValueIteration(double gamma) {
+			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy().setPrey(new RandomPrey()), gamma);
+			valIter.Iterate();
+//			Map<HuntState, Double> result = valIter.stateValues;
+//
+//			List<HuntState> states = new ArrayList<HuntState>();
+//			Position preyPos=new Position(5,5);
+//			for(int i=0;i<board.getWidth();i++)
+//			{
+//				for(int j=0;j<board.getHeight();j++)
+//				{
+//					/*
+//					for(int k=0;k<board.getWidth();k++)
+//					{
+//						for(int l=0;l<board.getHeight();l++)
+//						{
+//							states.add(new HuntState(new Position(l,k), new Position(i,j)));
+//						}
+//					}
+//					*/
+//					//states.add(new HuntState(preyPos, new Position(i,j)));
+//				}
+//			}
+//			for (HuntState state : states) {
+//				System.out.println("Value for " + state.toString() + ": " + result.get(state));
+//			}
+			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
+		}
+
 	}
 
 }
