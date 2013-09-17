@@ -2,22 +2,49 @@ package hunt.model;
 
 import hunt.model.board.Position;
 
+/**
+ * Representation of the current layout of the grid world 
+ */
 public class HuntState {
 	
+	/**
+	 * Position of the prey in the grid world
+	 */
 	private Position preyPosition;
+	/**
+	 * Position of the predator in the grid world
+	 */
 	private Position predatorPosition;
 	
+	/**
+	 * Constructor with fields initialized
+	 * @param preyPosition - the position of the prey
+	 * @param predatorPosition - the position of the predator
+	 */
 	public HuntState(Position preyPosition, Position predatorPosition) {
 		this.preyPosition = preyPosition;
 		this.predatorPosition = predatorPosition;
 	}
 	
-	public Position getPreyPosition() {
-		return preyPosition;
+	@Override
+	public String toString() {
+		return "Predator(" + predatorPosition + "), Prey(" + preyPosition + ")";
 	}
 	
+	/**
+	 * Return the position of the prey
+	 * @return the position of the prey
+	 */
+	public Position getPreyPosition() {
+		return preyPosition.copy();
+	}
+	
+	/**
+	 * Return the position of the predator
+	 * @return the position of the predator
+	 */
 	public Position getPredatorPosition() {
-		return predatorPosition;
+		return predatorPosition.copy();
 	}
 
 	/* (non-Javadoc)
@@ -58,6 +85,14 @@ public class HuntState {
 		} else if (!preyPosition.equals(other.preyPosition))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Finds out whether this is a terminal state
+	 * @return true if this is a terminal state, false otherwise
+	 */
+	public boolean isTerminal() {
+		return this.predatorPosition.equals(this.preyPosition);
 	}
 }
 

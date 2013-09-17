@@ -1,6 +1,7 @@
 package hunt.scripts;
 
 import hunt.model.HuntState;
+import hunt.model.RandomPrey;
 import hunt.model.board.Position;
 import hunt.model.predator.RandomPredatorPolicy;
 
@@ -9,18 +10,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Collection and basic user interface for different script created during the 
+ * Autonomous Agents course 
+ */
 public class ScriptsMenu {
 
+	/**
+	 * Available commands
+	 */
 	protected List<Command> commands;
 	
+	/**
+	 * Determines whether to continue running or not.
+	 */
 	protected boolean exit;
 	
+	/**
+	 * Constructor, populates the list of commands
+	 */
 	public ScriptsMenu() {
 		commands = new ArrayList<Command>();
 		commands.add(new ExitCommand());
+		commands.add(new SimulatorCommand());
 		commands.add(new PolicyEvaluationCommand());
+		commands.add(new ValueIterationCommand());
 	}
 
+	/**
+	 * Perform input-script execution cycles
+	 */
 	public void run() {
 		exit = false;
 		Scanner s = new Scanner(System.in);
@@ -45,12 +64,22 @@ public class ScriptsMenu {
 		s.close();
 	}
 	
+	/**
+	 * Interface for available commands 
+	 */
 	private interface Command {
+		/**
+		 * The command
+		 * @return the command that invokes this script
+		 */
 		public String getCommand(); 
 		
 		public void execute(String[] args);
 	}
 	
+	/**
+	 * Stop running
+	 */
 	private class ExitCommand implements Command {
 		
 		public String getCommand() {
@@ -62,6 +91,28 @@ public class ScriptsMenu {
 		}
 	}
 	
+	/**
+	 * Perform game simulations using random policies 
+	 */
+	private class SimulatorCommand implements Command {
+		
+		public String getCommand() {
+			return "simulator";
+		}
+		
+		public void execute(String[] args) {
+			Simulator sim = new Simulator();
+			HuntState startState = new HuntState(new Position(5,5), new Position(0,0));
+			sim.setState(startState);
+			sim.setPredatorPolicy(new RandomPredatorPolicy());
+			sim.setPrey(new RandomPrey());
+			sim.run();
+		}
+	}
+	
+	/**
+	 * Perform policy evaluation of the random predator policy 
+	 */
 	private class PolicyEvaluationCommand implements Command {
 
 		public String getCommand() {
@@ -69,7 +120,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy());
+			PolicyEvaluator eval = new PolicyEvaluator(new RandomPredatorPolicy().setPrey(new RandomPrey()));
 			eval.run();
 			Map<HuntState, Double> result = eval.getValues();
 			
@@ -86,6 +137,7 @@ public class ScriptsMenu {
 			states.add(new HuntState(pos2_3, pos5_4));
 			states.add(new HuntState(pos2_10, pos10_0));
 			states.add(new HuntState(pos10_10, pos0_0));
+			states.add(new HuntState(pos10_10, pos10_0));
 			
 			for (HuntState state : states) {
 				System.out.println("Value for " + state.toString() + ": " + result.get(state));
@@ -94,6 +146,52 @@ public class ScriptsMenu {
 			System.out.println("Amount of iterations required: " + eval.getIterations());
 		}
 		
+	}
+	
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class ValueIterationCommand implements Command {
+
+		public String getCommand() {
+			return "valueiteration";
+		}
+
+		public void execute(String[] args) {
+			double gamma=0.1;
+			runValueIteration(gamma);
+			gamma=0.5;
+			runValueIteration(gamma);
+			gamma=0.7;
+			runValueIteration(gamma);
+			gamma=0.9;
+			runValueIteration(gamma);
+		}
+
+		/**
+		 * Perform the value iteration algorithm
+		 * @param gamma - the discount factor for this value iteration
+		 */
+		private void runValueIteration(double gamma) {
+			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy().setPrey(new RandomPrey()), gamma);
+			valIter.Iterate();
+			Map<HuntState, Double> result = valIter.stateValues;
+
+			List<HuntState> states = new ArrayList<HuntState>();
+			Position preyPos=new Position(5,5);
+			for(int i=0;i<Position.BWIDTH;i++)
+			{
+				for(int j=0;j<Position.BHEIGHT;j++)
+				{
+					states.add(new HuntState(preyPos, new Position(i,j)));
+				}
+			}
+			for (HuntState state : states) {
+				System.out.println("Value for " + state.toString() + ": " + result.get(state));
+			}
+			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
+		}
+
 	}
 
 }
