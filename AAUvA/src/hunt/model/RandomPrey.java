@@ -7,11 +7,19 @@ import hunt.model.board.Position;
 
 import java.util.Random;
 
-
+/**
+ * Prey that randomly moves about the board
+ */
 public class RandomPrey extends AbstractPrey {
 
+	/**
+	 * Random number generator
+	 */
 	private Random generator;
 	
+	/**
+	 * Initialize
+	 */
 	public RandomPrey()
 	{
 		generator=new Random();

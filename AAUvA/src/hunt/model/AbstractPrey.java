@@ -6,24 +6,10 @@ import java.util.List;
 import hunt.controller.Move;
 import hunt.model.board.Position;
 
+/**
+ * Abstract prey agent
+ */
 public abstract class AbstractPrey {
-
-	private Position position;
-
-	/**
-	 * @return the position
-	 */
-	public Position getPosition() {
-		return position;
-	}
-
-	/**
-	 * @param position the position to set
-	 */
-	public AbstractPrey setPosition(int x, int y) {
-		this.position = new Position(x, y);
-		return this;
-	}
 	
 	/**
 	 * Get the available actions in the given state

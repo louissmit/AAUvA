@@ -158,10 +158,6 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-//			Board board = new Board(11, 11);
-//			board.addPredator(new Predator(new RandomPredatorPolicy(board)),0,0);
-//			board.setPrey(new RandomPrey(),5,5);
-			
 			double gamma=0.1;
 			runValueIteration(gamma);
 			gamma=0.5;
@@ -172,6 +168,10 @@ public class ScriptsMenu {
 			runValueIteration(gamma);
 		}
 
+		/**
+		 * Perform the value iteration algorithm
+		 * @param gamma - the discount factor for this value iteration
+		 */
 		private void runValueIteration(double gamma) {
 			ValueIteration valIter = new ValueIteration(new RandomPredatorPolicy().setPrey(new RandomPrey()), gamma);
 			valIter.Iterate();
@@ -179,20 +179,10 @@ public class ScriptsMenu {
 
 			List<HuntState> states = new ArrayList<HuntState>();
 			Position preyPos=new Position(5,5);
-//			Position preyPos=new Position(2,2);
 			for(int i=0;i<Position.BWIDTH;i++)
 			{
 				for(int j=0;j<Position.BHEIGHT;j++)
 				{
-					/*
-					for(int k=0;k<board.getWidth();k++)
-					{
-						for(int l=0;l<board.getHeight();l++)
-						{
-							states.add(new HuntState(new Position(l,k), new Position(i,j)));
-						}
-					}
-					*/
 					states.add(new HuntState(preyPos, new Position(i,j)));
 				}
 			}

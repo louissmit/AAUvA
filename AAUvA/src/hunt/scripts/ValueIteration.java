@@ -10,17 +10,43 @@ import hunt.model.*;
 import hunt.model.board.Position;
 import hunt.model.predator.PredatorPolicy;
 
-///Value Iteration- 1.4
+/**
+ * Value iteration algorithm
+ *
+ */
 public class ValueIteration {
 
+	/**
+	 * Policy used for probability and reward distributions
+	 */
 	private PredatorPolicy policy;
+	/**
+	 * Total amount of iterations ran
+	 */
 	private int numberOfIterations;
+	/**
+	 * Error threshold
+	 */
 	private final double minTheta=0.0001;
+	/**
+	 * Discount factor
+	 */
 	private double gamma;
 
+	/**
+	 * The values for states, calculated by the algorithm
+	 */
 	public Hashtable<HuntState, Double> stateValues;
+	/**
+	 * The optimal policy as determined by the algorithm
+	 */
 	public Hashtable<HuntState,Position> optimalPolicy;
 	
+	/**
+	 * Initialize
+	 * @param _policy - the policy to use for transition and reward functions
+	 * @param _gamma - discount factor
+	 */
 	public ValueIteration(PredatorPolicy _policy,double _gamma)
 	{
 		this.policy=_policy;
@@ -77,7 +103,12 @@ public class ValueIteration {
 		this.numberOfIterations=iterations;
 	}
 	
-	
+	/**
+	 * Calculate the value for a state-action pair
+	 * @param move - the action
+	 * @param state - the state
+	 * @return the value for that state-action pair
+	 */
 	private double CalculateValueForAction(Position move,HuntState state)
 	{
 		double value=0;
@@ -91,7 +122,7 @@ public class ValueIteration {
 		return value;
 	}
 	
-	/*
+	/**
 	 * Calculate optimal policy for current stateValues and saves result in the policy field.
 	 * policy SHOULD be encapsulated to a separate class "Policy". Instances of predators
 	 * should have reference to the Policy class.
@@ -136,6 +167,10 @@ public class ValueIteration {
 			optimalPolicy.put(localState, lastMove);
 		}
 	}
+	/**
+	 * Get the amount of iterations required
+	 * @return the amount of iterations
+	 */
 	public int getIterations()
 	{
 		return this.numberOfIterations;

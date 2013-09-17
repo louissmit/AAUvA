@@ -1,16 +1,18 @@
 package hunt.model.board;
 
-import hunt.controller.Move;
-
 /**
  * A combination of an x-coordinate and a y-coordinate in the grid-world
  */
 public class Position {
 	
+	/**
+	 * Height of the board
+	 */
 	public static final int BHEIGHT = 11;
+	/**
+	 * Width of the board
+	 */
 	public static final int BWIDTH = 11;
-//	public static final int BHEIGHT = 3;
-//	public static final int BWIDTH = 3;
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -62,51 +64,36 @@ public class Position {
 		this.y = y;
 	}
 
+	/**
+	 * X coordinate
+	 * @return x coordinate
+	 */
 	public int getX() {
 		return this.x;
 	}
 
+	/**
+	 * Y coordinate
+	 * @return y coordinate
+	 */
 	public int getY() {
 		return this.y;
 	}
 	
-
-	
+	/**
+	 * Test for equality
+	 * @param p another position
+	 * @return true if the positions are equal, false otherwise
+	 */
 	public boolean isEqual(Position p) {
 		return (p.x == this.x) && (p.y == this.y);
-	}
-	
-	public Position isAdjacent(Position p) {
-		Position move = new Position(p.x - this.x , p.y - this.y);
-		if(move.isEqual(Move.EAST)) {
-			return Move.EAST;
-		} else if (move.isEqual(Move.WEST)) {
-			return Move.WEST;
-		} else if (move.isEqual(Move.NORTH)) {
-			return Move.NORTH;
-		} else if (move.isEqual(Move.SOUTH)) {
-			return Move.SOUTH;		
-		}
-		return Move.WAIT;
 	}
 	
 	@Override
 	public String toString(){
 		return this.x + ", " + this.y;
 	}
-
-	/**
-	 * @param newX
-	 * @param newY
-	 * @return
-	 */
-	public Position set(int newX, int newY) {
-		// TODO Auto-generated method stub
-		this.x = newX;
-		this.y = newY;
-		return this;
-	}
-
+	
 	/**
 	 * Add the values in another Position to this Position 
 	 * @param pos - the other position

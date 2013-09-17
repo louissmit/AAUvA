@@ -3,7 +3,6 @@ package hunt.model.predator;
 import java.util.List;
 
 import hunt.model.HuntState;
-import hunt.model.board.Board;
 import hunt.model.board.Position;
 
 public interface PredatorPolicy {

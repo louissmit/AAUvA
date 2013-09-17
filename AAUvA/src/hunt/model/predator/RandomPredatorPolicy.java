@@ -3,21 +3,29 @@ package hunt.model.predator;
 import hunt.controller.Move;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
-import hunt.model.board.Board;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Predator policy that makes random moves
+ */
 public class RandomPredatorPolicy implements PredatorPolicy {
 
+	/**
+	 * Random number generator
+	 */
 	private Random generator;
 	/**
 	 * Prey agent
 	 */
 	private AbstractPrey prey;
 	
+	/**
+	 * Create and initialize policy
+	 */
 	public RandomPredatorPolicy()
 	{
 		generator = new Random();
@@ -81,7 +89,7 @@ public class RandomPredatorPolicy implements PredatorPolicy {
 	
 			if (this.getActions(oldState).contains(action)) {
 				// State after predator takes a turn
-				HuntState midState = new HuntState(predPositionNew.copy(), preyPositionOld);
+				HuntState midState = new HuntState(preyPositionOld, predPositionNew.copy());
 				
 				if (!midState.isTerminal()) {
 					// Inferred prey action
