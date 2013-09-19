@@ -8,6 +8,7 @@ import hunt.model.board.Position;
 import hunt.model.predator.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -126,7 +127,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			boolean smartMode = args.length > 1 && args[1].equals("smart");
+			boolean smartMode = Arrays.asList(args).contains("smart");
 			PlannerPredatorPolicy policy;
 			if (smartMode) {
 				policy = new TemporalRandomPredatorPolicy();
@@ -135,7 +136,12 @@ public class ScriptsMenu {
 			}
 			policy.setPrey(new RandomPrey());
 			PolicyEvaluator eval = new PolicyEvaluator(policy);
+			
+			// Timer
+			long startTime = System.nanoTime();
 			eval.run();
+			long endTime = System.nanoTime();
+			
 			Map<HuntState, Double> result = eval.getValues();
 			
 			Position pos0_0 = new Position(0,0);
@@ -162,6 +168,8 @@ public class ScriptsMenu {
 			}
 			
 			System.out.println("Amount of iterations required: " + eval.getIterations());
+			
+			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 		}
 		
 	}
@@ -178,7 +186,7 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			this.smartMode = args.length > 1 && args[1].equals("smart");
+			this.smartMode = Arrays.asList(args).contains("smart");
 			
 			double gamma=0.1;
 			runValueIteration(gamma);
@@ -203,7 +211,11 @@ public class ScriptsMenu {
 			}
 			policy.setPrey(new RandomPrey());
 			ValueIteration valIter = new ValueIteration(policy, gamma);
+			
+			// Timer
+			long startTime = System.nanoTime();
 			valIter.Iterate();
+			long endTime = System.nanoTime();
 			Map<HuntState, Double> result = valIter.stateValues;
 
 			List<HuntState> states = new ArrayList<HuntState>();
@@ -228,6 +240,8 @@ public class ScriptsMenu {
 				
 			//}
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
+			
+			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 		}
 
 	}
