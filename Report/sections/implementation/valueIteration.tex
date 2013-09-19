@@ -1,9 +1,10 @@
-Iterative policy evaluation was implemented for the randomly moving predator. This algorithm takes a predator policy as input and produces a value for each possible state which is calculated according to the following formula: \\
 
-Value Iteration was implemented. This algorithm does not uses any policy at all but calculates values for each state with the following formula
+Value Iteration algorithm was implemented. This algorithm does not uses any policy at all but calculates values for each state with the following formula
 
 \begin{math}
   V(s) = \max_a \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
 \end{math} \\
 
-This algorithm loops over alll states until it finds that the difference between the previous value for $V(s)$ and the updated value is less than a certain threshold for all states. In the case of this specific implementation, a threshold of 0.001 was used.
+This algorithm loops over alll states updating values of states unitl the difference between new value and old value is less than threshold for all states. At the end optimal policy is created according to the formula:
+
+V(s) = \argmax_a \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
