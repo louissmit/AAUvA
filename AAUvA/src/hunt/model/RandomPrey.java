@@ -1,56 +1,61 @@
 package hunt.model;
 
 import hunt.controller.Move;
-import java.util.ArrayList;
-import hunt.model.board.Board;
+import java.util.List;
+
 import hunt.model.board.Position;
 
 import java.util.Random;
 
-
+/**
+ * Prey that randomly moves about the board
+ */
 public class RandomPrey extends AbstractPrey {
 
+	/**
+	 * Random number generator
+	 */
 	private Random generator;
 	
+	/**
+	 * Initialize
+	 */
 	public RandomPrey()
 	{
 		generator=new Random();
 	}
 	@Override
-	public void move(Board board) {
-		Position current = this.getPosition();
+	public Position getAction(HuntState s) {
+		Position action;
 		
-		//there must be a better way + testing
-		ArrayList<Position> moves = new ArrayList<Position>();
-		moves.add(Move.SOUTH);
-		moves.add(Move.NORTH);
-		moves.add(Move.WEST);
-		moves.add(Move.EAST);
-		
+		// Decide on move or wait
 		double randomNumber = generator.nextDouble();
-		double range = 0.05;
-		Position adj = current.isAdjacent(board.getPredator().getPosition());
-
-		
-		if(moves.contains(adj)) {
-			moves.remove(adj);
-			range = 0.2 / 3;
-		}
-		
-		if(randomNumber <= range){
-			board.updatePrey(moves.get(0));
-		}
-		else if(randomNumber <= 2*range){
-			board.updatePrey(moves.get(1));
-		}
-		else if(randomNumber <= 3*range){
-			board.updatePrey(moves.get(2));
-		}
-		else if(randomNumber <= 4*range && moves.size() > 3){
-			board.updatePrey(moves.get(3));
+		if (randomNumber < 0.8) {
+			action = Move.WAIT;
 		} else {
-			board.updatePrey(Move.WAIT);
+			List<Position> actions = this.getActions(s);
+			actions.remove(Move.WAIT);
+			
+			// Pick an action
+			randomNumber = generator.nextDouble();
+			int index = (int) (randomNumber * actions.size());
+			action = actions.get(index);
 		}
+		
+		return action;
+	}
+	@Override
+	public double getProbabilityOfAction(HuntState state, Position action) {
+		double result = 0;
+		if (action.equals(Move.WAIT)) {
+			// Wait has given probability
+			result = 0.8;
+		} else {
+			// Divide leftover probability over available actions (minus 1 to compensate for Move.WAIT)
+			result = 0.2 / (this.getActions(state).size() - 1);
+		}
+		
+		return result;
 	}
 
 }
