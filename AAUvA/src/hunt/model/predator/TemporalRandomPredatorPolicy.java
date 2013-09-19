@@ -5,12 +5,19 @@ import hunt.model.TemporalState;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Random predator policy making use of the improved state representation
  */
 public class TemporalRandomPredatorPolicy extends RandomPredatorPolicy {
+	
+	public TemporalRandomPredatorPolicy()
+	{
+		super();
+	}
 
 	@Override
 	public List<HuntState> getAllStates() {

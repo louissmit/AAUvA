@@ -10,7 +10,7 @@ import hunt.model.board.Position;
 public abstract class PredatorPolicy {
 	
 	/**
-	 * A mapping from states to actions to the probabilit of taking that action in that state
+	 * A mapping from states to actions to the probabilities of taking that action in that state
 	 */
 	protected Map<HuntState, HashMap<Position, Double>> probabilities;
 	
@@ -68,5 +68,22 @@ public abstract class PredatorPolicy {
 	 * @return the move the predator will make
 	 */
 	public abstract Position getAction(HuntState s);
+	
+	/**
+	 * sets map of probabilities of taking actions in particular state
+	 * @param _probabilities
+	 */
+	public void setProbabilities(Map<HuntState, HashMap<Position, Double>> _probabilities)
+	{
+		this.probabilities=_probabilities;
+	}
+	/**
+	 * gets map of probabilities of taking actions in particular state
+	 * @return
+	 */
+	public Map<HuntState, HashMap<Position, Double>> getProbabilities()
+	{
+		return this.probabilities;
+	}
 
 }

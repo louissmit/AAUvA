@@ -6,7 +6,9 @@ import hunt.model.HuntState;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	/**
@@ -118,5 +120,8 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		this.prey = prey;
 		return this;
 	}
-
+	
+	
 }
+	
+

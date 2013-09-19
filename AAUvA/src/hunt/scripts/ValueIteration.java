@@ -2,8 +2,10 @@ package hunt.scripts;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import hunt.controller.Move;
 import hunt.model.*;
@@ -40,7 +42,7 @@ public class ValueIteration {
 	/**
 	 * The optimal policy as determined by the algorithm
 	 */
-	public Hashtable<HuntState,Position> optimalPolicy;
+	private Map<HuntState, HashMap<Position, Double>> optimalPolicyTable;
 	
 	/**
 	 * Initialize
@@ -52,7 +54,7 @@ public class ValueIteration {
 		this.policy=_policy;
 		this.gamma=_gamma;
 		stateValues=new Hashtable<HuntState,Double>();
-		optimalPolicy=new Hashtable<HuntState,Position>();
+		optimalPolicyTable=new HashMap<HuntState, HashMap<Position, Double>>();
 	}
 
 	/**
@@ -124,12 +126,12 @@ public class ValueIteration {
 	
 	/**
 	 * Calculate optimal policy for current stateValues and saves result in the policy field.
-	 * policy SHOULD be encapsulated to a separate class "Policy". Instances of predators
-	 * should have reference to the Policy class.
+	 * This method should be called after Iterate() method was called
 	 */
 	public void CalculateOptimalPolicyForCurrentValues()
 	{
 		List<HuntState> states=policy.getAllStates();
+		this.optimalPolicyTable=this.policy.getProbabilities();
 		for(int i=0;i<states.size();i++)
 		{
 			HuntState localState=states.get(i);
@@ -164,8 +166,19 @@ public class ValueIteration {
 				lastMove=Move.SOUTH;
 				lastCalculatedValue=calculatedValue;
 			}			
-			optimalPolicy.put(localState, lastMove);
+			
+			HashMap<Position, Double> actionsProbabilities=new HashMap<Position, Double>();
+			actionsProbabilities.put(Move.EAST,0.0);
+			actionsProbabilities.put(Move.WEST,0.0);
+			actionsProbabilities.put(Move.SOUTH,0.0);
+			actionsProbabilities.put(Move.NORTH,0.0);
+			actionsProbabilities.put(Move.WAIT,0.0);
+			
+			actionsProbabilities.put(lastMove,1.0);
+			this.optimalPolicyTable.put(localState, actionsProbabilities);
 		}
+		
+		
 	}
 	/**
 	 * Get the amount of iterations required
@@ -174,6 +187,15 @@ public class ValueIteration {
 	public int getIterations()
 	{
 		return this.numberOfIterations;
+	}
+	
+	/**
+	 * returns policy of the predator
+	 * @return
+	 */
+	public PredatorPolicy GetPolicy()
+	{
+		return this.policy;
 	}
 
 	

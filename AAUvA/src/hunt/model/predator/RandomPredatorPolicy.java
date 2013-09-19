@@ -17,7 +17,7 @@ public class RandomPredatorPolicy extends PlannerPredatorPolicy {
 	/**
 	 * Random number generator
 	 */
-	private Random generator;
+	protected Random generator;
 	
 	/**
 	 * Create and initialize policy
@@ -65,14 +65,27 @@ public class RandomPredatorPolicy extends PlannerPredatorPolicy {
 	@Override
 	public Position getAction(HuntState s) {
 		// Alowed actions
-		List<Position> actions = this.getActions(s);
 		
+		List<Position> actions = this.getActions(s);
+		HashMap<Position, Double> distribution=probabilities.get(s);
+		double randomNumber = generator.nextDouble();
+		double prob=0;
+		for (Position action : actions) {
+			prob+=distribution.get(action);
+			if(randomNumber<=prob)
+				return action;
+		}
+		return null;
+		
+		/*
+		List<Position> actions = this.getActions(s);
 		// Get a number between 0 and 1
 		double randomNumber = generator.nextDouble();
 		// Get a number between 0 and the amount of actions
 		int index = (int) (randomNumber * actions.size());
 		// Use the number to pick a random action
 		return actions.get(index);
+		*/
 	}
 
 }

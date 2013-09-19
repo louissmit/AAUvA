@@ -217,6 +217,7 @@ public class ScriptsMenu {
 			valIter.Iterate();
 			long endTime = System.nanoTime();
 			Map<HuntState, Double> result = valIter.stateValues;
+			valIter.CalculateOptimalPolicyForCurrentValues();
 
 			List<HuntState> states = new ArrayList<HuntState>();
 			Position preyPos=new Position(5,5);
@@ -242,8 +243,24 @@ public class ScriptsMenu {
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
 			
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
+			
+			System.out.println("Simulation using new policy: ");
+			
+			Simulator sim = new Simulator();
+			HuntState state;
+			Position predPos = new Position(0,0);
+			if (smartMode) {
+				state = new TemporalState(preyPos.copy().subtract(predPos)); 
+				System.out.println(state + ": " + result.get(state));
+			} else {
+				state=new AbsoluteState(preyPos, predPos);
+				System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):" + result.get(state));
+			}
+			sim.setState(state);
+			sim.setPredatorPolicy(valIter.GetPolicy());
+			sim.setPrey(new RandomPrey());
+			sim.run();
 		}
-
 	}
-
 }
+
