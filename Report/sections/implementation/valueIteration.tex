@@ -1,10 +1,14 @@
 
-Value Iteration algorithm was implemented. This algorithm does not uses any policy at all but calculates values for each state with the following formula
+Value Iteration algorithm was implemented. This algorithm does not uses any policy at all but calculates values for each state with the following formula \\
+
 
 \begin{math}
   V(s) = \max_a \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
 \end{math} \\
 
-This algorithm loops over alll states updating values of states unitl the difference between new value and old value is less than threshold for all states. At the end optimal policy is created according to the formula:
+This algorithm loops over all states updating values of states untill the difference between new value and old value is less than threshold for all states. At the end optimal policy is created according to the formula: \\
 
-V(s) = \argmax_a \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
+
+\begin{math}
+V(s) =\arg\max_a \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
+\end{math} \\
