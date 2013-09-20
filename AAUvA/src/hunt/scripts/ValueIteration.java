@@ -10,6 +10,7 @@ import java.util.Map;
 import hunt.controller.Move;
 import hunt.model.*;
 import hunt.model.board.Position;
+import hunt.model.predator.PlannerPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
 
 /**
@@ -21,7 +22,7 @@ public class ValueIteration {
 	/**
 	 * Policy used for probability and reward distributions
 	 */
-	private PredatorPolicy policy;
+	private PlannerPredatorPolicy policy;
 	/**
 	 * Total amount of iterations ran
 	 */
@@ -49,7 +50,7 @@ public class ValueIteration {
 	 * @param _policy - the policy to use for transition and reward functions
 	 * @param _gamma - discount factor
 	 */
-	public ValueIteration(PredatorPolicy _policy,double _gamma)
+	public ValueIteration(PlannerPredatorPolicy _policy,double _gamma)
 	{
 		this.policy=_policy;
 		this.gamma=_gamma;

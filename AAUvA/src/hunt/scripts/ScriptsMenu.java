@@ -114,7 +114,7 @@ public class ScriptsMenu {
 			sim.setState(startState);
 			sim.setPredatorPolicy(new RandomPredatorPolicy());
 			sim.setPrey(new RandomPrey());
-			sim.run();
+			sim.run(1000);
 		}
 	}
 	
@@ -193,6 +193,7 @@ public class ScriptsMenu {
 			new PolicyIterator(eval).run();
 
 			long endTime = System.nanoTime();
+			System.out.println(eval.getIterations());
 			Utility.printStates(eval.getValues(), smartMode);
 //			printResults(eval, startTime, endTime, smartMode);
 		}
@@ -250,25 +251,26 @@ public class ScriptsMenu {
 			
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 			
-//			if(this.simulatorTest)
-//			{
-//				System.out.println("Simulation using new policy: ");
-//				
-//				Simulator sim = new Simulator();
-//				HuntState state;
-//				Position predPos = new Position(0,0);
-//				if (smartMode) {
-//					state = new RelativeState(preyPos.copy().subtract(predPos)); 
-//					System.out.println(state);
-//				} else {
-//					state=new AbsoluteState(preyPos, predPos);
-//					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):");
-//				}
-//				sim.setState(state);
-//				sim.setPredatorPolicy(valIter.GetPolicy());
-//				sim.setPrey(new RandomPrey());
-//				sim.run();
-//			}
+			Position preyPos=new Position(5,5);
+			if(this.simulatorTest)
+			{
+				System.out.println("Simulation using new policy: ");
+				
+				Simulator sim = new Simulator();
+				HuntState state;
+				Position predPos = new Position(0,0);
+				if (smartMode) {
+					state = new RelativeState(preyPos.copy().subtract(predPos)); 
+					System.out.println(state);
+				} else {
+					state=new AbsoluteState(preyPos, predPos);
+					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):");
+				}
+				sim.setState(state);
+				sim.setPredatorPolicy(valIter.GetPolicy());
+				sim.setPrey(new RandomPrey());
+				sim.run(100);
+			}
 		}
 	}
 }

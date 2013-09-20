@@ -31,6 +31,7 @@ public class PolicyIterator {
 
 		boolean stable = true;
 		while(stable){
+			eval.iterations++;
 			for (HuntState currentState: values.keySet()) {
 
 				// Loop over all actions possible in the current state and selects the best action
@@ -38,7 +39,7 @@ public class PolicyIterator {
 				Position bestAction = null;
 				for (Position action : policy.getActions(currentState)) {
 					double actionProbability = policy.getActionProbability(currentState, action);
-					double actionValue = eval.evaluateAction(currentState, action);
+					double actionValue = eval.evaluateAction(currentState, action, eval.values);
 					if((actionProbability * actionValue) > bestActionValue) {
 						bestAction = action;
 						stable = false;

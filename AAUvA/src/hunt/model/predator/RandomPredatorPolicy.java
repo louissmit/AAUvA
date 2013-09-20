@@ -1,5 +1,6 @@
 package hunt.model.predator;
 
+import hunt.controller.Move;
 import hunt.model.AbsoluteState;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -75,7 +76,7 @@ public class RandomPredatorPolicy extends PlannerPredatorPolicy {
 			if(randomNumber<=prob)
 				return action;
 		}
-		return null;
+		return Move.WAIT;
 		
 		/*
 		List<Position> actions = this.getActions(s);

@@ -1,5 +1,7 @@
 package hunt.scripts;
 
+import java.util.ArrayList;
+
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -31,15 +33,30 @@ public class Simulator {
 	/**
 	 * Run the simulator
 	 */
-	public void run() {
-		int i = 0;
+	public void run(int runs) {
 		
-		while(running) {
-			currentState = transition(currentState);
-			System.out.println(currentState);
+		double avg = 0.0;
+		int i = 0;
+		int x = 0;
+		ArrayList<Integer> runlist = new ArrayList<Integer>();
+		while(i < runs) {
+			x = 0;
+			while(running) {
+				currentState = transition(currentState);
+				x++;
+			}
+			avg += x;
+			runlist.add(x);
+			running = true;
 			i++;
 		}
-		System.out.println("Runs: " + i);	}
+		avg = avg / runs;
+		double temp = 0;
+		for(double run: runlist){
+			temp += (run - avg)*(run - avg);
+		}
+		System.out.println("Average: " + avg + ", standard deviation: " + Math.sqrt(temp / runs));
+	}
 	
 	/**
 	 * Advance the state
