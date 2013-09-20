@@ -187,9 +187,13 @@ public class ScriptsMenu {
 		}
 		public void execute(String[] args) {
 			boolean smartMode = Arrays.asList(args).contains("smart");
-			PolicyEvaluator eval = super.runEval(smartMode);
+			long startTime = System.nanoTime();
 
-			
+			PolicyEvaluator eval = super.runEval(smartMode);
+			PolicyImprover improv = new PolicyImprover(eval).run();
+
+			long endTime = System.nanoTime();
+			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
 	

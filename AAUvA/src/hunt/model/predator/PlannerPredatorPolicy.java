@@ -30,6 +30,14 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	public void setActionProbability(HuntState state, HashMap<Position, Double> distribution){
 		this.probabilities.put(state, distribution);	}
 
+	public void setAction(HuntState state, Position action){
+		HashMap<Position, Double> dist = this.probabilities.get(state);
+		for(Position key: dist.keySet()){
+			dist.put(key, 0.0);
+		}
+		dist.put(action, 1.0);
+	}
+
 	@Override
 	public double getActionProbability(HuntState oldState, Position action) {
 		return this.probabilities.get(oldState).get(action);

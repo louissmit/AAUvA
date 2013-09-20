@@ -2,6 +2,7 @@ package hunt.scripts;
 
 import hunt.model.HuntState;
 import hunt.model.board.Position;
+import hunt.model.predator.PlannerPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class PolicyEvaluator {
 	/**
 	 * The policy determining the predator moves
 	 */
-	protected PredatorPolicy policy;
+	protected PlannerPredatorPolicy policy;
 	
 	/**
 	 * The amount of iterations required for convergence
@@ -40,7 +41,7 @@ public class PolicyEvaluator {
 	 * Initialize the evaluator with a given policy
 	 * @param policy - the policy to evaluate
 	 */
-	public PolicyEvaluator(PredatorPolicy policy) {
+	public PolicyEvaluator(PlannerPredatorPolicy policy) {
 		values = new HashMap<HuntState, Double>();
 		this.policy = policy;
 	}
@@ -73,7 +74,6 @@ public class PolicyEvaluator {
 					double actionValue = evaluateAction(oldState, action);
 					updatedValue += actionProbability * actionValue;
 				}
-				
 				this.values.put(oldState, updatedValue);
 				
 				difference = Math.max(difference, Math.abs(oldValue - updatedValue));
