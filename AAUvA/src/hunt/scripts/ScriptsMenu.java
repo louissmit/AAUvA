@@ -37,6 +37,7 @@ public class ScriptsMenu {
 		commands.add(new ExitCommand());
 		commands.add(new SimulatorCommand());
 		commands.add(new PolicyEvaluationCommand());
+		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
 	}
 
@@ -128,6 +129,13 @@ public class ScriptsMenu {
 
 		public void execute(String[] args) {
 			boolean smartMode = Arrays.asList(args).contains("smart");
+			// Timer
+			long startTime = System.nanoTime();
+			PolicyEvaluator eval = runEval(smartMode);
+			long endTime = System.nanoTime();
+			printResults(eval, startTime, endTime, smartMode);
+		}
+		public PolicyEvaluator runEval(boolean smartMode){
 			PlannerPredatorPolicy policy;
 			if (smartMode) {
 				policy = new TemporalRandomPredatorPolicy();
@@ -136,14 +144,8 @@ public class ScriptsMenu {
 			}
 			policy.setPrey(new RandomPrey());
 			PolicyEvaluator eval = new PolicyEvaluator(policy);
-			
-			// Timer
-			long startTime = System.nanoTime();
-			eval.run();
-			long endTime = System.nanoTime();
-			printResults(eval, startTime, endTime, smartMode);
+			return eval.run();
 		}
-		
 		public void printResults(PolicyEvaluator eval, long startTime, long endTime, boolean smartMode) {
 			Map<HuntState, Double> result = eval.getValues();
 			Position pos0_0 = new Position(0,0);
@@ -178,12 +180,15 @@ public class ScriptsMenu {
 	/**
 	 * Perform policy iteration of the random predator policy 
 	 */
-	private class PolicyIterationCommand implements Command {
+	private class PolicyIterationCommand extends PolicyEvaluationCommand {
 
 		public String getCommand() {
 			return "piterate";
 		}
 		public void execute(String[] args) {
+			boolean smartMode = Arrays.asList(args).contains("smart");
+			PolicyEvaluator eval = super.runEval(smartMode);
+
 			
 		}
 	}

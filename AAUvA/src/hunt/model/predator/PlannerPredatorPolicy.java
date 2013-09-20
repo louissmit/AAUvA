@@ -27,24 +27,23 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		return result;
 	}
 
+	public void setActionProbability(HuntState state, HashMap<Position, Double> distribution){
+		this.probabilities.put(state, distribution);	}
+
 	@Override
 	public double getActionProbability(HuntState oldState, Position action) {
-		double result = 0;
-		if (this.getActions(oldState).contains(action)) {
-			result = 0.2;
-		}
-		return result;
+		return this.probabilities.get(oldState).get(action);
 	}
 
 	@Override
 	public List<HuntState> getNextStates(HuntState oldState, Position action) {
 		List<HuntState> states = new ArrayList<HuntState>();
-		
+
 		// In terminal states, loop to self
 		if (!oldState.isTerminal()) {
 			// Update predator position and state
 			HuntState midState = oldState.movePredator(action);
-			
+
 			if (!midState.isTerminal()) {
 				for (Position preyAction : this.prey.getActions(midState)) {
 					// Update prey position and state
@@ -56,7 +55,7 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		} else {
 			states.add(oldState.copy());
 		}
-		
+
 		return states;
 	}
 
@@ -64,7 +63,7 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	public double getTransitionProbability(HuntState oldState,
 			HuntState newState, Position action) {
 		double result = 0;
-		
+
 		// Terminal states always have probability 1 of looping back
 		if (!oldState.isTerminal()) {
 			// Make sure action is allowed; should never fail, really
@@ -72,11 +71,11 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 
 				// Apply predator action
 				HuntState midState = oldState.movePredator(action);
-				
+
 				if (!midState.isTerminal()) {
 					// Inferred prey action
 					Position preyAction = newState.getPreyAction(midState);
-					
+
 					// Determine probability of prey taking this action given the intermediate state
 					result = this.prey.getProbabilityOfAction(midState, preyAction);
 				} else {
@@ -94,14 +93,14 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	public double getReward(HuntState oldState, HuntState newState,
 			Position action) {
 		double result = 0;
-		
+
 		// Terminal states can no longer get rewards
 		if (!oldState.isTerminal()) {
 			if (newState.isTerminal() && newState.predatorWins()) {
 				result = 10;
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -120,8 +119,8 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		this.prey = prey;
 		return this;
 	}
-	
-	
+
+
 }
-	
+
 

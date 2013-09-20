@@ -48,8 +48,9 @@ public class PolicyEvaluator {
 	/**
 	 * Perform policy evaluation
 	 * Note that this makes use of the result of a previously found run, if any.
+	 * @return 
 	 */
-	public void run() {
+	public PolicyEvaluator run() {
 		// Setup
 		this.init();
 		double difference = 1000;
@@ -69,17 +70,7 @@ public class PolicyEvaluator {
 				double updatedValue = 0;
 				for (Position action : policy.getActions(oldState)) {
 					double actionProbability = policy.getActionProbability(oldState, action);
-					double actionValue = 0;
-					
-					// Loop over all states that may be reached by the given combination of old state and action
-					for (HuntState newState : policy.getNextStates(oldState, action)) {
-						double transitionProbability = policy.getTransitionProbability(oldState, newState, action);
-						double transitionReward = policy.getReward(oldState, newState, action);
-						double newStateValue = values.get(newState);
-												
-						actionValue += transitionProbability * (transitionReward + GAMMA * newStateValue); 
-					}
-					
+					double actionValue = evaluateAction(oldState, action);
 					updatedValue += actionProbability * actionValue;
 				}
 				
@@ -89,8 +80,23 @@ public class PolicyEvaluator {
 			}
 			
 		}
+		return this;
 	}
-	
+
+	public double evaluateAction(HuntState oldState, Position action) {
+		double actionValue = 0;
+
+		// Loop over all states that may be reached by the given combination of old state and action
+		for (HuntState newState : policy.getNextStates(oldState, action)) {
+			double transitionProbability = policy.getTransitionProbability(oldState, newState, action);
+			double transitionReward = policy.getReward(oldState, newState, action);
+			double newStateValue = values.get(newState);
+
+			actionValue += transitionProbability * (transitionReward + GAMMA * newStateValue); 
+		}
+		return actionValue;
+	}
+
 	/**
 	 * Make sure the state space contains all possible states
 	 */
