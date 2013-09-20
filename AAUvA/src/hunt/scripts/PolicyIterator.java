@@ -4,47 +4,48 @@
 package hunt.scripts;
 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import hunt.model.HuntState;
 import hunt.model.board.Position;
 import hunt.model.predator.PlannerPredatorPolicy;
 
 /**
- * @author louissmit
+ * Wraps around PolicyEvaluator to improve the policy and evaluate again.
  *
  */
-public class PolicyImprover {
+public class PolicyIterator {
 
 	private PolicyEvaluator eval;
 	private PlannerPredatorPolicy policy;
 
-	public PolicyImprover(PolicyEvaluator eval){
+	public PolicyIterator(PolicyEvaluator eval){
 		this.eval = eval;
 		this.policy = eval.policy;
 	}
 
+	/**
+	 * Executes policy iteration algorithm.
+	 */
 	public void run(){
 		Map<HuntState, Double> values = this.eval.getValues();
 
 		boolean stable = true;
 		while(stable){
-			for (Entry<HuntState, Double> entry: values.entrySet()) {
-				HuntState oldState = entry.getKey();
+			for (HuntState currentState: values.keySet()) {
 
-				// Loop over all actions possible in the current state
-				double bestActionValue = 0;
+				// Loop over all actions possible in the current state and selects the best action
+				double bestActionValue = -1; //all action values => 0
 				Position bestAction = null;
-				for (Position action : policy.getActions(oldState)) {
-					double actionProbability = policy.getActionProbability(oldState, action);
-					double actionValue = eval.evaluateAction(oldState, action);
+				for (Position action : policy.getActions(currentState)) {
+					double actionProbability = policy.getActionProbability(currentState, action);
+					double actionValue = eval.evaluateAction(currentState, action);
 					if((actionProbability * actionValue) > bestActionValue) {
 						bestAction = action;
 						stable = false;
 						bestActionValue = actionProbability * actionValue;
 					}
 				}
-				policy.setAction(oldState, bestAction);
+				policy.setAction(currentState, bestAction);
 			}
 			if(!stable) {
 				eval.run();
