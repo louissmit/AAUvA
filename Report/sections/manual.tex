@@ -1,0 +1,11 @@
+Using the built application, the results from section \ref{sec:results} can be recreated. After compilation, the application can be run using the main-method of hunt.scripts.ScriptsMenu without any arguments. This loads a textual interface, wherein commands may be invoked with optionally a set of arguments. The first word on the line should be the command, the rest of the line may contain space-separated arguments. The following commands are available:
+
+\begin{itemize}
+  \item simulator - runs a simulation using a random prey and a random predator.
+  \item evaluate - runs the policy evaluator. Arguments include:
+    \subitem smart - use the improved state representation.
+  \item evaluate - runs the value iterator. Arguments include:
+    \subitem smart - use the improved state representation.
+     \subitem test - run simulator to test the new policy
+  \item exit - terminates the program.
+\end{itemize}

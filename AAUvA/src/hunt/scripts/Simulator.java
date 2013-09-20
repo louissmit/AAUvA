@@ -43,25 +43,25 @@ public class Simulator {
 	
 	/**
 	 * Advance the state
-	 * @param s - the current state
+	 * @param state - the current state
 	 * @return - the new state
 	 */
-	public HuntState transition(HuntState s) {
+	public HuntState transition(HuntState state) {
 		// Update predator
-		Position predatorAction = predPolicy.getAction(s);
+		Position predatorAction = predPolicy.getAction(state);
 		
-		s = s.movePredator(predatorAction);
+		state = state.movePredator(predatorAction);
 		
 		// Check for end state
-		if (s.isTerminal()) {
+		if (state.isTerminal()) {
 			running = false;
 		} else {
 			// Update prey
-			Position preyAction = preyPolicy.getAction(s);
-			s = s.movePrey(preyAction);
+			Position preyAction = preyPolicy.getAction(state);
+			state = state.movePrey(preyAction);
 		}
 		
-		return s;
+		return state;
 	}
 
 	/**

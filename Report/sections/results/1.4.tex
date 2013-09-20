@@ -1,0 +1,545 @@
+
+
+Using the Value Iteration script values for all states were calculated. States in which predator is close to the prey have high value. States where predator stands next to the prey have value of the reward. This is caused by the fact that in Value Iteration no policy is used so always action which bring the biggest reward is chosen. Values for some states for different gamma are presented in the tables below.
+
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Predator position & Prey position & State value for gamma 0.1 \\
+    \hline
+ Predator(0, 0) & Prey(5, 5) &2.3062574315715792E-7\\
+Predator(0, 1) & Prey(5, 5) &1.4966517298110765E-6\\
+Predator(0, 2) & Prey(5, 5) &1.0745859400315526E-5\\
+Predator(0, 3) & Prey(5, 5) &7.124428136484024E-5\\
+Predator(0, 4) & Prey(5, 5) &4.3621856953160524E-4\\
+Predator(0, 5) & Prey(5, 5) &0.0017298103153706806\\
+Predator(0, 6) & Prey(5, 5) &4.377568506594972E-4\\
+Predator(0, 7) & Prey(5, 5) &7.36873777042101E-5\\
+Predator(0, 8) & Prey(5, 5) &1.1059059596402595E-5\\
+Predator(0, 9) & Prey(5, 5) &1.6792165045899704E-6\\
+Predator(0, 10) & Prey(5, 5) &2.503035495155951E-7\\
+Predator(1, 0) & Prey(5, 5) &1.4966517298110765E-6\\
+Predator(1, 1) & Prey(5, 5) &1.0745859400315526E-5\\
+Predator(1, 2) & Prey(5, 5) &7.249203221843603E-5\\
+Predator(1, 3) & Prey(5, 5) &4.96211443598984E-4\\
+Predator(1, 4) & Prey(5, 5) &0.003194543183308774\\
+Predator(1, 5) & Prey(5, 5) &0.013772914901416891\\
+Predator(1, 6) & Prey(5, 5) &0.003194980111145579\\
+Predator(1, 7) & Prey(5, 5) &4.978160697405268E-4\\
+Predator(1, 8) & Prey(5, 5) &7.499410610130815E-5\\
+Predator(1, 9) & Prey(5, 5) &1.1080442802207618E-5\\
+Predator(1, 10) & Prey(5, 5) &1.6905970383762533E-6\\
+Predator(2, 0) & Prey(5, 5) &1.0745859400315526E-5\\
+Predator(2, 1) & Prey(5, 5) &7.249203221843603E-5\\
+Predator(2, 2) & Prey(5, 5) &4.96211443598984E-4\\
+Predator(2, 3) & Prey(5, 5) &0.0034428456029882547\\
+Predator(2, 4) & Prey(5, 5) &0.02173865733190683\\
+Predator(2, 5) & Prey(5, 5) &0.11756369405337472\\
+Predator(2, 6) & Prey(5, 5) &0.021738722697146683\\
+Predator(2, 7) & Prey(5, 5) &0.0034432881985126864\\
+Predator(2, 8) & Prey(5, 5) &4.9782484148125E-4\\
+Predator(2, 9) & Prey(5, 5) &7.500700186139183E-5\\
+Predator(2, 10) & Prey(5, 5) &1.1087974775430308E-5\\
+Predator(3, 0) & Prey(5, 5) &7.124428136484024E-5\\
+Predator(3, 1) & Prey(5, 5) &4.96211443598984E-4\\
+Predator(3, 2) & Prey(5, 5) &0.0034428456029882547\\
+Predator(3, 3) & Prey(5, 5) &0.02173865733190683\\
+Predator(3, 4) & Prey(5, 5) &0.1669758755571364\\
+Predator(3, 5) & Prey(5, 5) &0.8163265302998804\\
+Predator(3, 6) & Prey(5, 5) &0.16697588125572732\\
+Predator(3, 7) & Prey(5, 5) &0.0217387229444149\\
+Predator(3, 8) & Prey(5, 5) &0.0034432889877662465\\
+Predator(3, 9) & Prey(5, 5) &4.978277563539023E-4\\
+Predator(3, 10) & Prey(5, 5) &7.376078615416759E-5\\
+Predator(4, 0) & Prey(5, 5) &4.3621856953160524E-4\\
+Predator(4, 1) & Prey(5, 5) &0.0031945431833087746\\
+Predator(4, 2) & Prey(5, 5) &0.02173865733190683\\
+Predator(4, 3) & Prey(5, 5) &0.1669758755571364\\
+Predator(4, 4) & Prey(5, 5) &0.8163265302998804\\
+Predator(4, 5) & Prey(5, 5) &10.0\\
+Predator(4, 6) & Prey(5, 5) &0.8163265306120912\\
+Predator(4, 7) & Prey(5, 5) &0.16697588125754206\\
+Predator(4, 8) & Prey(5, 5) &0.021738722986939282\\
+Predator(4, 9) & Prey(5, 5) &0.003194986938826973\\
+Predator(4, 10) & Prey(5, 5) &4.3783567178950946E-4\\
+Predator(5, 0) & Prey(5, 5) &0.0017298103153706806\\
+Predator(5, 1) & Prey(5, 5) &0.013772914901416891\\
+Predator(5, 2) & Prey(5, 5) &0.11756369405337472\\
+Predator(5, 3) & Prey(5, 5) &0.8163265302998804\\
+Predator(5, 4) & Prey(5, 5) &10.0\\
+Predator(5, 5) & Prey(5, 5) &0.0\\
+Predator(5, 6) & Prey(5, 5) &10.0\\
+Predator(5, 7) & Prey(5, 5) &0.8163265306120912\\
+Predator(5, 8) & Prey(5, 5) &0.11756369975769365\\
+Predator(5, 9) & Prey(5, 5) &0.013772980744237691\\
+Predator(5, 10) & Prey(5, 5) &0.0017302580683027234\\
+Predator(6, 0) & Prey(5, 5) &4.3775685065949714E-4\\
+Predator(6, 1) & Prey(5, 5) &0.003194980111145578\\
+Predator(6, 2) & Prey(5, 5) &0.02173872269714668\\
+Predator(6, 3) & Prey(5, 5) &0.16697588125572732\\
+Predator(6, 4) & Prey(5, 5) &0.8163265306120912\\
+Predator(6, 5) & Prey(5, 5) &10.0\\
+Predator(6, 6) & Prey(5, 5) &0.8163265306120912\\
+Predator(6, 7) & Prey(5, 5) &0.16697588126158314\\
+Predator(6, 8) & Prey(5, 5) &0.021738723037193382\\
+Predator(6, 9) & Prey(5, 5) &0.0031949871298013544\\
+Predator(6, 10) & Prey(5, 5) &4.378358028416101E-4\\
+Predator(7, 0) & Prey(5, 5) &7.36873777042101E-5\\
+Predator(7, 1) & Prey(5, 5) &4.978160697405268E-4\\
+Predator(7, 2) & Prey(5, 5) &0.0034432881985126864\\
+Predator(7, 3) & Prey(5, 5) &0.0217387229444149\\
+Predator(7, 4) & Prey(5, 5) &0.16697588125754206\\
+Predator(7, 5) & Prey(5, 5) &0.8163265306120912\\
+Predator(7, 6) & Prey(5, 5) &0.16697588126158314\\
+Predator(7, 7) & Prey(5, 5) &0.021738723037193382\\
+Predator(7, 8) & Prey(5, 5) &0.003443289551083868\\
+Predator(7, 9) & Prey(5, 5) &4.978286809278709E-4\\
+Predator(7, 10) & Prey(5, 5) &7.37615309803835E-5\\
+Predator(8, 0) & Prey(5, 5) &1.1059059596402597E-5\\
+Predator(8, 1) & Prey(5, 5) &7.499410610130815E-5\\
+Predator(8, 2) & Prey(5, 5) &4.978248414812501E-4\\
+Predator(8, 3) & Prey(5, 5) &0.0034432889877662465\\
+Predator(8, 4) & Prey(5, 5) &0.021738722986939282\\
+Predator(8, 5) & Prey(5, 5) &0.11756369975769365\\
+Predator(8, 6) & Prey(5, 5) &0.021738723037193382\\
+Predator(8, 7) & Prey(5, 5) &0.003443289551083868\\
+Predator(8, 8) & Prey(5, 5) &4.978286809278709E-4\\
+Predator(8, 9) & Prey(5, 5) &7.500928275780733E-5\\
+Predator(8, 10) & Prey(5, 5) &1.1089928198695095E-5\\
+Predator(9, 0) & Prey(5, 5) &1.6792165045899704E-6\\
+Predator(9, 1) & Prey(5, 5) &1.1080442802207618E-5\\
+Predator(9, 2) & Prey(5, 5) &7.500700186139183E-5\\
+Predator(9, 3) & Prey(5, 5) &4.978277563539024E-4\\
+Predator(9, 4) & Prey(5, 5) &0.003194986938826973\\
+Predator(9, 5) & Prey(5, 5) &0.013772980744237691\\
+Predator(9, 6) & Prey(5, 5) &0.0031949871298013544\\
+Predator(9, 7) & Prey(5, 5) &4.978286809278709E-4\\
+Predator(9, 8) & Prey(5, 5) &7.500928275780733E-5\\
+Predator(9, 9) & Prey(5, 5) &1.1089928198695095E-5\\
+Predator(9, 10) & Prey(5, 5) &1.6949245303257216E-6\\
+Predator(10, 0) & Prey(5, 5) &2.5030354951559506E-7\\
+Predator(10, 1) & Prey(5, 5) &1.6905970383762533E-6\\
+Predator(10, 2) & Prey(5, 5) &1.1087974775430308E-5\\
+Predator(10, 3) & Prey(5, 5) &7.37607861541676E-5\\
+Predator(10, 4) & Prey(5, 5) &4.3783567178950946E-4\\
+Predator(10, 5) & Prey(5, 5) &0.0017302580683027234\\
+Predator(10, 6) & Prey(5, 5) &4.378358028416101E-4\\
+Predator(10, 7) & Prey(5, 5) &7.37615309803835E-5\\
+Predator(10, 8) & Prey(5, 5) &1.1089928198695095E-5\\
+Predator(10, 9) & Prey(5, 5) &1.6949245303257216E-6\\
+Predator(10, 10) & Prey(5, 5) &2.5623618076791884E-7\\
+\caption{State Values} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Predator position & Prey position & State value for gamma 0.5 \\
+    \hline
+Predator(0, 0) & Prey(5, 5) &0.02665353898698826\\
+Predator(0, 1) & Prey(5, 5) &0.050175207866660194\\
+Predator(0, 2) & Prey(5, 5) &0.09430081095649795\\
+Predator(0, 3) & Prey(5, 5) &0.17681725179100577\\
+Predator(0, 4) & Prey(5, 5) &0.33282045624726564\\
+Predator(0, 5) & Prey(5, 5) &0.5332004455544963\\
+Predator(0, 6) & Prey(5, 5) &0.3328204588657085\\
+Predator(0, 7) & Prey(5, 5) &0.17681728675666952\\
+Predator(0, 8) & Prey(5, 5) &0.0943010371238076\\
+Predator(0, 9) & Prey(5, 5) &0.050176419611615224\\
+Predator(0, 10) & Prey(5, 5) &0.026658900109662882\\
+Predator(1, 0) & Prey(5, 5) &0.050175207866660194\\
+Predator(1, 1) & Prey(5, 5) &0.09239663366312316\\
+Predator(1, 2) & Prey(5, 5) &0.17694541206311565\\
+Predator(1, 3) & Prey(5, 5) &0.33902611152837614\\
+Predator(1, 4) & Prey(5, 5) &0.6447563296121679\\
+Predator(1, 5) & Prey(5, 5) &1.0814109798372629\\
+Predator(1, 6) & Prey(5, 5) &0.6447563297443988\\
+Predator(1, 7) & Prey(5, 5) &0.33902611415058054\\
+Predator(1, 8) & Prey(5, 5) &0.17694544702915638\\
+Predator(1, 9) & Prey(5, 5) &0.09239693379136613\\
+Predator(1, 10) & Prey(5, 5) &0.0501764115954377\\
+Predator(2, 0) & Prey(5, 5) &0.09430081095649795\\
+Predator(2, 1) & Prey(5, 5) &0.17694541206311565\\
+Predator(2, 2) & Prey(5, 5) &0.33902611152837614\\
+Predator(2, 3) & Prey(5, 5) &0.6497545802244536\\
+Predator(2, 4) & Prey(5, 5) &1.2434595260039993\\
+Predator(2, 5) & Prey(5, 5) &2.202729044834281\\
+Predator(2, 6) & Prey(5, 5) &1.2434595260080017\\
+Predator(2, 7) & Prey(5, 5) &0.6497545803567076\\
+Predator(2, 8) & Prey(5, 5) &0.33902611415059447\\
+Predator(2, 9) & Prey(5, 5) &0.176945447029356\\
+Predator(2, 10) & Prey(5, 5) &0.0943010364142718\\
+Predator(3, 0) & Prey(5, 5) &0.17681725179100577\\
+Predator(3, 1) & Prey(5, 5) &0.33902611152837614\\
+Predator(3, 2) & Prey(5, 5) &0.6497545802244536\\
+Predator(3, 3) & Prey(5, 5) &1.2434595260039993\\
+Predator(3, 4) & Prey(5, 5) &2.3976608187134234\\
+Predator(3, 5) & Prey(5, 5) &4.444444444444443\\
+Predator(3, 6) & Prey(5, 5) &2.3976608187134505\\
+Predator(3, 7) & Prey(5, 5) &1.2434595260080024\\
+Predator(3, 8) & Prey(5, 5) &0.6497545803567081\\
+Predator(3, 9) & Prey(5, 5) &0.3390261141506029\\
+Predator(3, 10) & Prey(5, 5) &0.17681728675735203\\
+Predator(4, 0) & Prey(5, 5) &0.33282045624726564\\
+Predator(4, 1) & Prey(5, 5) &0.6447563296121679\\
+Predator(4, 2) & Prey(5, 5) &1.2434595260039993\\
+Predator(4, 3) & Prey(5, 5) &2.3976608187134234\\
+Predator(4, 4) & Prey(5, 5) &4.444444444444443\\
+Predator(4, 5) & Prey(5, 5) &10.0\\
+Predator(4, 6) & Prey(5, 5) &4.444444444444445\\
+Predator(4, 7) & Prey(5, 5) &2.3976608187134505\\
+Predator(4, 8) & Prey(5, 5) &1.2434595260080026\\
+Predator(4, 9) & Prey(5, 5) &0.6447563297444228\\
+Predator(4, 10) & Prey(5, 5) &0.3328204588694977\\
+Predator(5, 0) & Prey(5, 5) &0.5332004455544963\\
+Predator(5, 1) & Prey(5, 5) &1.0814109798372629\\
+Predator(5, 2) & Prey(5, 5) &2.202729044834281\\
+Predator(5, 3) & Prey(5, 5) &4.444444444444443\\
+Predator(5, 4) & Prey(5, 5) &10.0\\
+Predator(5, 5) & Prey(5, 5) &0.0\\
+Predator(5, 6) & Prey(5, 5) &10.0\\
+Predator(5, 7) & Prey(5, 5) &4.444444444444445\\
+Predator(5, 8) & Prey(5, 5) &2.202729044834308\\
+Predator(5, 9) & Prey(5, 5) &1.081410979841266\\
+Predator(5, 10) & Prey(5, 5) &0.5332004456867538\\
+Predator(6, 0) & Prey(5, 5) &0.33282045886570855\\
+Predator(6, 1) & Prey(5, 5) &0.644756329744399\\
+Predator(6, 2) & Prey(5, 5) &1.243459526008002\\
+Predator(6, 3) & Prey(5, 5) &2.3976608187134505\\
+Predator(6, 4) & Prey(5, 5) &4.444444444444445\\
+Predator(6, 5) & Prey(5, 5) &10.0\\
+Predator(6, 6) & Prey(5, 5) &4.444444444444445\\
+Predator(6, 7) & Prey(5, 5) &2.3976608187134505\\
+Predator(6, 8) & Prey(5, 5) &1.2434595260080026\\
+Predator(6, 9) & Prey(5, 5) &0.6447563297444233\\
+Predator(6, 10) & Prey(5, 5) &0.332820458869504\\
+Predator(7, 0) & Prey(5, 5) &0.17681728675666952\\
+Predator(7, 1) & Prey(5, 5) &0.33902611415058054\\
+Predator(7, 2) & Prey(5, 5) &0.6497545803567076\\
+Predator(7, 3) & Prey(5, 5) &1.2434595260080026\\
+Predator(7, 4) & Prey(5, 5) &2.3976608187134505\\
+Predator(7, 5) & Prey(5, 5) &4.444444444444445\\
+Predator(7, 6) & Prey(5, 5) &2.3976608187134505\\
+Predator(7, 7) & Prey(5, 5) &1.2434595260080026\\
+Predator(7, 8) & Prey(5, 5) &0.6497545803567091\\
+Predator(7, 9) & Prey(5, 5) &0.3390261141506145\\
+Predator(7, 10) & Prey(5, 5) &0.17681728675744932\\
+Predator(8, 0) & Prey(5, 5) &0.0943010371238076\\
+Predator(8, 1) & Prey(5, 5) &0.1769454470291564\\
+Predator(8, 2) & Prey(5, 5) &0.33902611415059447\\
+Predator(8, 3) & Prey(5, 5) &0.6497545803567082\\
+Predator(8, 4) & Prey(5, 5) &1.2434595260080026\\
+Predator(8, 5) & Prey(5, 5) &2.202729044834308\\
+Predator(8, 6) & Prey(5, 5) &1.2434595260080026\\
+Predator(8, 7) & Prey(5, 5) &0.6497545803567091\\
+Predator(8, 8) & Prey(5, 5) &0.3390261141506145\\
+Predator(8, 9) & Prey(5, 5) &0.17694544702955922\\
+Predator(8, 10) & Prey(5, 5) &0.09430103712552995\\
+Predator(9, 0) & Prey(5, 5) &0.050176419611615224\\
+Predator(9, 1) & Prey(5, 5) &0.09239693379136615\\
+Predator(9, 2) & Prey(5, 5) &0.176945447029356\\
+Predator(9, 3) & Prey(5, 5) &0.339026114150603\\
+Predator(9, 4) & Prey(5, 5) &0.6447563297444228\\
+Predator(9, 5) & Prey(5, 5) &1.081410979841266\\
+Predator(9, 6) & Prey(5, 5) &0.6447563297444233\\
+Predator(9, 7) & Prey(5, 5) &0.3390261141506145\\
+Predator(9, 8) & Prey(5, 5) &0.17694544702955922\\
+Predator(9, 9) & Prey(5, 5) &0.09239693379229531\\
+Predator(9, 10) & Prey(5, 5) &0.050176419613304296\\
+Predator(10, 0) & Prey(5, 5) &0.026658900109662882\\
+Predator(10, 1) & Prey(5, 5) &0.0501764115954377\\
+Predator(10, 2) & Prey(5, 5) &0.0943010364142718\\
+Predator(10, 3) & Prey(5, 5) &0.1768172867573521\\
+Predator(10, 4) & Prey(5, 5) &0.3328204588694977\\
+Predator(10, 5) & Prey(5, 5) &0.5332004456867538\\
+Predator(10, 6) & Prey(5, 5) &0.332820458869504\\
+Predator(10, 7) & Prey(5, 5) &0.17681728675744934\\
+Predator(10, 8) & Prey(5, 5) &0.09430103712552998\\
+Predator(10, 9) & Prey(5, 5) &0.050176419613304296\\
+Predator(10, 10) & Prey(5, 5) &0.026658900111154973\\
+\caption{State Values} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Predator position & Prey position & State value for gamma 0.5 \\
+    \hline
+Predator(0, 0) & Prey(5, 5) &0.4348019522647783\\
+Predator(0, 1) & Prey(5, 5) &0.6064794656339891\\
+Predator(0, 2) & Prey(5, 5) &0.8452939858423552\\
+Predator(0, 3) & Prey(5, 5) &1.176529340015051\\
+Predator(0, 4) & Prey(5, 5) &1.6463081797035755\\
+Predator(0, 5) & Prey(5, 5) &2.1168502418161457\\
+Predator(0, 6) & Prey(5, 5) &1.646308180701948\\
+Predator(0, 7) & Prey(5, 5) &1.176529353775119\\
+Predator(0, 8) & Prey(5, 5) &0.8452941211237722\\
+Predator(0, 9) & Prey(5, 5) &0.6064805389875808\\
+Predator(0, 10) & Prey(5, 5) &0.4348090737929598\\
+Predator(1, 0) & Prey(5, 5) &0.6064794656339891\\
+Predator(1, 1) & Prey(5, 5) &0.8328437522566325\\
+Predator(1, 2) & Prey(5, 5) &1.1750054237999004\\
+Predator(1, 3) & Prey(5, 5) &1.6586592865463787\\
+Predator(1, 4) & Prey(5, 5) &2.3345057261612507\\
+Predator(1, 5) & Prey(5, 5) &3.0759430237680085\\
+Predator(1, 6) & Prey(5, 5) &2.334505726173017\\
+Predator(1, 7) & Prey(5, 5) &1.6586592875453567\\
+Predator(1, 8) & Prey(5, 5) &1.175005447845183\\
+Predator(1, 9) & Prey(5, 5) &0.8328440364347901\\
+Predator(1, 10) & Prey(5, 5) &0.6064805259036397\\
+Predator(2, 0) & Prey(5, 5) &0.8452939858423552\\
+Predator(2, 1) & Prey(5, 5) &1.1750054237999004\\
+Predator(2, 2) & Prey(5, 5) &1.6586592865463787\\
+Predator(2, 3) & Prey(5, 5) &2.341512363857884\\
+Predator(2, 4) & Prey(5, 5) &3.304374480716308\\
+Predator(2, 5) & Prey(5, 5) &4.480485406325652\\
+Predator(2, 6) & Prey(5, 5) &3.3043744807169526\\
+Predator(2, 7) & Prey(5, 5) &2.341512363869669\\
+Predator(2, 8) & Prey(5, 5) &1.658659287545365\\
+Predator(2, 9) & Prey(5, 5) &1.1750054478453054\\
+Predator(2, 10) & Prey(5, 5) &0.8452941200403974\\
+Predator(3, 0) & Prey(5, 5) &1.176529340015051\\
+Predator(3, 1) & Prey(5, 5) &1.6586592865463787\\
+Predator(3, 2) & Prey(5, 5) &2.341512363857884\\
+Predator(3, 3) & Prey(5, 5) &3.304374480716308\\
+Predator(3, 4) & Prey(5, 5) &4.6736684171042535\\
+Predator(3, 5) & Prey(5, 5) &6.511627906976744\\
+Predator(3, 6) & Prey(5, 5) &4.673668417104276\\
+Predator(3, 7) & Prey(5, 5) &3.304374480716953\\
+Predator(3, 8) & Prey(5, 5) &2.3415123638696693\\
+Predator(3, 9) & Prey(5, 5) &1.6586592875453698\\
+Predator(3, 10) & Prey(5, 5) &1.17652935372443\\
+Predator(4, 0) & Prey(5, 5) &1.6463081797035755\\
+Predator(4, 1) & Prey(5, 5) &2.3345057261612507\\
+Predator(4, 2) & Prey(5, 5) &3.304374480716308\\
+Predator(4, 3) & Prey(5, 5) &4.6736684171042535\\
+Predator(4, 4) & Prey(5, 5) &6.511627906976744\\
+Predator(4, 5) & Prey(5, 5) &10.0\\
+Predator(4, 6) & Prey(5, 5) &6.511627906976745\\
+Predator(4, 7) & Prey(5, 5) &4.673668417104276\\
+Predator(4, 8) & Prey(5, 5) &3.304374480716953\\
+Predator(4, 9) & Prey(5, 5) &2.3345057261730364\\
+Predator(4, 10) & Prey(5, 5) &1.6463081807025701\\
+Predator(5, 0) & Prey(5, 5) &2.1168502418161457\\
+Predator(5, 1) & Prey(5, 5) &3.0759430237680085\\
+Predator(5, 2) & Prey(5, 5) &4.480485406325652\\
+Predator(5, 3) & Prey(5, 5) &6.511627906976744\\
+Predator(5, 4) & Prey(5, 5) &10.0\\
+Predator(5, 5) & Prey(5, 5) &0.0\\
+Predator(5, 6) & Prey(5, 5) &10.0\\
+Predator(5, 7) & Prey(5, 5) &6.511627906976745\\
+Predator(5, 8) & Prey(5, 5) &4.480485406325675\\
+Predator(5, 9) & Prey(5, 5) &3.075943023768654\\
+Predator(5, 10) & Prey(5, 5) &2.116850241827935\\
+Predator(6, 0) & Prey(5, 5) &1.646308180701948\\
+Predator(6, 1) & Prey(5, 5) &2.334505726173017\\
+Predator(6, 2) & Prey(5, 5) &3.3043744807169526\\
+Predator(6, 3) & Prey(5, 5) &4.673668417104276\\
+Predator(6, 4) & Prey(5, 5) &6.511627906976745\\
+Predator(6, 5) & Prey(5, 5) &10.0\\
+Predator(6, 6) & Prey(5, 5) &6.511627906976745\\
+Predator(6, 7) & Prey(5, 5) &4.673668417104276\\
+Predator(6, 8) & Prey(5, 5) &3.304374480716953\\
+Predator(6, 9) & Prey(5, 5) &2.334505726173037\\
+Predator(6, 10) & Prey(5, 5) &1.6463081807025755\\
+Predator(7, 0) & Prey(5, 5) &1.176529353775119\\
+Predator(7, 1) & Prey(5, 5) &1.6586592875453567\\
+Predator(7, 2) & Prey(5, 5) &2.341512363869669\\
+Predator(7, 3) & Prey(5, 5) &3.304374480716953\\
+Predator(7, 4) & Prey(5, 5) &4.673668417104276\\
+Predator(7, 5) & Prey(5, 5) &6.511627906976745\\
+Predator(7, 6) & Prey(5, 5) &4.673668417104276\\
+Predator(7, 7) & Prey(5, 5) &3.304374480716953\\
+Predator(7, 8) & Prey(5, 5) &2.3415123638696698\\
+Predator(7, 9) & Prey(5, 5) &1.6586592875453783\\
+Predator(7, 10) & Prey(5, 5) &1.1765293537803594\\
+Predator(8, 0) & Prey(5, 5) &0.8452941211237722\\
+Predator(8, 1) & Prey(5, 5) &1.1750054478451832\\
+Predator(8, 2) & Prey(5, 5) &1.658659287545365\\
+Predator(8, 3) & Prey(5, 5) &2.3415123638696693\\
+Predator(8, 4) & Prey(5, 5) &3.304374480716953\\
+Predator(8, 5) & Prey(5, 5) &4.480485406325675\\
+Predator(8, 6) & Prey(5, 5) &3.304374480716953\\
+Predator(8, 7) & Prey(5, 5) &2.3415123638696698\\
+Predator(8, 8) & Prey(5, 5) &1.6586592875453783\\
+Predator(8, 9) & Prey(5, 5) &1.1750054478454717\\
+Predator(8, 10) & Prey(5, 5) &0.8452941211269069\\
+Predator(9, 0) & Prey(5, 5) &0.6064805389875808\\
+Predator(9, 1) & Prey(5, 5) &0.8328440364347903\\
+Predator(9, 2) & Prey(5, 5) &1.1750054478453054\\
+Predator(9, 3) & Prey(5, 5) &1.6586592875453698\\
+Predator(9, 4) & Prey(5, 5) &2.3345057261730364\\
+Predator(9, 5) & Prey(5, 5) &3.075943023768654\\
+Predator(9, 6) & Prey(5, 5) &2.334505726173037\\
+Predator(9, 7) & Prey(5, 5) &1.6586592875453783\\
+Predator(9, 8) & Prey(5, 5) &1.1750054478454717\\
+Predator(9, 9) & Prey(5, 5) &0.8328440364363434\\
+Predator(9, 10) & Prey(5, 5) &0.6064805389918017\\
+Predator(10, 0) & Prey(5, 5) &0.4348090737929598\\
+Predator(10, 1) & Prey(5, 5) &0.6064805259036397\\
+Predator(10, 2) & Prey(5, 5) &0.8452941200403973\\
+Predator(10, 3) & Prey(5, 5) &1.17652935372443\\
+Predator(10, 4) & Prey(5, 5) &1.6463081807025701\\
+Predator(10, 5) & Prey(5, 5) &2.116850241827935\\
+Predator(10, 6) & Prey(5, 5) &1.6463081807025755\\
+Predator(10, 7) & Prey(5, 5) &1.1765293537803594\\
+Predator(10, 8) & Prey(5, 5) &0.8452941211269069\\
+Predator(10, 9) & Prey(5, 5) &0.6064805389918017\\
+Predator(10, 10) & Prey(5, 5) &0.43480907379722766\\
+\caption{State Values} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Predator position & Prey position & State value for gamma 0.5 \\
+    \hline
+Predator(0, 0) & Prey(5, 5) &3.8831184975365622\\
+Predator(0, 1) & Prey(5, 5) &4.291468043288639\\
+Predator(0, 2) & Prey(5, 5) &4.741708596690495\\
+Predator(0, 3) & Prey(5, 5) &5.237371936170275\\
+Predator(0, 4) & Prey(5, 5) &5.791868294072476\\
+Predator(0, 5) & Prey(5, 5) &6.251349263142562\\
+Predator(0, 6) & Prey(5, 5) &5.791868294273208\\
+Predator(0, 7) & Prey(5, 5) &5.237371937786689\\
+Predator(0, 8) & Prey(5, 5) &4.741708642750298\\
+Predator(0, 9) & Prey(5, 5) &4.291468650753559\\
+Predator(0, 10) & Prey(5, 5) &3.883124042466906\\
+Predator(1, 0) & Prey(5, 5) &4.291468043288639\\
+Predator(1, 1) & Prey(5, 5) &4.711845550357856\\
+Predator(1, 2) & Prey(5, 5) &5.228082499102657\\
+Predator(1, 3) & Prey(5, 5) &5.802403292630497\\
+Predator(1, 4) & Prey(5, 5) &6.435560858404808\\
+Predator(1, 5) & Prey(5, 5) &6.99733987788653\\
+Predator(1, 6) & Prey(5, 5) &6.435560858413571\\
+Predator(1, 7) & Prey(5, 5) &5.802403292831541\\
+Predator(1, 8) & Prey(5, 5) &5.228082501476525\\
+Predator(1, 9) & Prey(5, 5) &4.71184564014747\\
+Predator(1, 10) & Prey(5, 5) &4.291468641484821\\
+Predator(2, 0) & Prey(5, 5) &4.741708596690495\\
+Predator(2, 1) & Prey(5, 5) &5.228082499102657\\
+Predator(2, 2) & Prey(5, 5) &5.802403292630497\\
+Predator(2, 3) & Prey(5, 5) &6.440143160955783\\
+Predator(2, 4) & Prey(5, 5) &7.147599117580023\\
+Predator(2, 5) & Prey(5, 5) &7.838963488305835\\
+Predator(2, 6) & Prey(5, 5) &7.1475991175803575\\
+Predator(2, 7) & Prey(5, 5) &6.440143160964555\\
+Predator(2, 8) & Prey(5, 5) &5.802403292831546\\
+Predator(2, 9) & Prey(5, 5) &5.228082501475825\\
+Predator(2, 10) & Prey(5, 5) &4.741708642268786\\
+Predator(3, 0) & Prey(5, 5) &5.237371936170275\\
+Predator(3, 1) & Prey(5, 5) &5.802403292630497\\
+Predator(3, 2) & Prey(5, 5) &6.440143160955783\\
+Predator(3, 3) & Prey(5, 5) &7.147599117580023\\
+Predator(3, 4) & Prey(5, 5) &7.936210131332071\\
+Predator(3, 5) & Prey(5, 5) &8.78048780487805\\
+Predator(3, 6) & Prey(5, 5) &7.936210131332084\\
+Predator(3, 7) & Prey(5, 5) &7.1475991175803575\\
+Predator(3, 8) & Prey(5, 5) &6.440143160964555\\
+Predator(3, 9) & Prey(5, 5) &5.802403292831547\\
+Predator(3, 10) & Prey(5, 5) &5.237371937779903\\
+Predator(4, 0) & Prey(5, 5) &5.7918682940724775\\
+Predator(4, 1) & Prey(5, 5) &6.435560858404808\\
+Predator(4, 2) & Prey(5, 5) &7.147599117580023\\
+Predator(4, 3) & Prey(5, 5) &7.936210131332071\\
+Predator(4, 4) & Prey(5, 5) &8.78048780487805\\
+Predator(4, 5) & Prey(5, 5) &10.0\\
+Predator(4, 6) & Prey(5, 5) &8.78048780487805\\
+Predator(4, 7) & Prey(5, 5) &7.936210131332084\\
+Predator(4, 8) & Prey(5, 5) &7.1475991175803575\\
+Predator(4, 9) & Prey(5, 5) &6.435560858413581\\
+Predator(4, 10) & Prey(5, 5) &5.791868294273529\\
+Predator(5, 0) & Prey(5, 5) &6.251349263142562\\
+Predator(5, 1) & Prey(5, 5) &6.99733987788653\\
+Predator(5, 2) & Prey(5, 5) &7.838963488305835\\
+Predator(5, 3) & Prey(5, 5) &8.78048780487805\\
+Predator(5, 4) & Prey(5, 5) &10.0\\
+Predator(5, 5) & Prey(5, 5) &0.0\\
+Predator(5, 6) & Prey(5, 5) &10.0\\
+Predator(5, 7) & Prey(5, 5) &8.78048780487805\\
+Predator(5, 8) & Prey(5, 5) &7.838963488305847\\
+Predator(5, 9) & Prey(5, 5) &6.997339877886864\\
+Predator(5, 10) & Prey(5, 5) &6.251349263151338\\
+Predator(6, 0) & Prey(5, 5) &5.791868294273208\\
+Predator(6, 1) & Prey(5, 5) &6.435560858413571\\
+Predator(6, 2) & Prey(5, 5) &7.1475991175803575\\
+Predator(6, 3) & Prey(5, 5) &7.936210131332084\\
+Predator(6, 4) & Prey(5, 5) &8.78048780487805\\
+Predator(6, 5) & Prey(5, 5) &10.0\\
+Predator(6, 6) & Prey(5, 5) &8.78048780487805\\
+Predator(6, 7) & Prey(5, 5) &7.936210131332084\\
+Predator(6, 8) & Prey(5, 5) &7.147599117580358\\
+Predator(6, 9) & Prey(5, 5) &6.435560858413581\\
+Predator(6, 10) & Prey(5, 5) &5.791868294273532\\
+Predator(7, 0) & Prey(5, 5) &5.237371937786689\\
+Predator(7, 1) & Prey(5, 5) &5.802403292831541\\
+Predator(7, 2) & Prey(5, 5) &6.440143160964555\\
+Predator(7, 3) & Prey(5, 5) &7.147599117580358\\
+Predator(7, 4) & Prey(5, 5) &7.936210131332084\\
+Predator(7, 5) & Prey(5, 5) &8.78048780487805\\
+Predator(7, 6) & Prey(5, 5) &7.936210131332084\\
+Predator(7, 7) & Prey(5, 5) &7.147599117580358\\
+Predator(7, 8) & Prey(5, 5) &6.440143160964556\\
+Predator(7, 9) & Prey(5, 5) &5.802403292831553\\
+Predator(7, 10) & Prey(5, 5) &5.237371937790217\\
+Predator(8, 0) & Prey(5, 5) &4.741708642750298\\
+Predator(8, 1) & Prey(5, 5) &5.228082501476525\\
+Predator(8, 2) & Prey(5, 5) &5.802403292831546\\
+Predator(8, 3) & Prey(5, 5) &6.440143160964555\\
+Predator(8, 4) & Prey(5, 5) &7.147599117580358\\
+Predator(8, 5) & Prey(5, 5) &7.838963488305847\\
+Predator(8, 6) & Prey(5, 5) &7.147599117580358\\
+Predator(8, 7) & Prey(5, 5) &6.440143160964556\\
+Predator(8, 8) & Prey(5, 5) &5.802403292831553\\
+Predator(8, 9) & Prey(5, 5) &5.228082501477795\\
+Predator(8, 10) & Prey(5, 5) &4.741708642752964\\
+Predator(9, 0) & Prey(5, 5) &4.291468650753559\\
+Predator(9, 1) & Prey(5, 5) &4.71184564014747\\
+Predator(9, 2) & Prey(5, 5) &5.228082501475825\\
+Predator(9, 3) & Prey(5, 5) &5.802403292831547\\
+Predator(9, 4) & Prey(5, 5) &6.435560858413581\\
+Predator(9, 5) & Prey(5, 5) &6.997339877886864\\
+Predator(9, 6) & Prey(5, 5) &6.435560858413581\\
+Predator(9, 7) & Prey(5, 5) &5.802403292831553\\
+Predator(9, 8) & Prey(5, 5) &5.228082501477795\\
+Predator(9, 9) & Prey(5, 5) &4.711845640149459\\
+Predator(9, 10) & Prey(5, 5) &4.291468650757011\\
+Predator(10, 0) & Prey(5, 5) &3.883124042466906\\
+Predator(10, 1) & Prey(5, 5) &4.291468641484821\\
+Predator(10, 2) & Prey(5, 5) &4.741708642268786\\
+Predator(10, 3) & Prey(5, 5) &5.237371937779903\\
+Predator(10, 4) & Prey(5, 5) &5.791868294273529\\
+Predator(10, 5) & Prey(5, 5) &6.251349263151338\\
+Predator(10, 6) & Prey(5, 5) &5.791868294273532\\
+Predator(10, 7) & Prey(5, 5) &5.237371937790217\\
+Predator(10, 8) & Prey(5, 5) &4.741708642752964\\
+Predator(10, 9) & Prey(5, 5) &4.291468650757012\\
+Predator(10, 10) & Prey(5, 5) &3.8831240424706754\\
+\caption{State Values} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+Numbers of iterations for different values of gamma are presented in the table below. 
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Gamma & Amount of iterations & time in ns \\
+    \hline
+0.1 & 6 &   2664551938 \\
+0.5 & 13 & 4100229811\\
+0.7 & 15 & 4935193753\\
+0.9 &17 &  5465595303\\
+\caption{Performance for absolute position representation} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+The best results in terms of time and number of iterations are observed for gamma equals 0.1. Increasing gamma factor causes increasing both factors. Changing data representation to distance based not only decrease computing time but also number of iterations. It can be observed that value iteration script performs approximately 100 times faster in comparison to the classic representation where positions of prey and predators are stored.
+
+\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
+   Gamma & Amount of iterations & time in ns \\
+    \hline
+0.1 & 6 & 13370103 \\
+0.5 & 12 &32938805\\
+0.7 & 14 &32783420\\
+0.9 &15 & 36526657\\
+\caption{Performance for distance based representation} 
+\label{tab:myfirstlongtable}
+\end{longtable}
+
+
+

@@ -141,9 +141,11 @@ public class ScriptsMenu {
 			long startTime = System.nanoTime();
 			eval.run();
 			long endTime = System.nanoTime();
-			
+			printResults(eval, startTime, endTime, smartMode);
+		}
+		
+		public void printResults(PolicyEvaluator eval, long startTime, long endTime, boolean smartMode) {
 			Map<HuntState, Double> result = eval.getValues();
-			
 			Position pos0_0 = new Position(0,0);
 			Position pos2_3 = new Position(2,3);
 			Position pos2_10 = new Position(2,10);
@@ -169,10 +171,22 @@ public class ScriptsMenu {
 			
 			System.out.println("Amount of iterations required: " + eval.getIterations());
 			
-			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
+			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 		}
-		
 	}
+
+	/**
+	 * Perform policy iteration of the random predator policy 
+	 */
+	private class PolicyIterationCommand implements Command {
+
+		public String getCommand() {
+			return "piterate";
+		}
+		public void execute(String[] args) {
+			
+		}
+	}
 	
 	/**
 	 * Perform value iteration for the random policy
