@@ -4,4 +4,4 @@ Iterative policy evaluation was implemented for the randomly moving predator. Th
   V(s) = \sum_a \pi (s, a) \sum_{s'} \mathcal{P}_{ss'}^a \left[\mathcal{R}_{ss'}^a + \gamma V(s') \right]
 \end{math} \\
 
-This algorithm loops over alll states until it finds that the difference between the previous value for $V(s)$ and the updated value is less than a certain threshold for all states. In the case of this specific implementation, a threshold of 0.001 was used.
+This algorithm loops over all states until it finds that the difference between the previous value for $V(s)$ and the updated value is less than a certain threshold for all states. In the case of this specific implementation, a threshold of 0.0001 was used.

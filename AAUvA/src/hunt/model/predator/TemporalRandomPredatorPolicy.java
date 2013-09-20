@@ -1,7 +1,7 @@
 package hunt.model.predator;
 
 import hunt.model.HuntState;
-import hunt.model.TemporalState;
+import hunt.model.RelativeState;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class TemporalRandomPredatorPolicy extends RandomPredatorPolicy {
 		// Predator position
 		for (int i = 0; i < Position.BWIDTH; i++) {
 			for (int j = 0; j < Position.BHEIGHT; j++) {
-				result.add(new TemporalState(new Position(i,j)));
+				result.add(new RelativeState(new Position(i,j)));
 			}
 		}
 		
