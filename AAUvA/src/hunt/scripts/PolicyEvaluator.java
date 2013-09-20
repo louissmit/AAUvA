@@ -44,6 +44,8 @@ public class PolicyEvaluator {
 	public PolicyEvaluator(PlannerPredatorPolicy policy) {
 		values = new HashMap<HuntState, Double>();
 		this.policy = policy;
+		this.iterations = 0;
+		this.init();
 	}
 
 	/**
@@ -53,9 +55,7 @@ public class PolicyEvaluator {
 	 */
 	public PolicyEvaluator run() {
 		// Setup
-		this.init();
 		double difference = 1000;
-		this.iterations = 0;
 		
 		// Sweeps
 		while (difference > THRESHOLD) {

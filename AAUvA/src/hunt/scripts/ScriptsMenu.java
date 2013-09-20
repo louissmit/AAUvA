@@ -190,7 +190,7 @@ public class ScriptsMenu {
 			long startTime = System.nanoTime();
 
 			PolicyEvaluator eval = super.runEval(smartMode);
-			PolicyImprover improv = new PolicyImprover(eval).run();
+			new PolicyImprover(eval).run();
 
 			long endTime = System.nanoTime();
 			printResults(eval, startTime, endTime, smartMode);

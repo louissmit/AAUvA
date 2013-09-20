@@ -127,6 +127,10 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		this.prey = prey;
 		return this;
 	}
+	
+	public String toString() {
+		return this.probabilities.toString();
+	}
 
 
 }
