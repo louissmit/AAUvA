@@ -80,20 +80,14 @@ public class ValueIteration {
 				{
 					double oldValue=stateValues.get(localState);
 					List<Double> valuesForAction=new ArrayList<Double>();
-					double calculatedValue=CalculateValueForAction(Move.EAST, localState);
-					valuesForAction.add(calculatedValue);
 					
-					calculatedValue=CalculateValueForAction(Move.WEST, localState);
-					valuesForAction.add(calculatedValue);
-					
-					calculatedValue=CalculateValueForAction(Move.NORTH, localState);
-					valuesForAction.add(calculatedValue);
-					
-					calculatedValue=CalculateValueForAction(Move.SOUTH, localState);
-					valuesForAction.add(calculatedValue);
-					
-					calculatedValue=CalculateValueForAction(Move.WAIT, localState);
-					valuesForAction.add(calculatedValue);
+					List<Position> possibleActions=this.policy.getActions(localState);
+					double calculatedValue=0;
+					for(Position action:possibleActions)
+					{
+						calculatedValue=CalculateValueForAction(action, localState);
+						valuesForAction.add(calculatedValue);
+					}
 					
 					double maxValue=Collections.max(valuesForAction);
 					stateValues.put(localState, maxValue);
@@ -139,41 +133,23 @@ public class ValueIteration {
 			double lastCalculatedValue=-10000;
 			Position lastMove=Move.WAIT;
 			
-			double calculatedValue=CalculateValueForAction(Move.EAST, localState);
-			if(calculatedValue>lastCalculatedValue)
+			List<Position> possibleActions=this.policy.getActions(localState);
+			double calculatedValue=0;
+			for(Position action:possibleActions)
 			{
-				lastMove=Move.EAST;
-				lastCalculatedValue=calculatedValue;
+				calculatedValue=CalculateValueForAction(action, localState);
+				if(calculatedValue>lastCalculatedValue)
+				{
+					lastMove=action;
+					lastCalculatedValue=calculatedValue;
+				}
 			}
-			
-			calculatedValue=CalculateValueForAction(Move.WEST, localState);
-			if(calculatedValue>lastCalculatedValue)
-			{
-				lastMove=Move.WEST;
-				lastCalculatedValue=calculatedValue;
-			}
-			
-			calculatedValue=CalculateValueForAction(Move.NORTH, localState);
-			if(calculatedValue>lastCalculatedValue)
-			{
-				lastMove=Move.NORTH;
-				lastCalculatedValue=calculatedValue;
-			}
-			
-			calculatedValue=CalculateValueForAction(Move.SOUTH, localState);
-			if(calculatedValue>lastCalculatedValue)
-			{
-				lastMove=Move.SOUTH;
-				lastCalculatedValue=calculatedValue;
-			}			
 			
 			HashMap<Position, Double> actionsProbabilities=new HashMap<Position, Double>();
-			actionsProbabilities.put(Move.EAST,0.0);
-			actionsProbabilities.put(Move.WEST,0.0);
-			actionsProbabilities.put(Move.SOUTH,0.0);
-			actionsProbabilities.put(Move.NORTH,0.0);
-			actionsProbabilities.put(Move.WAIT,0.0);
-			
+			for(Position action:possibleActions)
+			{
+				actionsProbabilities.put(action,0.0);
+			}
 			actionsProbabilities.put(lastMove,1.0);
 			this.optimalPolicyTable.put(localState, actionsProbabilities);
 		}
