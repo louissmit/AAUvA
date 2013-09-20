@@ -193,7 +193,8 @@ public class ScriptsMenu {
 			new PolicyIterator(eval).run();
 
 			long endTime = System.nanoTime();
-			printResults(eval, startTime, endTime, smartMode);
+			Utility.printStates(eval.getValues(), smartMode);
+//			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
 	
