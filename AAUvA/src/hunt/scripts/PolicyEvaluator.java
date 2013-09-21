@@ -31,11 +31,11 @@ public class PolicyEvaluator {
 	/**
 	 * The minimal difference required for another iteration
 	 */
-	public static final double THRESHOLD = 0.001;
+	public static final double THRESHOLD = 0.0001;
 	/**
 	 * The discount factor
 	 */
-	public static final double GAMMA = 0.8;
+	public static final double GAMMA = 0.9;
 	
 	/**
 	 * Initialize the evaluator with a given policy
