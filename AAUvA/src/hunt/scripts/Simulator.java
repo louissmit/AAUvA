@@ -19,7 +19,7 @@ public class Simulator {
 	/**
 	 * The current state of the grid world
 	 */
-	protected HuntState currentState;
+	protected HuntState currentState, startState;
 	
 	/**
 	 * The deciding policy for the predator
@@ -41,6 +41,7 @@ public class Simulator {
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
 		while(i < runs) {
 			x = 0;
+			this.reset();
 			while(running) {
 				currentState = transition(currentState);
 				x++;
@@ -85,8 +86,13 @@ public class Simulator {
 	 * Update the state
 	 * @param state - the new state 
 	 */
-	public void setState(HuntState state) {
-		this.currentState = state;
+	public void setStartState(HuntState state) {
+		this.startState = state;
+		this.reset();
+	}
+	
+	public void reset(){
+		this.currentState = this.startState;
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class PolicyEvaluator {
 	/**
 	 * The discount factor
 	 */
-	public static final double GAMMA = 0.8;
+	public static final double GAMMA = 0.1;
 	
 	/**
 	 * Initialize the evaluator with a given policy

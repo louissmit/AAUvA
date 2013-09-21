@@ -111,10 +111,10 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			Simulator sim = new Simulator();
 			HuntState startState = new AbsoluteState(new Position(5,5), new Position(0,0));
-			sim.setState(startState);
+			sim.setStartState(startState);
 			sim.setPredatorPolicy(new RandomPredatorPolicy());
 			sim.setPrey(new RandomPrey());
-			sim.run(1000);
+			sim.run(100);
 		}
 	}
 	
@@ -266,7 +266,7 @@ public class ScriptsMenu {
 					state=new AbsoluteState(preyPos, predPos);
 					System.out.println("Predator(" + predPos.toString() + "), Prey(" + preyPos.toString() + "):");
 				}
-				sim.setState(state);
+				sim.setStartState(state);
 				sim.setPredatorPolicy(valIter.GetPolicy());
 				sim.setPrey(new RandomPrey());
 				sim.run(100);
