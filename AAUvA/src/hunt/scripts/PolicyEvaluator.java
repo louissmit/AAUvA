@@ -2,6 +2,7 @@ package hunt.scripts;
 
 import hunt.model.HuntState;
 import hunt.model.board.Position;
+import hunt.model.predator.PlannerPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class PolicyEvaluator {
 	/**
 	 * The policy determining the predator moves
 	 */
-	protected PredatorPolicy policy;
+	protected PlannerPredatorPolicy policy;
 	
 	/**
 	 * The amount of iterations required for convergence
@@ -30,7 +31,7 @@ public class PolicyEvaluator {
 	/**
 	 * The minimal difference required for another iteration
 	 */
-	public static final double THRESHOLD = 0.001;
+	public static final double THRESHOLD = 0.0001;
 	/**
 	 * The discount factor
 	 */
@@ -40,20 +41,21 @@ public class PolicyEvaluator {
 	 * Initialize the evaluator with a given policy
 	 * @param policy - the policy to evaluate
 	 */
-	public PolicyEvaluator(PredatorPolicy policy) {
+	public PolicyEvaluator(PlannerPredatorPolicy policy) {
 		values = new HashMap<HuntState, Double>();
 		this.policy = policy;
+		this.iterations = 0;
+		this.init();
 	}
 
 	/**
 	 * Perform policy evaluation
 	 * Note that this makes use of the result of a previously found run, if any.
+	 * @return 
 	 */
-	public void run() {
+	public PolicyEvaluator run() {
 		// Setup
-		this.init();
 		double difference = 1000;
-		this.iterations = 0;
 		
 		// Sweeps
 		while (difference > THRESHOLD) {
@@ -69,28 +71,32 @@ public class PolicyEvaluator {
 				double updatedValue = 0;
 				for (Position action : policy.getActions(oldState)) {
 					double actionProbability = policy.getActionProbability(oldState, action);
-					double actionValue = 0;
-					
-					// Loop over all states that may be reached by the given combination of old state and action
-					for (HuntState newState : policy.getNextStates(oldState, action)) {
-						double transitionProbability = policy.getTransitionProbability(oldState, newState, action);
-						double transitionReward = policy.getReward(oldState, newState, action);
-						double newStateValue = values.get(newState);
-												
-						actionValue += transitionProbability * (transitionReward + GAMMA * newStateValue); 
-					}
-					
+					double actionValue = evaluateAction(oldState, action, this.values);
 					updatedValue += actionProbability * actionValue;
 				}
-				
 				this.values.put(oldState, updatedValue);
 				
 				difference = Math.max(difference, Math.abs(oldValue - updatedValue));
 			}
 			
 		}
+		return this;
 	}
-	
+
+	public double evaluateAction(HuntState oldState, Position action, Map<HuntState, Double> values) {
+		double actionValue = 0;
+
+		// Loop over all states that may be reached by the given combination of old state and action
+		for (HuntState newState : policy.getNextStates(oldState, action)) {
+			double transitionProbability = policy.getTransitionProbability(oldState, newState, action);
+			double transitionReward = policy.getReward(oldState, newState, action);
+			double newStateValue = values.get(newState);
+
+			actionValue += transitionProbability * (transitionReward + GAMMA * newStateValue); 
+		}
+		return actionValue;
+	}
+
 	/**
 	 * Make sure the state space contains all possible states
 	 */
