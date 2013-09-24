@@ -5,6 +5,7 @@ import hunt.model.HuntState;
 import hunt.model.board.Position;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +20,18 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 	public EpsilonGreedyPredatorPolicy(double epsilon) {
 		super();
 		this.epsilon = epsilon;
+		// Set random policy
+		this.probabilities = new HashMap<HuntState, HashMap<Position, Double>>();
+		for (HuntState state : this.getAllStates()) {
+			HashMap<Position, Double> distribution = new HashMap<Position, Double>();
+			
+			List<Position> actions = this.getActions(state);
+			for (Position action : actions) {
+				distribution.put(action, new Double(((double) 1) / actions.size()));
+			}
+			
+			this.probabilities.put(state, distribution);
+		}
 	}
 
 	/**
@@ -33,6 +46,7 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 			dist.put(key, epsilon / (countActions - 1));
 		}
 		dist.put(action, 1.0 - epsilon);
+		this.probabilities.put(state, dist);
 	}
 
 	@Override
@@ -46,10 +60,12 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 		{
 			double Qval=QValues.get(action);
 			if(Qval>max)
+			{
 				bestAction=action;
+				max=Qval;
+			}
 		}
 		this.setAction(state, bestAction);
-		
 	}
 
 }

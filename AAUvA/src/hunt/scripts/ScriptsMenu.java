@@ -39,6 +39,7 @@ public class ScriptsMenu {
 		commands.add(new PolicyEvaluationCommand());
 		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
+		commands.add(new QLearnCommand());
 	}
 
 	/**
@@ -271,6 +272,69 @@ public class ScriptsMenu {
 				sim.setPrey(new RandomPrey());
 				sim.run(100);
 			}
+		}
+	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnCommand implements Command {
+
+
+
+		public String getCommand() {
+			return "qlearn";
+		}
+
+		public void execute(String[] args) {
+
+			
+			double gamma=0.1;
+			double alpha=0.1;
+			int numberOfIterations=10000;
+			List<Integer> episodes=runQLearn(gamma,alpha,numberOfIterations);
+			System.out.println("Gamma="+gamma+" alpha="+alpha);
+			double lastOnes=0;
+			double avg=100;
+			for(int i=0;i<episodes.size();i++)
+			{
+				if(i%avg==0)
+					lastOnes=0;
+				lastOnes+=episodes.get(i);
+				if(i%avg==99)
+				{
+					lastOnes/=avg;
+					System.out.println("Episode: "+i+" number of steps needed to catch the prey: "+lastOnes);
+				}
+			}
+		}
+
+		/**
+		 * Perform the Q-Learn
+		 * @param gamma - the discount factor for this value iteration
+		 */
+		private List<Integer> runQLearn(double gamma,double alpha,int numberOfIteration) {
+			
+			LearningPredatorPolicy policy;
+			policy = new EpsilonGreedyPredatorPolicy(0.1);
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+			QLearn qLearn=new QLearn(policy,sim,gamma,alpha,15);
+			List<Integer> results=new ArrayList<Integer>();
+			// Timer
+			long startTime = System.nanoTime();
+			for(int i=0;i<numberOfIteration;i++)
+			{
+				int a=0;
+				if(i==998)
+					a=1;
+				int result=qLearn.Iterate();
+				results.add(result);
+			}
+			long endTime = System.nanoTime();
+			
+			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
+			return results;
 		}
 	}
 }

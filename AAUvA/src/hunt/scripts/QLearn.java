@@ -1,7 +1,6 @@
 package hunt.scripts;
 import hunt.controller.Move;
 import hunt.model.HuntState;
-import hunt.model.StateAndAction;
 import hunt.model.StateAndRewardObservation;
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
@@ -40,21 +39,35 @@ public class QLearn {
 	/**
 	 * The values for states, calculated by the algorithm
 	 */
-	public Hashtable<StateAndAction, Double> stateActionValues;
+	public Hashtable<HuntState, Hashtable<Position,Double>> stateActionValues;
 
 	
 	/**
 	 * Initialize
 	 * @param _policy - the policy to use for transition and reward functions
+	 * @param _simulator - simulator 
 	 * @param _gamma - discount factor
+	 * @param _alpha - learning rate
+	 * @param _initialization - start values for Q
 	 */
-	public QLearn(LearningPredatorPolicy _policy,Simulator _simulator,double _gamma,double _alpha)
+	public QLearn(LearningPredatorPolicy _policy,Simulator _simulator,double _gamma,double _alpha,double initialization)
 	{
 		this.policy=_policy;
 		this.simulator=_simulator;
 		this.gamma=_gamma;
 		this.alpha=_alpha;
-		stateActionValues=new Hashtable<StateAndAction,Double>();
+		stateActionValues=new Hashtable<HuntState,Hashtable<Position,Double>>();
+		List<HuntState> allStates=policy.getAllStates();
+		for(HuntState state:allStates)
+		{
+			List<Position> actions=policy.getActions(state);
+			Hashtable<Position,Double> actionsMap=new Hashtable<Position,Double>();
+			for(Position action:actions)
+			{
+				actionsMap.put(action,initialization);
+			}
+			this.stateActionValues.put(state,actionsMap);
+		}
 	}
 
 	/**
@@ -64,7 +77,8 @@ public class QLearn {
 	{
 		List<HuntState> states=policy.getAllStates();
 		Random random=new Random();
-		int randomStateNumber=random.nextInt()%states.size();
+		int randomStateNumber=random.nextInt(states.size());
+		//int randomStateNumber=random.nextInt(4);
 		HuntState currentState=states.get(randomStateNumber);
 		simulator.setStartState(currentState);
 		double reward=0;
@@ -82,18 +96,16 @@ public class QLearn {
 			
 			for(Position nextAction:actionsInNextStep)
 			{
-				StateAndAction currentStateAndAction=new StateAndAction(nextState, nextAction);
-				double nextValue=this.stateActionValues.get(currentStateAndAction);
+				double nextValue=this.stateActionValues.get(nextState).get(nextAction);
 				if (nextValue>maxNextValue)
 				{
 					maxAction=nextAction;
 					maxNextValue=nextValue;
 				}
 			}
-			StateAndAction currentStateAction=new StateAndAction(currentState,action);
-			double currentValue=this.stateActionValues.get(currentStateAction);
+			double currentValue=this.stateActionValues.get(currentState).get(action);
 			double newValue=currentValue+this.alpha*(reward+this.gamma*maxNextValue-currentValue);
-			this.stateActionValues.put(currentStateAction,newValue );
+			this.stateActionValues.get(currentState).put(action,newValue );
 			UpdatePolicy(currentState);
 			currentState=nextState;
 			numberOfIterations++;
@@ -109,8 +121,7 @@ public class QLearn {
 		Map<Position,Double> QValues=new HashMap<Position, Double>();
 		for(Position action:possibleActions)
 		{
-			StateAndAction stateAndAction=new StateAndAction(state, action);
-			double value=this.stateActionValues.get(stateAndAction);
+			double value=this.stateActionValues.get(state).get(action);
 			QValues.put(action, value);
 		}
 		policy.setProbabilitiesWithQ(state,QValues);
