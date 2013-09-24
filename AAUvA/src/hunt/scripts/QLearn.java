@@ -2,7 +2,9 @@ package hunt.scripts;
 import hunt.controller.Move;
 import hunt.model.HuntState;
 import hunt.model.StateAndAction;
+import hunt.model.StateAndRewardObservation;
 import hunt.model.board.Position;
+import hunt.model.predator.LearningPredatorPolicy;
 import hunt.model.predator.PlannerPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
 
@@ -19,11 +21,7 @@ public class QLearn {
 	/**
 	 * Policy used for probability and reward distributions
 	 */
-	private PlannerPredatorPolicy policy;
-	/**
-	 * Total amount of iterations ran
-	 */
-	private int numberOfIterations;
+	private LearningPredatorPolicy policy;
 	
 	/**
 	 * simulator of environment
@@ -50,7 +48,7 @@ public class QLearn {
 	 * @param _policy - the policy to use for transition and reward functions
 	 * @param _gamma - discount factor
 	 */
-	public QLearn(PlannerPredatorPolicy _policy,Simulator _simulator,double _gamma,double _alpha)
+	public QLearn(LearningPredatorPolicy _policy,Simulator _simulator,double _gamma,double _alpha)
 	{
 		this.policy=_policy;
 		this.simulator=_simulator;
@@ -74,10 +72,10 @@ public class QLearn {
 		while(!currentState.isTerminal())
 		{
 			Position action=policy.getAction(currentState);
-			StateAndRewardObservation observation=simulator.Move(currentState,action);
-			reward=observation.reward;
-			HuntState nextState=observation.state;
-			List<Position> actionsInNextStep=policy.getAction(nextState);
+			StateAndRewardObservation observation=simulator.movePredator(action);
+			reward=observation.getReward();
+			HuntState nextState=observation.getState();
+			List<Position> actionsInNextStep=policy.getActions(nextState);
 			
 			Position maxAction=Move.WAIT;
 			double maxNextValue=-100000;
@@ -92,7 +90,7 @@ public class QLearn {
 					maxNextValue=nextValue;
 				}
 			}
-			StateAndRewardObservation currentStateAction=new StateAndRewardObservation(currentState,action);
+			StateAndAction currentStateAction=new StateAndAction(currentState,action);
 			double currentValue=this.stateActionValues.get(currentStateAction);
 			double newValue=currentValue+this.alpha*(reward+this.gamma*maxNextValue-currentValue);
 			this.stateActionValues.put(currentStateAction,newValue );
@@ -115,7 +113,7 @@ public class QLearn {
 			double value=this.stateActionValues.get(stateAndAction);
 			QValues.put(action, value);
 		}
-		policy.setActionQ(state,QValues);
+		policy.setProbabilitiesWithQ(state,QValues);
 		
 	}
 
