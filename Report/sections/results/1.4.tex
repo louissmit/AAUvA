@@ -1,7 +1,5 @@
 
 
-Using the Value Iteration script values for all states were calculated. States in which predator is close to the prey have high value. States where predator stands next to the prey have value of the reward. This is caused by the fact that in Value Iteration no policy is used so always action which bring the biggest reward is chosen. Values for some states for different gamma are presented in the tables below.
-
 
 \begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
    Predator position & Prey position & State value for gamma 0.1 \\
@@ -515,31 +513,6 @@ Predator(10, 10) & Prey(5, 5) &3.8831240424706754\\
 \label{tab:myfirstlongtable}
 \end{longtable}
 
-Numbers of iterations for different values of gamma are presented in the table below. 
-
-\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
-   Gamma & Amount of iterations & time in ns \\
-    \hline
-0.1 & 6 &   2664551938 \\
-0.5 & 13 & 4100229811\\
-0.7 & 15 & 4935193753\\
-0.9 &17 &  5465595303\\
-\caption{Performance for absolute position representation} 
-\label{tab:myfirstlongtable}
-\end{longtable}
-
-The best results in terms of time and number of iterations are observed for gamma equals 0.1. Increasing gamma factor causes increasing both factors. Changing data representation to distance based not only decrease computing time but also number of iterations. It can be observed that value iteration script performs approximately 100 times faster in comparison to the classic representation where positions of prey and predators are stored.
-
-\begin{longtable}{| p{.30\textwidth} | p{.30\textwidth} | p{.30\textwidth} |} 
-   Gamma & Amount of iterations & time in ns \\
-    \hline
-0.1 & 6 & 13370103 \\
-0.5 & 12 &32938805\\
-0.7 & 14 &32783420\\
-0.9 &15 & 36526657\\
-\caption{Performance for distance based representation} 
-\label{tab:myfirstlongtable}
-\end{longtable}
 
 
 
