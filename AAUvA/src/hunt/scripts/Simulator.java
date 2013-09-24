@@ -13,7 +13,7 @@ import hunt.model.predator.PredatorPolicy;
 public class Simulator {
 	
 	/**
-	 * Is the simulator still running?
+	 * Is the simulator still running
 	 */
 	private boolean running = true;
 	/**

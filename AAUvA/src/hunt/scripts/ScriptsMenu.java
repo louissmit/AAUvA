@@ -114,7 +114,7 @@ public class ScriptsMenu {
 			sim.setStartState(startState);
 			sim.setPredatorPolicy(new RandomPredatorPolicy());
 			sim.setPrey(new RandomPrey());
-			sim.run(100);
+			sim.run(100); 
 		}
 	}
 	
