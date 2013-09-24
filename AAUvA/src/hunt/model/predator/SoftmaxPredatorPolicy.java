@@ -9,7 +9,7 @@ import hunt.model.board.Position;
 /**
  * Predator agent using softmax 
  */
-public class SoftmaxPredatorPolicy extends PlannerPredatorPolicy {
+public class SoftmaxPredatorPolicy extends LearningPredatorPolicy {
 	
 	/** Softmax temperature */
 	private double temperature;
@@ -22,12 +22,8 @@ public class SoftmaxPredatorPolicy extends PlannerPredatorPolicy {
 		this.temperature = temperature;
 	}
 	
-	/**
-	 * Update the probability distribution
-	 * @param state - the state to update the distribution for
-	 * @param QValues - the Q-values for the actions in the given state
-	 */
-	public void setProbabilities(HuntState state, Map<Position, Double> QValues) {
+	@Override
+	public void setProbabilitiesWithQ(HuntState state, Map<Position, Double> QValues) {
 		// Calculation of relative weights
 		HashMap<Position, Double> probabilities = new HashMap<Position, Double>();
 		double totalProbability = 0;
