@@ -1,10 +1,12 @@
 package hunt.model.predator;
 
+import hunt.controller.Move;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Predator policy that uses an epsilon greedy method to select action 
@@ -36,7 +38,17 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 	@Override
 	public void setProbabilitiesWithQ(HuntState state,
 			Map<Position, Double> QValues) {
-		// TODO Auto-generated method stub
+		
+		Set<Position> actions=QValues.keySet();
+		Position bestAction=Move.WAIT;
+		double max=-10000;
+		for(Position action: actions)
+		{
+			double Qval=QValues.get(action);
+			if(Qval>max)
+				bestAction=action;
+		}
+		this.setAction(state, bestAction);
 		
 	}
 
