@@ -1,0 +1,16 @@
+Using the policy evaluation script, the policy for the randomly moving predator was evaluated. The values for a few of the states are listed in Table \ref{tab-poleval}. As can be seen, the states in which the predator is close to the prey receive a higher value as the predator is more likely to stumble upon the prey and receive its reward for catching it. The distance between predator and prey is equal in the second and third row, explaining why their state values are equal. In total, the algorithm required 15 sweeps to converge. \\
+
+\begin{table}
+\begin{center}
+  \begin{tabular}{l | l | l}
+     Predator position & Prey position & State value \\
+    \hline
+    5,5 & 0,0 & 0.0051 \\
+    5,4 & 2,3 & 0.1812 \\
+    10,0 & 2,10 & 0.1812 \\
+    0,0 & 10,10 & 1,194
+  \end{tabular}
+  \caption{State values}
+  \label{tab-poleval}
+\end{center}
+\end{table}
