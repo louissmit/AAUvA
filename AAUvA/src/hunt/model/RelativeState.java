@@ -5,7 +5,7 @@ import hunt.model.board.Position;
 /**
  * Smart state representation
  */
-public class TemporalState implements HuntState {
+public class RelativeState implements HuntState {
 	
 	/**
 	 * Relative distance of the prey compared to the predator
@@ -16,7 +16,7 @@ public class TemporalState implements HuntState {
 	 * Constructor
 	 * @param distance - the initial distance
 	 */
-	public TemporalState(Position distance) {
+	public RelativeState(Position distance) {
 		this.distance = distance;
 	}
 
@@ -27,17 +27,17 @@ public class TemporalState implements HuntState {
 
 	@Override
 	public HuntState movePredator(Position action) {
-		return new TemporalState(distance.copy().subtract(action));
+		return new RelativeState(distance.copy().subtract(action));
 	}
 
 	@Override
 	public HuntState movePrey(Position action) {
-		return new TemporalState(distance.copy().add(action));
+		return new RelativeState(distance.copy().add(action));
 	}
 
 	@Override
 	public HuntState copy() {
-		return new TemporalState(this.distance.copy());
+		return new RelativeState(this.distance.copy());
 	}
 
 	@Override
@@ -47,10 +47,10 @@ public class TemporalState implements HuntState {
 
 	@Override
 	public Position getPreyAction(HuntState oldState) {
-		if (!(oldState instanceof TemporalState)) {
+		if (!(oldState instanceof RelativeState)) {
 			throw new IllegalArgumentException("oldState must be of type TemporalState");
 		}
-		TemporalState state = (TemporalState) oldState;
+		RelativeState state = (RelativeState) oldState;
 		
 		return this.distance.copy().subtract(state.getDistance());
 	}
@@ -89,9 +89,9 @@ public class TemporalState implements HuntState {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof TemporalState))
+		if (!(obj instanceof RelativeState))
 			return false;
-		TemporalState other = (TemporalState) obj;
+		RelativeState other = (RelativeState) obj;
 		if (distance == null) {
 			if (other.distance != null)
 				return false;

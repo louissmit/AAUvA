@@ -1,5 +1,7 @@
 package hunt.scripts;
 
+import java.util.ArrayList;
+
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -17,7 +19,7 @@ public class Simulator {
 	/**
 	 * The current state of the grid world
 	 */
-	protected HuntState currentState;
+	protected HuntState currentState, startState;
 	
 	/**
 	 * The deciding policy for the predator
@@ -31,15 +33,31 @@ public class Simulator {
 	/**
 	 * Run the simulator
 	 */
-	public void run() {
-		int i = 0;
+	public void run(int runs) {
 		
-		while(running) {
-			currentState = transition(currentState);
-			System.out.println(currentState);
+		double avg = 0.0;
+		int i = 0;
+		int x = 0;
+		ArrayList<Integer> runlist = new ArrayList<Integer>();
+		while(i < runs) {
+			x = 0;
+			this.reset();
+			while(running) {
+				currentState = transition(currentState);
+				x++;
+			}
+			avg += x;
+			runlist.add(x);
+			running = true;
 			i++;
 		}
-		System.out.println("Runs: " + i);	}
+		avg = avg / runs;
+		double temp = 0;
+		for(double run: runlist){
+			temp += (run - avg)*(run - avg);
+		}
+		System.out.println("Average: " + avg + ", standard deviation: " + Math.sqrt(temp / runs));
+	}
 	
 	/**
 	 * Advance the state
@@ -68,8 +86,13 @@ public class Simulator {
 	 * Update the state
 	 * @param state - the new state 
 	 */
-	public void setState(HuntState state) {
-		this.currentState = state;
+	public void setStartState(HuntState state) {
+		this.startState = state;
+		this.reset();
+	}
+	
+	public void reset(){
+		this.currentState = this.startState;
 	}
 
 	/**
