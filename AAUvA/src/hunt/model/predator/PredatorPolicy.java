@@ -1,9 +1,12 @@
 package hunt.model.predator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import hunt.controller.Move;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
 
@@ -19,7 +22,15 @@ public abstract class PredatorPolicy {
 	 * @param oldState - the state where the predator needs to make a move
 	 * @return all allowed actions in the given state
 	 */
-	public abstract List<Position> getActions(HuntState oldState);
+	public List<Position> getActions(HuntState oldState) {
+		List<Position> result = new ArrayList<Position>();
+		result.add(Move.EAST);
+		result.add(Move.NORTH);
+		result.add(Move.SOUTH);
+		result.add(Move.WAIT);
+		result.add(Move.WEST);
+		return result;
+	}
 
 	/**
 	 * Return the probability of picking a certain action given a certain state
@@ -27,35 +38,9 @@ public abstract class PredatorPolicy {
 	 * @param action - the action taken
 	 * @return the probability of this combination occurring (policy-dependent)
 	 */
-	public abstract double getActionProbability(HuntState oldState, Position action);
-
-	/**
-	 * Return a list of states that may be reached after performing a certain action in a certain state
-	 * @param oldState - the current state
-	 * @param action - the action taken in the current state
-	 * @return - the states that may be reached from the state-action pair
-	 */
-	public abstract List<HuntState> getNextStates(HuntState oldState, Position action);
-
-	/**
-	 * Return the probability of reaching a certain state after having taken a certain action in a certain state
-	 * @param oldState - the old state
-	 * @param newState - the new state
-	 * @param action - the action moving the state from the old to the new
-	 * @return - the probability of reaching newState after performing action in oldState
-	 */
-	public abstract double getTransitionProbability(HuntState oldState,
-			HuntState newState, Position action);
-
-	/**
-	 * Return the expected reward obtained for transitioning from one state to another under a certain action
-	 * @param oldState - the old state
-	 * @param newState - the new state
-	 * @param action - the action moving the state from the old to the new
-	 * @return - the reward gotten for reaching newState after performing action in oldState
-	 */
-	public abstract double getReward(HuntState oldState, HuntState newState,
-			Position action);
+	public double getActionProbability(HuntState oldState, Position action) {
+		return this.probabilities.get(oldState).get(action);
+	}
 
 	/**
 	 * Returns a list of all possible states
@@ -67,7 +52,21 @@ public abstract class PredatorPolicy {
 	 * @param s - the current state
 	 * @return the move the predator will make
 	 */
-	public abstract Position getAction(HuntState s);
+	public Position getAction(HuntState s) {
+		// Alowed actions
+		
+		List<Position> actions = this.getActions(s);
+		HashMap<Position, Double> distribution=probabilities.get(s);
+		Random generator = new Random();
+		double randomNumber = generator.nextDouble();
+		double prob=0;
+		for (Position action : actions) {
+			prob+=distribution.get(action);
+			if(randomNumber<=prob)
+				return action;
+		}
+		return Move.WAIT;
+	}
 	
 	/**
 	 * sets map of probabilities of taking actions in particular state
