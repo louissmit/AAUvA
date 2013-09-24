@@ -36,6 +36,7 @@ public class PolicyEvaluator {
 	 * The discount factor
 	 */
 	public static final double GAMMA = 0.9;
+
 	
 	/**
 	 * Initialize the evaluator with a given policy
@@ -71,7 +72,7 @@ public class PolicyEvaluator {
 				double updatedValue = 0;
 				for (Position action : policy.getActions(oldState)) {
 					double actionProbability = policy.getActionProbability(oldState, action);
-					double actionValue = evaluateAction(oldState, action);
+					double actionValue = evaluateAction(oldState, action, this.values);
 					updatedValue += actionProbability * actionValue;
 				}
 				this.values.put(oldState, updatedValue);
@@ -83,7 +84,7 @@ public class PolicyEvaluator {
 		return this;
 	}
 
-	public double evaluateAction(HuntState oldState, Position action) {
+	public double evaluateAction(HuntState oldState, Position action, Map<HuntState, Double> values) {
 		double actionValue = 0;
 
 		// Loop over all states that may be reached by the given combination of old state and action
