@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
+import hunt.model.StateAndRewardObservation;
 import hunt.model.board.Position;
 import hunt.model.predator.PredatorPolicy;
 
@@ -95,6 +96,26 @@ public class Simulator {
 		this.currentState = this.startState;
 	}
 
+	/**
+	 * Give an agent a reward for an action
+	 * @param action - the action the agent took
+	 * @return the reward and next state after the action
+	 */
+	public StateAndRewardObservation movePredator(Position action) {
+		double reward = 0;
+		
+		HuntState nextState = currentState.copy().movePredator(action);
+		if (nextState.isTerminal() && nextState.predatorWins()) {
+			reward = 10;
+		} else {
+			Position preyAction = this.preyPolicy.getAction(nextState.copy());
+			nextState = nextState.movePrey(preyAction);
+		}
+		
+		this.currentState = nextState.copy();
+		return new StateAndRewardObservation(nextState, reward);
+	}
+	
 	/**
 	 * Set the policy for the predator
 	 * @param predatorPolicy - the policy

@@ -8,7 +8,7 @@ import hunt.model.board.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	/**
@@ -30,6 +30,11 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	public void setActionProbability(HuntState state, HashMap<Position, Double> distribution){
 		this.probabilities.put(state, distribution);	}
 
+	/**
+	 * Make the agent behave deterministically in a certain state
+	 * @param state - the state that the agent should make a certain action
+	 * @param action - the action that the agents should take in state
+	 */
 	public void setAction(HuntState state, Position action){
 		HashMap<Position, Double> dist = this.probabilities.get(state);
 		for(Position key: dist.keySet()){
@@ -132,6 +137,22 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		return this.probabilities.toString();
 	}
 
+	@Override
+	public Position getAction(HuntState s) {
+		// Alowed actions
+		
+		List<Position> actions = this.getActions(s);
+		HashMap<Position, Double> distribution=probabilities.get(s);
+		Random generator = new Random();
+		double randomNumber = generator.nextDouble();
+		double prob=0;
+		for (Position action : actions) {
+			prob+=distribution.get(action);
+			if(randomNumber<=prob)
+				return action;
+		}
+		return Move.WAIT;
+	}
 
 }
 
