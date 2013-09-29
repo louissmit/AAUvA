@@ -35,6 +35,7 @@ public class Simulator {
 	 * Run the simulator
 	 */
 	public void run(int runs) {
+		assert(currentState != null);
 		
 		double avg = 0.0;
 		int i = 0;

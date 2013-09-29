@@ -23,12 +23,12 @@ public class ScriptsMenu {
 	 * Available commands
 	 */
 	protected List<Command> commands;
-	
+
 	/**
 	 * Determines whether to continue running or not.
 	 */
 	protected boolean exit;
-	
+
 	/**
 	 * Constructor, populates the list of commands
 	 */
@@ -40,6 +40,7 @@ public class ScriptsMenu {
 		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
+		commands.add(new SARSACommand());
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class ScriptsMenu {
 			String command = s.next();
 			String argString = s.nextLine();
 			String[] args = argString.split(" ");
-			
+
 			boolean found = false;
 			for (int i = 0; i < commands.size(); i++) {
 				if (command.toLowerCase().equals(commands.get(i).getCommand())) {
@@ -61,14 +62,14 @@ public class ScriptsMenu {
 					found = true;
 				}
 			}
-			
+
 			if (!found) {
 				System.out.println("Command not recognized");
 			}
 		}
 		s.close();
 	}
-	
+
 	/**
 	 * Interface for available commands 
 	 */
@@ -78,37 +79,37 @@ public class ScriptsMenu {
 		 * @return the command that invokes this script
 		 */
 		public String getCommand(); 
-		
+
 		/**
 		 * Execute this command
 		 * @param args user-inputted arguments for the command. args[0] is equal to getCommand
 		 */
 		public void execute(String[] args);
 	}
-	
+
 	/**
 	 * Stop running
 	 */
 	private class ExitCommand implements Command {
-		
+
 		public String getCommand() {
 			return "exit";
 		}
-		
+
 		public void execute(String[] args) {
 			exit = true;
 		}
 	}
-	
+
 	/**
 	 * Perform game simulations using random policies 
 	 */
 	private class SimulatorCommand implements Command {
-		
+
 		public String getCommand() {
 			return "simulator";
 		}
-		
+
 		public void execute(String[] args) {
 			Simulator sim = new Simulator();
 			HuntState startState = new AbsoluteState(new Position(5,5), new Position(0,0));
@@ -118,7 +119,7 @@ public class ScriptsMenu {
 			sim.run(100); 
 		}
 	}
-	
+
 	/**
 	 * Perform policy evaluation of the random predator policy 
 	 */
@@ -156,14 +157,14 @@ public class ScriptsMenu {
 			Position pos5_5 = new Position(5,5);
 			Position pos10_0 = new Position(10,0);
 			Position pos10_10 = new Position(10,10);
-			
+
 			List<AbsoluteState> states = new ArrayList<AbsoluteState>();
 			states.add(new AbsoluteState(pos0_0, pos5_5));
 			states.add(new AbsoluteState(pos2_3, pos5_4));
 			states.add(new AbsoluteState(pos2_10, pos10_0));
 			states.add(new AbsoluteState(pos10_10, pos0_0));
 			states.add(new AbsoluteState(pos10_10, pos10_0));
-			
+
 			for (AbsoluteState state : states) {
 				HuntState finalState = state;
 				if (smartMode) {
@@ -171,9 +172,9 @@ public class ScriptsMenu {
 				}
 				System.out.println("Value for " + finalState.toString() + ": " + result.get(finalState));
 			}
-			
+
 			System.out.println("Amount of iterations required: " + eval.getIterations());
-			
+
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 		}
 	}
@@ -196,15 +197,15 @@ public class ScriptsMenu {
 			long endTime = System.nanoTime();
 			System.out.println(eval.getIterations());
 			Utility.printStates(eval.getValues(), smartMode);
-//			printResults(eval, startTime, endTime, smartMode);
+			//			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
-	
+
 	/**
 	 * Perform value iteration for the random policy
 	 */
 	private class ValueIterationCommand implements Command {
-		
+
 		private boolean smartMode = false;
 		private boolean simulatorTest=false;
 
@@ -215,7 +216,7 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			this.smartMode = Arrays.asList(args).contains("smart");
 			this.simulatorTest = Arrays.asList(args).contains("test");
-			
+
 			double gamma=0.1;
 			runValueIteration(gamma);
 			gamma=0.5;
@@ -239,7 +240,7 @@ public class ScriptsMenu {
 			}
 			policy.setPrey(new RandomPrey());
 			ValueIteration valIter = new ValueIteration(policy, gamma);
-			
+
 			// Timer
 			long startTime = System.nanoTime();
 			valIter.Iterate();
@@ -249,14 +250,14 @@ public class ScriptsMenu {
 			Utility.printStates(result, smartMode);
 
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
-			
+
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
-			
+
 			Position preyPos=new Position(5,5);
 			if(this.simulatorTest)
 			{
 				System.out.println("Simulation using new policy: ");
-				
+
 				Simulator sim = new Simulator();
 				HuntState state;
 				Position predPos = new Position(0,0);
@@ -274,25 +275,10 @@ public class ScriptsMenu {
 			}
 		}
 	}
-	/**
-	 * Perform value iteration for the random policy
-	 */
-	private class QLearnCommand implements Command {
+	private abstract class QGeneralCommand implements Command {
 
-
-
-		public String getCommand() {
-			return "qlearn";
-		}
-
-		public void execute(String[] args) {
-
-			
-			double gamma=0.1;
-			double alpha=0.1;
-			int numberOfIterations=10000;
-			List<Integer> episodes=runQLearn(gamma,alpha,numberOfIterations);
-			System.out.println("Gamma="+gamma+" alpha="+alpha);
+		public void executeQ(QGeneral script, int numberOfIterations) {
+			List<Integer> episodes=runQ(script, numberOfIterations);
 			double lastOnes=0;
 			double avg=100;
 			for(int i=0;i<episodes.size();i++)
@@ -312,30 +298,69 @@ public class ScriptsMenu {
 		 * Perform the Q-Learn
 		 * @param gamma - the discount factor for this value iteration
 		 */
-		private List<Integer> runQLearn(double gamma,double alpha,int numberOfIteration) {
-			
-			LearningPredatorPolicy policy;
-			policy = new EpsilonGreedyPredatorPolicy(0.1);
-			Simulator sim = new Simulator();
-			sim.setPredatorPolicy(policy);
-			sim.setPrey(new RandomPrey());
-			QLearn qLearn=new QLearn(policy,sim,gamma,alpha,15);
+		private List<Integer> runQ(QGeneral script, int numberOfIteration) {
+
 			List<Integer> results=new ArrayList<Integer>();
 			// Timer
-			long startTime = System.nanoTime();
+			long startTime = System.currentTimeMillis();
 			for(int i=0;i<numberOfIteration;i++)
 			{
 				int a=0;
 				if(i==998)
 					a=1;
-				int result=qLearn.Iterate();
+				int result = script.Iterate();
 				results.add(result);
 			}
-			long endTime = System.nanoTime();
-			
-			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
+			long endTime = System.currentTimeMillis();
+
+			System.out.println("Time taken (milliseconds): " + (endTime - startTime));
 			return results;
 		}
+
+	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnCommand extends QGeneralCommand {
+
+
+
+		public String getCommand() {
+			return "qlearn";
+		}
+
+		public void execute(String[] args) {
+			double gamma=0.1;
+			double alpha=0.1;
+			int numberOfIterations=10000;
+			LearningPredatorPolicy policy;
+			policy = new EpsilonGreedyPredatorPolicy(0.1);
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+			QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
+			super.executeQ(qlearn, numberOfIterations);
+		}
+
+	}
+
+	private class SARSACommand extends QGeneralCommand{
+		public String getCommand() {
+			return "sarsa";
+		}
+		
+		public void execute(String[] args) {
+			double gamma=0.1;
+			double alpha=0.1;
+			int numberOfIterations=10000;
+			LearningPredatorPolicy policy;
+			policy = new EpsilonGreedyPredatorPolicy(0.1);
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+			SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
+			super.executeQ(sarsa, numberOfIterations);
+		}
 	}
 }
 

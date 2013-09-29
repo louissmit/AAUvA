@@ -15,59 +15,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class QLearn {
+public class QLearn extends QGeneral{
+
 
 	/**
-	 * Policy used for probability and reward distributions
+	 * @param _policy
+	 * @param _simulator
+	 * @param _gamma
+	 * @param _alpha
+	 * @param initialization
 	 */
-	private LearningPredatorPolicy policy;
-	
-	/**
-	 * simulator of environment
-	 */
-	private Simulator simulator;
-	/**
-	 * Discount factor
-	 */
-	private double gamma;
-	
-	/**
-	 * learning rate
-	 */
-	private double alpha;
-
-	/**
-	 * The values for states, calculated by the algorithm
-	 */
-	public Hashtable<HuntState, Hashtable<Position,Double>> stateActionValues;
-
-	
-	/**
-	 * Initialize
-	 * @param _policy - the policy to use for transition and reward functions
-	 * @param _simulator - simulator 
-	 * @param _gamma - discount factor
-	 * @param _alpha - learning rate
-	 * @param _initialization - start values for Q
-	 */
-	public QLearn(LearningPredatorPolicy _policy,Simulator _simulator,double _gamma,double _alpha,double initialization)
-	{
-		this.policy=_policy;
-		this.simulator=_simulator;
-		this.gamma=_gamma;
-		this.alpha=_alpha;
-		stateActionValues=new Hashtable<HuntState,Hashtable<Position,Double>>();
-		List<HuntState> allStates=policy.getAllStates();
-		for(HuntState state:allStates)
-		{
-			List<Position> actions=policy.getActions(state);
-			Hashtable<Position,Double> actionsMap=new Hashtable<Position,Double>();
-			for(Position action:actions)
-			{
-				actionsMap.put(action,initialization);
-			}
-			this.stateActionValues.put(state,actionsMap);
-		}
+	public QLearn(LearningPredatorPolicy _policy, Simulator _simulator,
+			double _gamma, double _alpha, double initialization) {
+		super(_policy, _simulator, _gamma, _alpha, initialization);
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -111,29 +72,5 @@ public class QLearn {
 			numberOfIterations++;
 		}	
 		return numberOfIterations;
-	}
-	
-	/**
-	 * Updates 
-	 */
-	private void UpdatePolicy(HuntState state) {
-		List<Position> possibleActions=policy.getActions(state);
-		Map<Position,Double> QValues=new HashMap<Position, Double>();
-		for(Position action:possibleActions)
-		{
-			double value=this.stateActionValues.get(state).get(action);
-			QValues.put(action, value);
-		}
-		policy.setProbabilitiesWithQ(state,QValues);
-		
-	}
-
-	/**
-	 * returns policy of the predator
-	 * @return
-	 */
-	public PredatorPolicy GetPolicy()
-	{
-		return this.policy;
 	}
 }
