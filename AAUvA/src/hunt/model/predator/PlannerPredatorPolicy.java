@@ -1,6 +1,5 @@
 package hunt.model.predator;
 
-import hunt.controller.Move;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -8,7 +7,6 @@ import hunt.model.board.Position;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	/**
@@ -16,20 +14,14 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	 */
 	private AbstractPrey prey;
 
-	@Override
-	public List<Position> getActions(HuntState oldState) {
-		List<Position> result = new ArrayList<Position>();
-		result.add(Move.EAST);
-		result.add(Move.NORTH);
-		result.add(Move.SOUTH);
-		result.add(Move.WAIT);
-		result.add(Move.WEST);
-		return result;
-	}
-
 	public void setActionProbability(HuntState state, HashMap<Position, Double> distribution){
 		this.probabilities.put(state, distribution);	}
 
+	/**
+	 * Make the agent behave deterministically in a certain state
+	 * @param state - the state that the agent should make a certain action
+	 * @param action - the action that the agents should take in state
+	 */
 	public void setAction(HuntState state, Position action){
 		HashMap<Position, Double> dist = this.probabilities.get(state);
 		for(Position key: dist.keySet()){
@@ -38,12 +30,12 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		dist.put(action, 1.0);
 	}
 
-	@Override
-	public double getActionProbability(HuntState oldState, Position action) {
-		return this.probabilities.get(oldState).get(action);
-	}
-
-	@Override
+	/**
+	 * Return a list of states that may be reached after performing a certain action in a certain state
+	 * @param oldState - the current state
+	 * @param action - the action taken in the current state
+	 * @return - the states that may be reached from the state-action pair
+	 */
 	public List<HuntState> getNextStates(HuntState oldState, Position action) {
 		List<HuntState> states = new ArrayList<HuntState>();
 
@@ -67,7 +59,13 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		return states;
 	}
 
-	@Override
+	/**
+	 * Return the probability of reaching a certain state after having taken a certain action in a certain state
+	 * @param oldState - the old state
+	 * @param newState - the new state
+	 * @param action - the action moving the state from the old to the new
+	 * @return - the probability of reaching newState after performing action in oldState
+	 */
 	public double getTransitionProbability(HuntState oldState,
 			HuntState newState, Position action) {
 		double result = 0;
@@ -97,7 +95,13 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		return result;
 	}
 
-	@Override
+	/**
+	 * Return the expected reward obtained for transitioning from one state to another under a certain action
+	 * @param oldState - the old state
+	 * @param newState - the new state
+	 * @param action - the action moving the state from the old to the new
+	 * @return - the reward gotten for reaching newState after performing action in oldState
+	 */
 	public double getReward(HuntState oldState, HuntState newState,
 			Position action) {
 		double result = 0;
@@ -110,12 +114,6 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 		}
 
 		return result;
-	}
-
-	@Override
-	public List<HuntState> getAllStates() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**
@@ -131,7 +129,6 @@ public abstract class PlannerPredatorPolicy extends PredatorPolicy {
 	public String toString() {
 		return this.probabilities.toString();
 	}
-
 
 }
 

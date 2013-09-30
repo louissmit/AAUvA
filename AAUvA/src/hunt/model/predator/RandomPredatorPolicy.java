@@ -1,6 +1,5 @@
 package hunt.model.predator;
 
-import hunt.controller.Move;
 import hunt.model.AbsoluteState;
 import hunt.model.HuntState;
 import hunt.model.board.Position;
@@ -58,35 +57,6 @@ public class RandomPredatorPolicy extends PlannerPredatorPolicy {
 		}
 		
 		return result;
-	}
-
-	/**
-	 * Decides on an action for the agent. Ignores the probability distribution (for now)
-	 */
-	@Override
-	public Position getAction(HuntState s) {
-		// Alowed actions
-		
-		List<Position> actions = this.getActions(s);
-		HashMap<Position, Double> distribution=probabilities.get(s);
-		double randomNumber = generator.nextDouble();
-		double prob=0;
-		for (Position action : actions) {
-			prob+=distribution.get(action);
-			if(randomNumber<=prob)
-				return action;
-		}
-		return Move.WAIT;
-		
-		/*
-		List<Position> actions = this.getActions(s);
-		// Get a number between 0 and 1
-		double randomNumber = generator.nextDouble();
-		// Get a number between 0 and the amount of actions
-		int index = (int) (randomNumber * actions.size());
-		// Use the number to pick a random action
-		return actions.get(index);
-		*/
 	}
 
 }
