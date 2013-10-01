@@ -286,7 +286,7 @@ public class ScriptsMenu {
 		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
 			List<Integer> episodes=runQ(script, numberOfIterations,filename);
 			double lastOnes=0;
-			double avg=100;
+			double avg=10;
 			util.setupSerializer(filename);
 			for(int i=0;i<episodes.size();i++)
 			{
@@ -342,7 +342,7 @@ public class ScriptsMenu {
 			{
 				for(double discountFactor:this.discountFactors)
 				{
-					int numberOfIterations=10000;
+					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
 					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();
