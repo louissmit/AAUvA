@@ -64,7 +64,7 @@ public class Utility {
 		};
 	}
 
-	public void serializeEpisode(int episodeNr, int iterations){
+	public void serializeEpisode(int episodeNr, double iterations){
 		try {
 			writer.append(episodeNr +", " + iterations);
 			writer.newLine();

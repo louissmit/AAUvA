@@ -284,11 +284,9 @@ public class ScriptsMenu {
 
 		
 		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
-			List<Integer> episodes=runQ(script, numberOfIterations);
-			List<Integer> xAxis=new ArrayList<Integer>();
-			List<Double> yAxis=new ArrayList<Double>();
+			List<Integer> episodes=runQ(script, numberOfIterations,filename);
 			double lastOnes=0;
-			double avg=1;
+			double avg=100;
 			util.setupSerializer(filename);
 			for(int i=0;i<episodes.size();i++)
 			{
@@ -298,9 +296,7 @@ public class ScriptsMenu {
 				if(i%avg==(avg-1))
 				{
 					lastOnes/=avg;
-					util.serializeEpisode(i, (int)lastOnes);
-					xAxis.add(i);
-					yAxis.add(lastOnes);
+					util.serializeEpisode(i+1, lastOnes);
 					//System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
@@ -311,7 +307,7 @@ public class ScriptsMenu {
 		 * Perform the Q-Learn
 		 * @param gamma - the discount factor for this value iteration
 		 */
-		private List<Integer> runQ(QGeneral script, int numberOfIteration) {
+		private List<Integer> runQ(QGeneral script, int numberOfIteration,String name) {
 
 			List<Integer> results=new ArrayList<Integer>();
 			// Timer
@@ -323,7 +319,8 @@ public class ScriptsMenu {
 			}
 			long endTime = System.currentTimeMillis();
 
-			System.out.println("Time taken (milliseconds): " + (endTime - startTime));
+			
+			System.out.println("Time taken (milliseconds) for "+name+": " + (endTime - startTime));
 			return results;
 		}
 
