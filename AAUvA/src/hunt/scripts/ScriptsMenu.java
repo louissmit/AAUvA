@@ -41,6 +41,7 @@ public class ScriptsMenu {
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
 		commands.add(new SARSACommand());
+		commands.add(new MonteCarloCommand());
 	}
 
 	/**
@@ -305,9 +306,9 @@ public class ScriptsMenu {
 			long startTime = System.currentTimeMillis();
 			for(int i=0;i<numberOfIteration;i++)
 			{
-				int a=0;
-				if(i==998)
-					a=1;
+//				int a=0;
+//				if(i==998)
+//					a=1;
 				int result = script.Iterate();
 				results.add(result);
 			}
@@ -361,6 +362,28 @@ public class ScriptsMenu {
 			SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
 			super.executeQ(sarsa, numberOfIterations);
 		}
+	}
+
+	private class MonteCarloCommand extends QGeneralCommand{
+		public String getCommand() {
+			return "mc";
+		}
+		
+		public void execute(String[] args) {
+			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+//			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
+			
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+//			sim.setStartState(new RelativeState(new Position(5,5)));
+			
+			double gamma=0.9;
+			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
+			super.executeQ(mc, 100000);
+//			mc.runEpisode();
+		}
+
 	}
 }
 
