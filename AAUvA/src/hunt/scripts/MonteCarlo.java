@@ -91,8 +91,8 @@ public class MonteCarlo extends QGeneral {
 			StateAndRewardObservation observation = this.simulator.movePredator(predatorMove.copy());
 			totalReward += observation.getReward();
 			visitedStatesAndActions.add(new StateActionPair(currentState.copy(), predatorMove.copy()));
-			System.out.println(predatorMove);
-			System.out.println(this.simulator.currentState);
+//			System.out.println(predatorMove);
+//			System.out.println(this.simulator.currentState);
 		}
 		
 		int episodeLength = visitedStatesAndActions.size();
