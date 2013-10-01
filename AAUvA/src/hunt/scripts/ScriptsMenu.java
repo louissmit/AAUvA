@@ -43,6 +43,7 @@ public class ScriptsMenu {
 		commands.add(new QLearnCommand());
 		commands.add(new SARSACommand());
 		util = new Utility();
+		commands.add(new MonteCarloCommand());
 	}
 
 	/**
@@ -378,6 +379,28 @@ public class ScriptsMenu {
 				}
 			}
 		}
+	}
+
+	private class MonteCarloCommand extends QGeneralCommand{
+		public String getCommand() {
+			return "mc";
+		}
+		
+		public void execute(String[] args) {
+			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+//			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
+			
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+//			sim.setStartState(new RelativeState(new Position(5,5)));
+			
+			double gamma=0.9;
+			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
+			super.executeQ(mc, 100000,"montecarlo");
+//			mc.runEpisode();
+		}
+
 	}
 }
 
