@@ -29,6 +29,7 @@ public class ScriptsMenu {
 	 */
 	protected boolean exit;
 
+	private Utility util;
 	/**
 	 * Constructor, populates the list of commands
 	 */
@@ -41,6 +42,7 @@ public class ScriptsMenu {
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
 		commands.add(new SARSACommand());
+		util = new Utility();
 	}
 
 	/**
@@ -196,7 +198,7 @@ public class ScriptsMenu {
 
 			long endTime = System.nanoTime();
 			System.out.println(eval.getIterations());
-			Utility.printStates(eval.getValues(), smartMode);
+			util.printStates(eval.getValues(), smartMode);
 			//			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
@@ -247,7 +249,7 @@ public class ScriptsMenu {
 			long endTime = System.nanoTime();
 			Map<HuntState, Double> result = valIter.stateValues;
 			valIter.CalculateOptimalPolicyForCurrentValues();
-			Utility.printStates(result, smartMode);
+			util.printStates(result, smartMode);
 
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
 
@@ -281,6 +283,7 @@ public class ScriptsMenu {
 			List<Integer> episodes=runQ(script, numberOfIterations);
 			double lastOnes=0;
 			double avg=100;
+			util.setupSerializer("data");
 			for(int i=0;i<episodes.size();i++)
 			{
 				if(i%avg==0)
@@ -289,9 +292,11 @@ public class ScriptsMenu {
 				if(i%avg==99)
 				{
 					lastOnes/=avg;
+					util.serializeEpisode(i, (int)lastOnes);
 					System.out.println("Episode: "+i+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
+			util.closeSerializer();
 		}
 
 		/**
