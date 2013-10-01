@@ -65,6 +65,20 @@ public class MonteCarlo extends QGeneral {
 	}
 	
 	public int Iterate() {
+		// Init
+		List<HuntState> allStates=policy.getAllStates();
+		for(HuntState state:allStates)
+		{
+			List<Position> actions=policy.getActions(state);
+			Hashtable<Position,Double> actionsMap=new Hashtable<Position,Double>();
+			for(Position action:actions)
+			{
+				actionsMap.put(action,new Double(0));
+			}
+			this.stateActionValues.put(state,actionsMap);
+		}
+		
+		
 		// Hashtable from states to actions to a list of returns
 		this.simulator.setStartState(new RelativeState(new Position(5,5)));
 		Hashtable<HuntState, Hashtable<Position,List<Double>>> returns = new Hashtable<HuntState, Hashtable<Position,List<Double>>>();
@@ -73,10 +87,11 @@ public class MonteCarlo extends QGeneral {
 		
 		while (!this.simulator.currentState.isTerminal()) {
 			HuntState currentState = this.simulator.currentState;
-			Position predatorMove = this.policy.getAction(currentState);
-			StateAndRewardObservation observation = this.simulator.movePredator(predatorMove);
+			Position predatorMove = this.policy.getAction(currentState.copy());
+			StateAndRewardObservation observation = this.simulator.movePredator(predatorMove.copy());
 			totalReward += observation.getReward();
 			visitedStatesAndActions.add(new StateActionPair(currentState.copy(), predatorMove.copy()));
+//			System.out.println(predatorMove);
 //			System.out.println(this.simulator.currentState);
 		}
 		
