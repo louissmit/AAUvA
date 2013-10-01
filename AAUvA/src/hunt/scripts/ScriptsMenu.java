@@ -337,18 +337,18 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			double gamma=0.1;
+			double epsilon=0.1;
 			for(double alpha:this.alphaRates)
 			{
 				for(double discountFactor:this.discountFactors)
 				{
 					int numberOfIterations=10000;
 					LearningPredatorPolicy policy;
-					policy = new EpsilonGreedyPredatorPolicy(discountFactor);
+					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
-					QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
+					QLearn qlearn = new QLearn(policy,sim,discountFactor,alpha,15);
 					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor));
 				}
 			}
@@ -362,18 +362,18 @@ public class ScriptsMenu {
 		}
 		
 		public void execute(String[] args) {
-			double gamma=0.1;
+			double epsilon=0.1;
 			for(double alpha:this.alphaRates)
 			{
 				for(double discountFactor:this.discountFactors)
 				{
 					int numberOfIterations=10000;
 					LearningPredatorPolicy policy;
-					policy = new EpsilonGreedyPredatorPolicy(discountFactor);
+					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
-					SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
+					SARSA sarsa = new SARSA(policy,sim,discountFactor,alpha,15);
 					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+" "+Double.toString(discountFactor));
 				}
 			}
