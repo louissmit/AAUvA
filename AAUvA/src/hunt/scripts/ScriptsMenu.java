@@ -288,8 +288,8 @@ public class ScriptsMenu {
 			List<Integer> xAxis=new ArrayList<Integer>();
 			List<Double> yAxis=new ArrayList<Double>();
 			double lastOnes=0;
-			double avg=1000;
-			util.setupSerializer("data");
+			double avg=1;
+			util.setupSerializer(filename);
 			for(int i=0;i<episodes.size();i++)
 			{
 				if(i%avg==0)
@@ -301,7 +301,7 @@ public class ScriptsMenu {
 					util.serializeEpisode(i, (int)lastOnes);
 					xAxis.add(i);
 					yAxis.add(lastOnes);
-					System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+					//System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
 			util.closeSerializer();
@@ -352,7 +352,7 @@ public class ScriptsMenu {
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
 					QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
-					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+Double.toString(discountFactor));
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor));
 				}
 			}
 		}
@@ -377,7 +377,7 @@ public class ScriptsMenu {
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
 					SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
-					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+Double.toString(discountFactor));
+					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+" "+Double.toString(discountFactor));
 				}
 			}
 		}
