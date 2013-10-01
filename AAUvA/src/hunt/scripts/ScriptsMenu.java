@@ -396,8 +396,8 @@ public class ScriptsMenu {
 			sim.setPrey(new RandomPrey());
 //			sim.setStartState(new RelativeState(new Position(5,5)));
 			
-			double gamma=0.9;
-			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0.1,0.1);
+			double gamma=0.1;
+			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
 			super.executeQ(mc, 10000,"montecarlo");
 //			mc.runEpisode();
 		}
