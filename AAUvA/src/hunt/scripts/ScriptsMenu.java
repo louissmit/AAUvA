@@ -297,7 +297,7 @@ public class ScriptsMenu {
 				{
 					lastOnes/=avg;
 					util.serializeEpisode(i+1, lastOnes);
-					//System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+					// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
 			util.closeSerializer();
