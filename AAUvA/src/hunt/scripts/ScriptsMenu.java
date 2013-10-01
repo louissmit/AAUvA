@@ -277,21 +277,31 @@ public class ScriptsMenu {
 	}
 	private abstract class QGeneralCommand implements Command {
 
-		public void executeQ(QGeneral script, int numberOfIterations) {
+		protected List<Double> alphaRates=new ArrayList<Double>(Arrays.asList(0.1,0.2,0.3,0.4,0.5));
+		protected List<Double> discountFactors=new ArrayList<Double>(Arrays.asList(0.1,0.5,0.7,0.9));
+
+		
+		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
 			List<Integer> episodes=runQ(script, numberOfIterations);
+			List<Integer> xAxis=new ArrayList<Integer>();
+			List<Double> yAxis=new ArrayList<Double>();
 			double lastOnes=0;
-			double avg=100;
+			double avg=1000;
 			for(int i=0;i<episodes.size();i++)
 			{
 				if(i%avg==0)
 					lastOnes=0;
 				lastOnes+=episodes.get(i);
-				if(i%avg==99)
+				if(i%avg==(avg-1))
 				{
 					lastOnes/=avg;
-					System.out.println("Episode: "+i+" number of steps needed to catch the prey: "+lastOnes);
+					xAxis.add(i);
+					yAxis.add(lastOnes);
+					System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
+			
+			
 		}
 
 		/**
@@ -305,9 +315,6 @@ public class ScriptsMenu {
 			long startTime = System.currentTimeMillis();
 			for(int i=0;i<numberOfIteration;i++)
 			{
-				int a=0;
-				if(i==998)
-					a=1;
 				int result = script.Iterate();
 				results.add(result);
 			}
@@ -331,15 +338,20 @@ public class ScriptsMenu {
 
 		public void execute(String[] args) {
 			double gamma=0.1;
-			double alpha=0.1;
-			int numberOfIterations=10000;
-			LearningPredatorPolicy policy;
-			policy = new EpsilonGreedyPredatorPolicy(0.1);
-			Simulator sim = new Simulator();
-			sim.setPredatorPolicy(policy);
-			sim.setPrey(new RandomPrey());
-			QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
-			super.executeQ(qlearn, numberOfIterations);
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=10000;
+					LearningPredatorPolicy policy;
+					policy = new EpsilonGreedyPredatorPolicy(discountFactor);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+Double.toString(discountFactor));
+				}
+			}
 		}
 
 	}
@@ -351,15 +363,20 @@ public class ScriptsMenu {
 		
 		public void execute(String[] args) {
 			double gamma=0.1;
-			double alpha=0.1;
-			int numberOfIterations=10000;
-			LearningPredatorPolicy policy;
-			policy = new EpsilonGreedyPredatorPolicy(0.1);
-			Simulator sim = new Simulator();
-			sim.setPredatorPolicy(policy);
-			sim.setPrey(new RandomPrey());
-			SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
-			super.executeQ(sarsa, numberOfIterations);
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=10000;
+					LearningPredatorPolicy policy;
+					policy = new EpsilonGreedyPredatorPolicy(discountFactor);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
+					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+Double.toString(discountFactor));
+				}
+			}
 		}
 	}
 }
