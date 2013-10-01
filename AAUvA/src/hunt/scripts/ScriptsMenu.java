@@ -316,9 +316,6 @@ public class ScriptsMenu {
 			long startTime = System.currentTimeMillis();
 			for(int i=0;i<numberOfIteration;i++)
 			{
-//				int a=0;
-//				if(i==998)
-//					a=1;
 				int result = script.Iterate();
 				results.add(result);
 			}
