@@ -331,13 +331,19 @@ public class ScriptsMenu {
 	 */
 	private class QLearnCommand extends QGeneralCommand {
 
-
+		private String policyId = "egreedy";
 
 		public String getCommand() {
 			return "qlearn";
 		}
 
 		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			
 			double epsilon=0.1;
 			for(double alpha:this.alphaRates)
 			{
@@ -345,7 +351,11 @@ public class ScriptsMenu {
 				{
 					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
-					policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					if (policyId.equals("softmax")) {
+						policy = new SoftmaxPredatorPolicy(0.1);
+					} else {
+						policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					}
 					Simulator sim = new Simulator();
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
@@ -387,7 +397,8 @@ public class ScriptsMenu {
 		}
 		
 		public void execute(String[] args) {
-			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+			LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(0.1);
+//			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
 //			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
 			
 			Simulator sim = new Simulator();
