@@ -399,8 +399,6 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(0.1);
 //			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
-			//LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
-			LearningPredatorPolicy policy=new EpsilonGreedyPredatorPolicy(0.1);
 //			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
 			
 			Simulator sim = new Simulator();
