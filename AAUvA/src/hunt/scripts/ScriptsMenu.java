@@ -29,6 +29,7 @@ public class ScriptsMenu {
 	 */
 	protected boolean exit;
 
+	private Utility util;
 	/**
 	 * Constructor, populates the list of commands
 	 */
@@ -40,7 +41,11 @@ public class ScriptsMenu {
 		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
+		commands.add(new QLearnEpsilonCommand());
 		commands.add(new SARSACommand());
+//		commands.add(new MonteCarloCommand());
+		util = new Utility();
+		
 	}
 
 	/**
@@ -196,7 +201,7 @@ public class ScriptsMenu {
 
 			long endTime = System.nanoTime();
 			System.out.println(eval.getIterations());
-			Utility.printStates(eval.getValues(), smartMode);
+			util.printStates(eval.getValues(), smartMode);
 			//			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
@@ -247,7 +252,7 @@ public class ScriptsMenu {
 			long endTime = System.nanoTime();
 			Map<HuntState, Double> result = valIter.stateValues;
 			valIter.CalculateOptimalPolicyForCurrentValues();
-			Utility.printStates(result, smartMode);
+			util.printStates(result, smartMode);
 
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
 
@@ -277,43 +282,50 @@ public class ScriptsMenu {
 	}
 	private abstract class QGeneralCommand implements Command {
 
-		public void executeQ(QGeneral script, int numberOfIterations) {
-			List<Integer> episodes=runQ(script, numberOfIterations);
+		protected List<Double> alphaRates=new ArrayList<Double>(Arrays.asList(0.1,0.2,0.3,0.4,0.5));
+		protected List<Double> discountFactors=new ArrayList<Double>(Arrays.asList(0.1,0.5,0.7,0.9));
+
+
+		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
+			List<Integer> episodes=runQ(script, numberOfIterations,filename);
 			double lastOnes=0;
-			double avg=100;
+			double avg=10;
+			util.setupSerializer(filename);
 			for(int i=0;i<episodes.size();i++)
 			{
 				if(i%avg==0)
 					lastOnes=0;
+
 				lastOnes+=episodes.get(i);
-				if(i%avg==99)
+
+				if(i%avg==(avg-1))
 				{
 					lastOnes/=avg;
-					System.out.println("Episode: "+i+" number of steps needed to catch the prey: "+lastOnes);
+					util.serializeEpisode(i+1, lastOnes);
+					// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
+			util.closeSerializer();
 		}
 
 		/**
 		 * Perform the Q-Learn
 		 * @param gamma - the discount factor for this value iteration
 		 */
-		private List<Integer> runQ(QGeneral script, int numberOfIteration) {
+		private List<Integer> runQ(QGeneral script, int numberOfIteration,String name) {
 
 			List<Integer> results=new ArrayList<Integer>();
 			// Timer
 			long startTime = System.currentTimeMillis();
 			for(int i=0;i<numberOfIteration;i++)
 			{
-				int a=0;
-				if(i==998)
-					a=1;
 				int result = script.Iterate();
 				results.add(result);
 			}
 			long endTime = System.currentTimeMillis();
 
-			System.out.println("Time taken (milliseconds): " + (endTime - startTime));
+			
+			System.out.println("Time taken (milliseconds) for "+name+": " + (endTime - startTime));
 			return results;
 		}
 
@@ -330,36 +342,80 @@ public class ScriptsMenu {
 		}
 
 		public void execute(String[] args) {
-			double gamma=0.1;
-			double alpha=0.1;
-			int numberOfIterations=10000;
-			LearningPredatorPolicy policy;
-			policy = new EpsilonGreedyPredatorPolicy(0.1);
-			Simulator sim = new Simulator();
-			sim.setPredatorPolicy(policy);
-			sim.setPrey(new RandomPrey());
-			QLearn qlearn = new QLearn(policy,sim,gamma,alpha,15);
-			super.executeQ(qlearn, numberOfIterations);
+			double epsilon=0.1;
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=2000;
+					LearningPredatorPolicy policy;
+					policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,discountFactor,alpha,15);
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor));
+				}
+			}
 		}
 
 	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnEpsilonCommand extends QGeneralCommand {
+
+
+
+		public String getCommand() {
+			return "qlearnepsilon";
+		}
+
+		public void execute(String[] args) {
+			double[] epsilons = {0.1, 0.2};
+			int[] qinits = {0, 5, 10, 10000};
+			double alpha = 0.1;
+			double gamma = 0.7;
+			int numberOfIterations=10000;
+			for(double epsilon: epsilons){
+				for(int qinit: qinits){
+
+					LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,gamma,alpha, qinit);
+					String name = "qlearnepsilon" + epsilon +" "+qinit;
+					super.executeQ(qlearn, numberOfIterations, name);
+				}
+
+			}
+
+		}
+
+	}
 
 	private class SARSACommand extends QGeneralCommand{
 		public String getCommand() {
 			return "sarsa";
 		}
-		
+
 		public void execute(String[] args) {
-			double gamma=0.1;
-			double alpha=0.1;
-			int numberOfIterations=10000;
-			LearningPredatorPolicy policy;
-			policy = new EpsilonGreedyPredatorPolicy(0.1);
-			Simulator sim = new Simulator();
-			sim.setPredatorPolicy(policy);
-			sim.setPrey(new RandomPrey());
-			SARSA sarsa = new SARSA(policy,sim,gamma,alpha,15);
-			super.executeQ(sarsa, numberOfIterations);
+			double epsilon=0.1;
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=10000;
+					LearningPredatorPolicy policy;
+					policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					SARSA sarsa = new SARSA(policy,sim,discountFactor,alpha,15);
+					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+" "+Double.toString(discountFactor));
+				}
+			}
 		}
 	}
 }
