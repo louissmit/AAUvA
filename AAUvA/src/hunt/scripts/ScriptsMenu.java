@@ -42,8 +42,9 @@ public class ScriptsMenu {
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
 		commands.add(new SARSACommand());
-		util = new Utility();
 		commands.add(new MonteCarloCommand());
+		util = new Utility();
+		
 	}
 
 	/**
@@ -390,7 +391,6 @@ public class ScriptsMenu {
 			}
 		}
 	}
-
 	private class MonteCarloCommand extends QGeneralCommand{
 		public String getCommand() {
 			return "mc";
