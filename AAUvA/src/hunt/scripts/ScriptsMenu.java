@@ -399,6 +399,8 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(0.1);
 //			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+			//LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+			LearningPredatorPolicy policy=new EpsilonGreedyPredatorPolicy(0.1);
 //			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
 			
 			Simulator sim = new Simulator();
@@ -406,9 +408,9 @@ public class ScriptsMenu {
 			sim.setPrey(new RandomPrey());
 //			sim.setStartState(new RelativeState(new Position(5,5)));
 			
-			double gamma=0.9;
+			double gamma=0.1;
 			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
-			super.executeQ(mc, 100000,"montecarlo");
+			super.executeQ(mc, 10000,"montecarlo");
 //			mc.runEpisode();
 		}
 
