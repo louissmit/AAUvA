@@ -335,7 +335,7 @@ public class ScriptsMenu {
 	 */
 	private class QLearnCommand extends QGeneralCommand {
 
-		private String policyId = "egreedy";
+		private String policyId = "";
 
 		public String getCommand() {
 			return "qlearn";
@@ -364,7 +364,7 @@ public class ScriptsMenu {
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
 					QLearn qlearn = new QLearn(policy,sim,discountFactor,alpha,15);
-					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor));
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor)+policyId);
 				}
 			}
 		}

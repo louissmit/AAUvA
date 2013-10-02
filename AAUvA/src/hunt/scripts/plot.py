@@ -35,6 +35,24 @@ def plotEpsilonQinit():
     plt.xlim(0,1000)
     plt.show()
 
-plotEpsilonQinit()
+def plotQLearnCompareEpsilonGreedySoftmax():
+    policies = ["", "softmax"]
+
+    gamma = 0.1
+    alpha = 0.1
+    for policyId in policies:
+        data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+ policyId +
+                '.csv', delimiter=',', names=['x', 'y'])
+
+        if policyId == "":
+			# Make up for e-greedy defaults to no policy id
+            policyId = "e-greedy"
+			
+        plt.plot(data['x'], data['y'], label=policyId)
+
+    plt.legend()
+    plt.show()
+
+plotQLearnCompareEpsilonGreedySoftmax()
 
 
