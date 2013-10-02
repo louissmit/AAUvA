@@ -41,8 +41,9 @@ public class ScriptsMenu {
 		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
 		commands.add(new QLearnCommand());
+		commands.add(new QLearnEpsilonCommand());
 		commands.add(new SARSACommand());
-		commands.add(new MonteCarloCommand());
+//		commands.add(new MonteCarloCommand());
 		util = new Utility();
 		
 	}
@@ -284,7 +285,7 @@ public class ScriptsMenu {
 		protected List<Double> alphaRates=new ArrayList<Double>(Arrays.asList(0.1,0.2,0.3,0.4,0.5));
 		protected List<Double> discountFactors=new ArrayList<Double>(Arrays.asList(0.1,0.5,0.7,0.9));
 
-		
+
 		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
 			List<Integer> episodes=runQ(script, numberOfIterations,filename);
 			double lastOnes=0;
@@ -294,7 +295,9 @@ public class ScriptsMenu {
 			{
 				if(i%avg==0)
 					lastOnes=0;
+
 				lastOnes+=episodes.get(i);
+
 				if(i%avg==(avg-1))
 				{
 					lastOnes/=avg;
@@ -367,12 +370,46 @@ public class ScriptsMenu {
 		}
 
 	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnEpsilonCommand extends QGeneralCommand {
+
+
+
+		public String getCommand() {
+			return "qlearnepsilon";
+		}
+
+		public void execute(String[] args) {
+			double[] epsilons = {0.1, 0.2};
+			int[] qinits = {0, 5, 10, 10000};
+			double alpha = 0.1;
+			double gamma = 0.7;
+			int numberOfIterations=10000;
+			for(double epsilon: epsilons){
+				for(int qinit: qinits){
+
+					LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,gamma,alpha, qinit);
+					String name = "qlearnepsilon" + epsilon +" "+qinit;
+					super.executeQ(qlearn, numberOfIterations, name);
+				}
+
+			}
+
+		}
+
+	}
 
 	private class SARSACommand extends QGeneralCommand{
 		public String getCommand() {
 			return "sarsa";
 		}
-		
+
 		public void execute(String[] args) {
 			double epsilon=0.1;
 			for(double alpha:this.alphaRates)
