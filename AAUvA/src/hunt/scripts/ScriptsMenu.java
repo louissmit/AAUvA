@@ -43,7 +43,9 @@ public class ScriptsMenu {
 		commands.add(new QLearnCommand());
 		commands.add(new QLearnEpsilonCommand());
 		commands.add(new SARSACommand());
+//		commands.add(new MonteCarloCommand());
 		util = new Utility();
+		
 	}
 
 	/**
@@ -285,7 +287,7 @@ public class ScriptsMenu {
 
 
 		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
-			List<Integer> episodes=runQ(script, numberOfIterations);
+			List<Integer> episodes=runQ(script, numberOfIterations,filename);
 			double lastOnes=0;
 			double avg=10;
 			util.setupSerializer(filename);
@@ -299,8 +301,8 @@ public class ScriptsMenu {
 				if(i%avg==(avg-1))
 				{
 					lastOnes/=avg;
-					util.serializeEpisode(i, lastOnes);
-					//System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+					util.serializeEpisode(i+1, lastOnes);
+					// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 				}
 			}
 			util.closeSerializer();
@@ -310,7 +312,7 @@ public class ScriptsMenu {
 		 * Perform the Q-Learn
 		 * @param gamma - the discount factor for this value iteration
 		 */
-		private List<Integer> runQ(QGeneral script, int numberOfIteration) {
+		private List<Integer> runQ(QGeneral script, int numberOfIteration,String name) {
 
 			List<Integer> results=new ArrayList<Integer>();
 			// Timer
@@ -322,7 +324,8 @@ public class ScriptsMenu {
 			}
 			long endTime = System.currentTimeMillis();
 
-			System.out.println("Time taken (milliseconds): " + (endTime - startTime));
+			
+			System.out.println("Time taken (milliseconds) for "+name+": " + (endTime - startTime));
 			return results;
 		}
 
@@ -344,7 +347,7 @@ public class ScriptsMenu {
 			{
 				for(double discountFactor:this.discountFactors)
 				{
-					int numberOfIterations=10000;
+					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
 					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();

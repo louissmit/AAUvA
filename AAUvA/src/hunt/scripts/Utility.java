@@ -73,6 +73,8 @@ public class Utility {
 		} 
 	}
 	
+	
+	
 	public void closeSerializer() {
 		try {
 			writer.close();
