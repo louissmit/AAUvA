@@ -1,6 +1,7 @@
 package hunt.model.predator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import hunt.model.HuntState;
@@ -20,6 +21,18 @@ public class SoftmaxPredatorPolicy extends LearningPredatorPolicy {
 	 */
 	public SoftmaxPredatorPolicy(double temperature) {
 		this.temperature = temperature;
+		// Set random policy
+		this.probabilities = new HashMap<HuntState, HashMap<Position, Double>>();
+		for (HuntState state : this.getAllStates()) {
+			HashMap<Position, Double> distribution = new HashMap<Position, Double>();
+			
+			List<Position> actions = this.getActions(state);
+			for (Position action : actions) {
+				distribution.put(action, new Double(((double) 1) / actions.size()));
+			}
+			
+			this.probabilities.put(state, distribution);
+		}
 	}
 	
 	@Override
@@ -37,6 +50,8 @@ public class SoftmaxPredatorPolicy extends LearningPredatorPolicy {
 		for (Position action: probabilities.keySet()) {
 			probabilities.put(action, probabilities.get(action) / totalProbability);
 		}
+		
+		this.probabilities.put(state, probabilities);
 	}
 
 }
