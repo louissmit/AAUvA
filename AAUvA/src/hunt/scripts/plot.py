@@ -10,8 +10,8 @@ def plotAlphaGamma():
     # for gamma in gammas:
     gamma = gammas[0]
     for alpha in alphas:
-        data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+ '.csv', delimiter=',', skip_header=10,
-                         skip_footer=10, names=['x', 'y'])
+        data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+
+                '.csv', delimiter=',', names=['x', 'y'])
 
         plt.plot(data['x'], data['y'], label='alpha = '+str(alpha))
 
