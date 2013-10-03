@@ -67,5 +67,6 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 		}
 		this.setAction(state, bestAction);
 	}
+	
 
 }

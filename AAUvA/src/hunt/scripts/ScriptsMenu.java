@@ -434,8 +434,21 @@ public class ScriptsMenu {
 			return "mc";
 		}
 		
+		private String policyId = "";
+		
 		public void execute(String[] args) {
-			LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(0.1);
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			LearningPredatorPolicy policy;
+			if (policyId.equals("softmax")) {
+				policy = new SoftmaxPredatorPolicy(0.1);
+			} else {
+				policy = new EpsilonGreedyPredatorPolicy(0.1);
+			}
+			 
 //			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
 //			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
 			
@@ -446,7 +459,7 @@ public class ScriptsMenu {
 			
 			double gamma=0.1;
 			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
-			super.executeQ(mc, 10000,"montecarlo");
+			super.executeQ(mc, 10000,"montecarlo"+policyId);
 //			mc.runEpisode();
 		}
 

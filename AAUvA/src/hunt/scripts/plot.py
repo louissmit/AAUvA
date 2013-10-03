@@ -52,7 +52,26 @@ def plotQLearnCompareEpsilonGreedySoftmax():
 
     plt.legend()
     plt.show()
+    
+def plotMonteCarloCompareEpsilonGreedySoftmax():
+    policies = ["", "softmax"]
+
+    gamma = 0.1
+    alpha = 0.1
+    for policyId in policies:
+        data = np.genfromtxt('../../../montecarlo'+  policyId +
+                '.csv', delimiter=',', names=['x', 'y'])
+
+        if policyId == "":
+            # Make up for e-greedy defaults to no policy id
+            policyId = "e-greedy"
+            
+        plt.plot(data['x'], data['y'], label=policyId)
+
+    plt.legend()
+    plt.show()
 
 #plotQLearnCompareEpsilonGreedySoftmax()
-plotAlphaGamma()
+#plotAlphaGamma()
+plotMonteCarloCompareEpsilonGreedySoftmax()
 
