@@ -8,7 +8,7 @@ def plotAlphaGamma():
     gammas = [0.1, 0.5, 0.7, 0.9]
 
     # for gamma in gammas:
-    gamma = gammas[0]
+    gamma = gammas[1]
     for alpha in alphas:
         data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+
                 '.csv', delimiter=',', names=['x', 'y'])
@@ -53,6 +53,6 @@ def plotQLearnCompareEpsilonGreedySoftmax():
     plt.legend()
     plt.show()
 
-plotQLearnCompareEpsilonGreedySoftmax()
-
+#plotQLearnCompareEpsilonGreedySoftmax()
+plotAlphaGamma()
 

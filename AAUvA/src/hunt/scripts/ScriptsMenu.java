@@ -45,6 +45,7 @@ public class ScriptsMenu {
 		commands.add(new SARSACommand());
 //		commands.add(new MonteCarloCommand());
 		util = new Utility();
+		commands.add(new MonteCarloCommand());
 		
 	}
 
