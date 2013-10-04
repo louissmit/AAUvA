@@ -417,7 +417,7 @@ public class ScriptsMenu {
 			{
 				for(double discountFactor:this.discountFactors)
 				{
-					int numberOfIterations=10000;
+					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
 					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();

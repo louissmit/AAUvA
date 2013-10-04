@@ -17,6 +17,20 @@ def plotAlphaGamma():
 
     plt.legend()
     plt.show()
+    
+def plotSarsa():
+    alphas = [0.1, 0.2, 0.3, 0.4, 0.5]
+    gammas = [0.1, 0.5, 0.7, 0.9]
+
+    # for gamma in gammas:
+    for gamma in gammas:
+        for alpha in alphas:
+            data = np.genfromtxt('../../../sarsa'+ str(alpha) + ' '+ str(gamma)+
+                    '.csv', delimiter=',', names=['x', 'y'])
+    
+            plt.plot(data['x'], data['y'], label='alpha = '+str(alpha))
+        plt.legend()
+        plt.show()
 
 def plotEpsilonQinit():
     epsilons = [0.1]
@@ -73,5 +87,6 @@ def plotMonteCarloCompareEpsilonGreedySoftmax():
 
 #plotQLearnCompareEpsilonGreedySoftmax()
 #plotAlphaGamma()
-plotMonteCarloCompareEpsilonGreedySoftmax()
+plotSarsa()
+#plotMonteCarloCompareEpsilonGreedySoftmax()
 
