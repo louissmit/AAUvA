@@ -1,8 +1,12 @@
 package hunt.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
+import hunt.model.predator.SoftmaxPredatorPolicy;
 
 /**
  * Predator object
@@ -31,14 +35,21 @@ public class Predator {
 		this.learningAlg = alg;
 	}
 	
+	public Predator(String name, PredatorPolicy policy) {
+		this.name = name;
+		this.policy = policy;
+		this.learningAlg = null;
+		
+	}
+
 	/**
 	 * Get an action for the given state 
 	 * @param state
 	 * @return
 	 */
-	public Position getAction(HuntState state) {
+	public Position getAction(MultiPredatorState state) {
 		// TODO store local state and returned action
-		HuntState localState = this.convertState(state);
+		MultiPredatorState localState = this.convertState(state);
 		return policy.getAction(state);
 	}
 	
@@ -61,13 +72,72 @@ public class Predator {
 	 * @param absoluteState
 	 * @return
 	 */
-	public HuntState convertState(HuntState absoluteState) {
+	public MultiPredatorState convertState(MultiPredatorState absoluteState) {
 		// TODO implement
 		return null;
 	}
 
 	public String getName() {
 		return this.name;
+	}
+	
+	/**
+	 * Internal state representation for the predator.
+	 * Only used as index, so lacks most function implementations. 
+	 */
+	private class PredatorInternalState extends MultiPredatorState {
+		
+		private Position prey;
+		private List<Position> predators;
+		
+		/**
+		 * Constructor. Actually copies the values given to avoid hashing problems.
+		 * @param prey
+		 * @param predators
+		 */
+		public PredatorInternalState(Position prey, List<Position> predators) {
+			this.prey = prey.copy();
+			this.predators = new ArrayList<Position>();
+			for (Position pred : predators) {
+				this.predators.add(pred.copy());
+			}
+		}
+
+		@Override
+		public HuntState movePredator(Position action) {
+			return null;
+		}
+
+		@Override
+		public Position getPreyAction(HuntState oldState) {
+			return null;
+		}
+
+		@Override
+		public boolean isTerminal() {
+			return false;
+		}
+
+		@Override
+		public MultiPredatorState movePredator(String name, Position action) {
+			return null;
+		}
+
+		@Override
+		public MultiPredatorState movePrey(Position action) {
+			return null;
+		}
+
+		@Override
+		public MultiPredatorState copy() {
+			return new PredatorInternalState(this.prey, this.predators);
+		}
+
+		@Override
+		public boolean predatorWins() {
+			return false;
+		}
+		
 	}
 	
 }

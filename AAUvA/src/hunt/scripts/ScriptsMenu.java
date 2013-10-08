@@ -1,11 +1,16 @@
 package hunt.scripts;
 
 import hunt.model.AbsoluteState;
+import hunt.model.BasicMPState;
 import hunt.model.HuntState;
+import hunt.model.MultiPredatorState;
+import hunt.model.Predator;
+import hunt.model.QTable;
 import hunt.model.RandomPrey;
 import hunt.model.RelativeState;
 import hunt.model.board.Position;
 import hunt.model.predator.*;
+import hunt.model.QLearnAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +51,7 @@ public class ScriptsMenu {
 //		commands.add(new MonteCarloCommand());
 		util = new Utility();
 		commands.add(new MonteCarloCommand());
+		commands.add(new MultiPredatorSimulatorCommand());
 		
 	}
 
@@ -91,6 +97,30 @@ public class ScriptsMenu {
 		 * @param args user-inputted arguments for the command. args[0] is equal to getCommand
 		 */
 		public void execute(String[] args);
+	}
+	
+	/**
+	 * Simulator with multiple predators
+	 */
+	private class MultiPredatorSimulatorCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "multipred";
+		}
+
+		@Override
+		public void execute(String[] args) {
+			RandomPredatorPolicy asPolicy = new RandomPredatorPolicy();
+			Predator pred = new Predator("Fritz", asPolicy);
+			
+			MultiPredatorSimulator sim = new MultiPredatorSimulator();
+			sim.addPredator(pred);
+			sim.setPrey(new RandomPrey());
+			
+			sim.setStartState(new BasicMPState());
+		}
+		
 	}
 
 	/**
