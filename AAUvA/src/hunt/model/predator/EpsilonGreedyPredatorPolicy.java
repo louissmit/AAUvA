@@ -2,6 +2,7 @@ package hunt.model.predator;
 
 import hunt.controller.Move;
 import hunt.model.HuntState;
+import hunt.model.QTable;
 import hunt.model.board.Position;
 
 import java.util.HashMap;
@@ -66,6 +67,12 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 			}
 		}
 		this.setAction(state, bestAction);
+	}
+
+	@Override
+	public void setProbabilitiesWithQ(QTable qtable) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
