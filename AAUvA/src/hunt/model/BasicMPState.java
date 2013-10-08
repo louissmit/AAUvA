@@ -21,6 +21,10 @@ public class BasicMPState extends MultiPredatorState {
 		this.predatorPositions.put(name, position);
 	}
 	
+	public Map<String, Position> getPositions()
+	{
+		return this.predatorPositions;
+	}
 
 	@Override
 	public boolean isTerminal() {
@@ -113,5 +117,46 @@ public class BasicMPState extends MultiPredatorState {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		for(Position distance:this.predatorPositions.values())
+		{
+			result = prime * result
+				+ ((distance == null) ? 0 : distance.hashCode());
+		}
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof RelativeState))
+			return false;
+		BasicMPState other = (BasicMPState) obj;
+		int counter=0;
+		for(Position localPos:this.predatorPositions.values())
+			for(Position otherPos:other.getPositions().values())
+			{
+				if(localPos.equals(otherPos))
+					counter++;
+			}
+		if(counter==this.predatorPositions.size())
+			return true;
+		else
+			return false;
+	}
+
 
 }

@@ -30,6 +30,12 @@ public class TemporalRandomPredatorPolicy extends RandomPredatorPolicy {
 			}
 		}
 		
+		for (int i = 0; i < Position.BWIDTH; i++) {
+			for (int j = 0; j < Position.BHEIGHT; j++) {
+				result.add(new RelativeState(new Position(i,j)));
+			}
+		}
+		
 		return result;
 	}
 }

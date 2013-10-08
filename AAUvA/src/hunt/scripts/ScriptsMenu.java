@@ -111,14 +111,20 @@ public class ScriptsMenu {
 
 		@Override
 		public void execute(String[] args) {
-			RandomPredatorPolicy asPolicy = new RandomPredatorPolicy();
-			Predator pred = new Predator("Fritz", asPolicy);
+			RandomPredatorPolicy asPolicy = new MultiAgentsRandomPolicy();
+			Predator pred = new Predator("1", asPolicy);
+			Predator pred2 = new Predator("2", asPolicy);
 			
 			MultiPredatorSimulator sim = new MultiPredatorSimulator();
 			sim.addPredator(pred);
+			sim.addPredator(pred2);
 			sim.setPrey(new RandomPrey());
 			
-			sim.setStartState(new BasicMPState());
+			BasicMPState startState=new BasicMPState();
+			startState.addPredator("1", new Position(0, 0));
+			startState.addPredator("2", new Position(10, 10));
+			sim.setStartState(startState);
+			sim.run(10);
 		}
 		
 	}
