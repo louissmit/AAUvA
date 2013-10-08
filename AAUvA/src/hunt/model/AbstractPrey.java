@@ -52,4 +52,6 @@ public abstract class AbstractPrey {
 	public abstract double getProbabilityOfAction(HuntState state,
 			Position action);
 
+	public abstract void giveObservation(StateAndRewardObservation preyObservation);
+
 }
