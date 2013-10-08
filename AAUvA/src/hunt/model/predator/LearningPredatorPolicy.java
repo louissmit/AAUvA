@@ -1,6 +1,7 @@
 package hunt.model.predator;
 
 import hunt.model.HuntState;
+import hunt.model.QTable;
 import hunt.model.RelativeState;
 import hunt.model.board.Position;
 
@@ -30,5 +31,7 @@ public abstract class LearningPredatorPolicy extends PredatorPolicy {
 		
 		return result;
 	}
+
+	public abstract void setProbabilitiesWithQ(QTable qtable);
 	
 }
