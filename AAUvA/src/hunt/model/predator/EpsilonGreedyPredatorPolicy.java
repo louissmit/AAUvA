@@ -71,8 +71,10 @@ public class EpsilonGreedyPredatorPolicy extends LearningPredatorPolicy {
 
 	@Override
 	public void setProbabilitiesWithQ(QTable qtable) {
-		// TODO Auto-generated method stub
-		
+		List<HuntState> states = this.getAllStates();
+		for (HuntState state : states) {
+			this.setProbabilitiesWithQ(state, qtable.getQValues(state));
+		}
 	}
 	
 
