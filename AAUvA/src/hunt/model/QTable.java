@@ -21,6 +21,9 @@ public class QTable {
 	/** Get Q-values for a certain state 
 	 * @return */
 	public HashMap<Position, Double> getQValues(HuntState state) {
+		if (!this.table.containsKey(state)) {
+			this.table.put(state, new HashMap<Position, Double>());
+		}
 		return this.table.get(state);
 	}
 	

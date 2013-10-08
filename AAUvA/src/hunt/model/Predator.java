@@ -1,5 +1,8 @@
 package hunt.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
@@ -76,6 +79,65 @@ public class Predator {
 
 	public String getName() {
 		return this.name;
+	}
+	
+	/**
+	 * Internal state representation for the predator.
+	 * Only used as index, so lacks most function implementations. 
+	 */
+	private class PredatorInternalState extends MultiPredatorState {
+		
+		private Position prey;
+		private List<Position> predators;
+		
+		/**
+		 * Constructor. Actually copies the values given to avoid hashing problems.
+		 * @param prey
+		 * @param predators
+		 */
+		public PredatorInternalState(Position prey, List<Position> predators) {
+			this.prey = prey.copy();
+			this.predators = new ArrayList<Position>();
+			for (Position pred : predators) {
+				this.predators.add(pred.copy());
+			}
+		}
+
+		@Override
+		public HuntState movePredator(Position action) {
+			return null;
+		}
+
+		@Override
+		public Position getPreyAction(HuntState oldState) {
+			return null;
+		}
+
+		@Override
+		public boolean isTerminal() {
+			return false;
+		}
+
+		@Override
+		public MultiPredatorState movePredator(String name, Position action) {
+			return null;
+		}
+
+		@Override
+		public MultiPredatorState movePrey(Position action) {
+			return null;
+		}
+
+		@Override
+		public MultiPredatorState copy() {
+			return new PredatorInternalState(this.prey, this.predators);
+		}
+
+		@Override
+		public boolean predatorWins() {
+			return false;
+		}
+		
 	}
 	
 }
