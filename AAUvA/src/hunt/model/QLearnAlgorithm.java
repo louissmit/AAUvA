@@ -3,7 +3,7 @@ package hunt.model;
 /**
  * Q-learning
  */
-public class QLearn extends LearningAlgorithm {
+public class QLearnAlgorithm extends LearningAlgorithm {
 
 	/** Table to store Q-values in */
 	protected QTable qtable;
@@ -12,7 +12,7 @@ public class QLearn extends LearningAlgorithm {
 	 * Instantiation
 	 * @param qtable - Q-table
 	 */
-	public QLearn(QTable qtable) {
+	public QLearnAlgorithm(QTable qtable) {
 		this.qtable = qtable;
 	}
 	

@@ -31,6 +31,10 @@ public class MultiPredatorSimulator {
 	 */
 	protected AbstractPrey preyPolicy;
 	
+	public MultiPredatorSimulator() {
+		predators = new ArrayList<Predator>();
+	}
+	
 	/**
 	 * Run the simulator
 	 */

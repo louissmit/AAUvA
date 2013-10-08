@@ -1,5 +1,6 @@
 package hunt.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import hunt.model.board.Position;
@@ -7,7 +8,14 @@ import hunt.model.board.Position;
 public class BasicMPState extends MultiPredatorState {
 	
 	private Map<String, Position> predatorPositions;
-	private Position preyPosition;
+	
+	public BasicMPState() {
+		predatorPositions = new HashMap<String, Position>();
+	}
+	
+	public void addPredator(String name, Position action) {
+		this.predatorPositions.put(name, action);
+	}
 
 	@Override
 	public boolean isTerminal() {

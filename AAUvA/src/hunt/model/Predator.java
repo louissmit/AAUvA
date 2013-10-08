@@ -3,6 +3,7 @@ package hunt.model;
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
 import hunt.model.predator.PredatorPolicy;
+import hunt.model.predator.SoftmaxPredatorPolicy;
 
 /**
  * Predator object
@@ -31,14 +32,21 @@ public class Predator {
 		this.learningAlg = alg;
 	}
 	
+	public Predator(String name, PredatorPolicy policy) {
+		this.name = name;
+		this.policy = policy;
+		this.learningAlg = null;
+		
+	}
+
 	/**
 	 * Get an action for the given state 
 	 * @param state
 	 * @return
 	 */
-	public Position getAction(HuntState state) {
+	public Position getAction(MultiPredatorState state) {
 		// TODO store local state and returned action
-		HuntState localState = this.convertState(state);
+		MultiPredatorState localState = this.convertState(state);
 		return policy.getAction(state);
 	}
 	
@@ -61,7 +69,7 @@ public class Predator {
 	 * @param absoluteState
 	 * @return
 	 */
-	public HuntState convertState(HuntState absoluteState) {
+	public MultiPredatorState convertState(MultiPredatorState absoluteState) {
 		// TODO implement
 		return null;
 	}
