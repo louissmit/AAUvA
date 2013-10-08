@@ -1,5 +1,7 @@
 package hunt.model;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +21,16 @@ public class BasicMPState extends MultiPredatorState {
 
 	@Override
 	public boolean isTerminal() {
-		// TODO Auto-generated method stub
+		ArrayList<Position> allPosition=new ArrayList<Position>();
+		for(Position position: predatorPositions.values())
+		{
+			if(position.getX()==0 && position.getY()==0)
+				return true;
+			if(allPosition.contains(position))
+				return true;
+			else
+				allPosition.add(position);
+		}
 		return false;
 	}
 
