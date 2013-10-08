@@ -23,12 +23,13 @@ public class ScriptsMenu {
 	 * Available commands
 	 */
 	protected List<Command> commands;
-	
+
 	/**
 	 * Determines whether to continue running or not.
 	 */
 	protected boolean exit;
-	
+
+	private Utility util;
 	/**
 	 * Constructor, populates the list of commands
 	 */
@@ -39,6 +40,13 @@ public class ScriptsMenu {
 		commands.add(new PolicyEvaluationCommand());
 		commands.add(new PolicyIterationCommand());
 		commands.add(new ValueIterationCommand());
+		commands.add(new QLearnCommand());
+		commands.add(new QLearnEpsilonCommand());
+		commands.add(new SARSACommand());
+//		commands.add(new MonteCarloCommand());
+		util = new Utility();
+		commands.add(new MonteCarloCommand());
+		
 	}
 
 	/**
@@ -52,7 +60,7 @@ public class ScriptsMenu {
 			String command = s.next();
 			String argString = s.nextLine();
 			String[] args = argString.split(" ");
-			
+
 			boolean found = false;
 			for (int i = 0; i < commands.size(); i++) {
 				if (command.toLowerCase().equals(commands.get(i).getCommand())) {
@@ -60,14 +68,14 @@ public class ScriptsMenu {
 					found = true;
 				}
 			}
-			
+
 			if (!found) {
 				System.out.println("Command not recognized");
 			}
 		}
 		s.close();
 	}
-	
+
 	/**
 	 * Interface for available commands 
 	 */
@@ -77,47 +85,47 @@ public class ScriptsMenu {
 		 * @return the command that invokes this script
 		 */
 		public String getCommand(); 
-		
+
 		/**
 		 * Execute this command
 		 * @param args user-inputted arguments for the command. args[0] is equal to getCommand
 		 */
 		public void execute(String[] args);
 	}
-	
+
 	/**
 	 * Stop running
 	 */
 	private class ExitCommand implements Command {
-		
+
 		public String getCommand() {
 			return "exit";
 		}
-		
+
 		public void execute(String[] args) {
 			exit = true;
 		}
 	}
-	
+
 	/**
 	 * Perform game simulations using random policies 
 	 */
 	private class SimulatorCommand implements Command {
-		
+
 		public String getCommand() {
 			return "simulator";
 		}
-		
+
 		public void execute(String[] args) {
 			Simulator sim = new Simulator();
 			HuntState startState = new AbsoluteState(new Position(5,5), new Position(0,0));
 			sim.setStartState(startState);
 			sim.setPredatorPolicy(new RandomPredatorPolicy());
 			sim.setPrey(new RandomPrey());
-			sim.run(100);
+			sim.run(100); 
 		}
 	}
-	
+
 	/**
 	 * Perform policy evaluation of the random predator policy 
 	 */
@@ -155,14 +163,14 @@ public class ScriptsMenu {
 			Position pos5_5 = new Position(5,5);
 			Position pos10_0 = new Position(10,0);
 			Position pos10_10 = new Position(10,10);
-			
+
 			List<AbsoluteState> states = new ArrayList<AbsoluteState>();
 			states.add(new AbsoluteState(pos0_0, pos5_5));
 			states.add(new AbsoluteState(pos2_3, pos5_4));
 			states.add(new AbsoluteState(pos2_10, pos10_0));
 			states.add(new AbsoluteState(pos10_10, pos0_0));
 			states.add(new AbsoluteState(pos10_10, pos10_0));
-			
+
 			for (AbsoluteState state : states) {
 				HuntState finalState = state;
 				if (smartMode) {
@@ -170,9 +178,9 @@ public class ScriptsMenu {
 				}
 				System.out.println("Value for " + finalState.toString() + ": " + result.get(finalState));
 			}
-			
+
 			System.out.println("Amount of iterations required: " + eval.getIterations());
-			
+
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
 		}
 	}
@@ -194,16 +202,16 @@ public class ScriptsMenu {
 
 			long endTime = System.nanoTime();
 			System.out.println(eval.getIterations());
-			Utility.printStates(eval.getValues(), smartMode);
-//			printResults(eval, startTime, endTime, smartMode);
+			util.printStates(eval.getValues(), smartMode);
+			//			printResults(eval, startTime, endTime, smartMode);
 		}
 	}
-	
+
 	/**
 	 * Perform value iteration for the random policy
 	 */
 	private class ValueIterationCommand implements Command {
-		
+
 		private boolean smartMode = false;
 		private boolean simulatorTest=false;
 
@@ -214,7 +222,7 @@ public class ScriptsMenu {
 		public void execute(String[] args) {
 			this.smartMode = Arrays.asList(args).contains("smart");
 			this.simulatorTest = Arrays.asList(args).contains("test");
-			
+
 			double gamma=0.1;
 			runValueIteration(gamma);
 			gamma=0.5;
@@ -238,24 +246,24 @@ public class ScriptsMenu {
 			}
 			policy.setPrey(new RandomPrey());
 			ValueIteration valIter = new ValueIteration(policy, gamma);
-			
+
 			// Timer
 			long startTime = System.nanoTime();
 			valIter.Iterate();
 			long endTime = System.nanoTime();
 			Map<HuntState, Double> result = valIter.stateValues;
 			valIter.CalculateOptimalPolicyForCurrentValues();
-			Utility.printStates(result, smartMode);
+			util.printStates(result, smartMode);
 
 			System.out.println("Amount of iterations required for gamma"+gamma+": " + valIter.getIterations());
-			
+
 			System.out.println("Time taken (nanoseconds): " + (endTime - startTime));
-			
+
 			Position preyPos=new Position(5,5);
 			if(this.simulatorTest)
 			{
 				System.out.println("Simulation using new policy: ");
-				
+
 				Simulator sim = new Simulator();
 				HuntState state;
 				Position predPos = new Position(0,0);
@@ -272,6 +280,189 @@ public class ScriptsMenu {
 				sim.run(100);
 			}
 		}
+	}
+	private abstract class QGeneralCommand implements Command {
+
+		protected List<Double> alphaRates=new ArrayList<Double>(Arrays.asList(0.1,0.2,0.3,0.4,0.5));
+		protected List<Double> discountFactors=new ArrayList<Double>(Arrays.asList(0.1,0.5,0.7,0.9));
+
+
+		public void executeQ(QGeneral script, int numberOfIterations,String filename) {
+			List<Integer> episodes=runQ(script, numberOfIterations,filename);
+			double lastOnes=0;
+			double avg=10;
+			util.setupSerializer(filename);
+			for(int i=0;i<episodes.size();i++)
+			{
+				if(i%avg==0)
+					lastOnes=0;
+
+				lastOnes+=episodes.get(i);
+
+				if(i%avg==(avg-1))
+				{
+					lastOnes/=avg;
+					util.serializeEpisode(i+1, lastOnes);
+					// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+				}
+			}
+			util.closeSerializer();
+		}
+
+		/**
+		 * Perform the Q-Learn
+		 * @param gamma - the discount factor for this value iteration
+		 */
+		private List<Integer> runQ(QGeneral script, int numberOfIteration,String name) {
+
+			List<Integer> results=new ArrayList<Integer>();
+			// Timer
+			long startTime = System.currentTimeMillis();
+			for(int i=0;i<numberOfIteration;i++)
+			{
+				int result = script.Iterate();
+				results.add(result);
+			}
+			long endTime = System.currentTimeMillis();
+
+			
+			System.out.println("Time taken (milliseconds) for "+name+": " + (endTime - startTime));
+			return results;
+		}
+
+	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnCommand extends QGeneralCommand {
+
+		private String policyId = "";
+
+		public String getCommand() {
+			return "qlearn";
+		}
+
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			
+			double epsilon=0.1;
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=2000;
+					LearningPredatorPolicy policy;
+					if (policyId.equals("softmax")) {
+						policy = new SoftmaxPredatorPolicy(0.1);
+					} else {
+						policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					}
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,discountFactor,alpha,15);
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor)+policyId);
+				}
+			}
+		}
+
+	}
+	/**
+	 * Perform value iteration for the random policy
+	 */
+	private class QLearnEpsilonCommand extends QGeneralCommand {
+
+
+
+		public String getCommand() {
+			return "qlearnepsilon";
+		}
+
+		public void execute(String[] args) {
+			double[] epsilons = {0.1, 0.2};
+			int[] qinits = {0, 5, 10, 10000};
+			double alpha = 0.1;
+			double gamma = 0.7;
+			int numberOfIterations=10000;
+			for(double epsilon: epsilons){
+				for(int qinit: qinits){
+
+					LearningPredatorPolicy policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					QLearn qlearn = new QLearn(policy,sim,gamma,alpha, qinit);
+					String name = "qlearnepsilon" + epsilon +" "+qinit;
+					super.executeQ(qlearn, numberOfIterations, name);
+				}
+
+			}
+
+		}
+
+	}
+
+	private class SARSACommand extends QGeneralCommand{
+		public String getCommand() {
+			return "sarsa";
+		}
+
+		public void execute(String[] args) {
+			double epsilon=0.1;
+			for(double alpha:this.alphaRates)
+			{
+				for(double discountFactor:this.discountFactors)
+				{
+					int numberOfIterations=2000;
+					LearningPredatorPolicy policy;
+					policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					Simulator sim = new Simulator();
+					sim.setPredatorPolicy(policy);
+					sim.setPrey(new RandomPrey());
+					SARSA sarsa = new SARSA(policy,sim,discountFactor,alpha,15);
+					super.executeQ(sarsa, numberOfIterations,"sarsa"+Double.toString(alpha)+" "+Double.toString(discountFactor));
+				}
+			}
+		}
+	}
+	private class MonteCarloCommand extends QGeneralCommand{
+		public String getCommand() {
+			return "mc";
+		}
+		
+		private String policyId = "";
+		
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			LearningPredatorPolicy policy;
+			if (policyId.equals("softmax")) {
+				policy = new SoftmaxPredatorPolicy(0.1);
+			} else {
+				policy = new EpsilonGreedyPredatorPolicy(0.1);
+			}
+			 
+//			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+//			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
+			
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+//			sim.setStartState(new RelativeState(new Position(5,5)));
+			
+			double gamma=0.1;
+			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
+			super.executeQ(mc, 10000,"montecarlo"+policyId);
+//			mc.runEpisode();
+		}
+
 	}
 }
 
