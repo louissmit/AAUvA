@@ -8,7 +8,7 @@ def plotAlphaGamma():
     gammas = [0.1, 0.5, 0.7, 0.9]
 
     # for gamma in gammas:
-    gamma = gammas[0]
+    gamma = gammas[1]
     for alpha in alphas:
         data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+
                 '.csv', delimiter=',', names=['x', 'y'])
@@ -17,6 +17,20 @@ def plotAlphaGamma():
 
     plt.legend()
     plt.show()
+    
+def plotSarsa():
+    alphas = [0.1, 0.2, 0.3, 0.4, 0.5]
+    gammas = [0.1, 0.5, 0.7, 0.9]
+
+    # for gamma in gammas:
+    for gamma in gammas:
+        for alpha in alphas:
+            data = np.genfromtxt('../../../sarsa'+ str(alpha) + ' '+ str(gamma)+
+                    '.csv', delimiter=',', names=['x', 'y'])
+    
+            plt.plot(data['x'], data['y'], label='alpha = '+str(alpha))
+        plt.legend()
+        plt.show()
 
 def plotEpsilonQinit():
     epsilons = [0.1]
@@ -35,6 +49,44 @@ def plotEpsilonQinit():
     plt.xlim(0,1000)
     plt.show()
 
-plotEpsilonQinit()
+def plotQLearnCompareEpsilonGreedySoftmax():
+    policies = ["", "softmax"]
 
+    gamma = 0.1
+    alpha = 0.1
+    for policyId in policies:
+        data = np.genfromtxt('../../../qlearn'+ str(alpha) + ' '+ str(gamma)+ policyId +
+                '.csv', delimiter=',', names=['x', 'y'])
+
+        if policyId == "":
+			# Make up for e-greedy defaults to no policy id
+            policyId = "e-greedy"
+			
+        plt.plot(data['x'], data['y'], label=policyId)
+
+    plt.legend()
+    plt.show()
+    
+def plotMonteCarloCompareEpsilonGreedySoftmax():
+    policies = ["", "softmax"]
+
+    gamma = 0.1
+    alpha = 0.1
+    for policyId in policies:
+        data = np.genfromtxt('../../../montecarlo'+  policyId +
+                '.csv', delimiter=',', names=['x', 'y'])
+
+        if policyId == "":
+            # Make up for e-greedy defaults to no policy id
+            policyId = "e-greedy"
+            
+        plt.plot(data['x'], data['y'], label=policyId)
+
+    plt.legend()
+    plt.show()
+
+#plotQLearnCompareEpsilonGreedySoftmax()
+#plotAlphaGamma()
+plotSarsa()
+#plotMonteCarloCompareEpsilonGreedySoftmax()
 

@@ -45,6 +45,7 @@ public class ScriptsMenu {
 		commands.add(new SARSACommand());
 //		commands.add(new MonteCarloCommand());
 		util = new Utility();
+		commands.add(new MonteCarloCommand());
 		
 	}
 
@@ -335,13 +336,19 @@ public class ScriptsMenu {
 	 */
 	private class QLearnCommand extends QGeneralCommand {
 
-
+		private String policyId = "";
 
 		public String getCommand() {
 			return "qlearn";
 		}
 
 		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			
 			double epsilon=0.1;
 			for(double alpha:this.alphaRates)
 			{
@@ -349,12 +356,16 @@ public class ScriptsMenu {
 				{
 					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
-					policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					if (policyId.equals("softmax")) {
+						policy = new SoftmaxPredatorPolicy(0.1);
+					} else {
+						policy = new EpsilonGreedyPredatorPolicy(epsilon);
+					}
 					Simulator sim = new Simulator();
 					sim.setPredatorPolicy(policy);
 					sim.setPrey(new RandomPrey());
 					QLearn qlearn = new QLearn(policy,sim,discountFactor,alpha,15);
-					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor));
+					super.executeQ(qlearn, numberOfIterations,"qlearn"+Double.toString(alpha)+" "+Double.toString(discountFactor)+policyId);
 				}
 			}
 		}
@@ -406,7 +417,7 @@ public class ScriptsMenu {
 			{
 				for(double discountFactor:this.discountFactors)
 				{
-					int numberOfIterations=10000;
+					int numberOfIterations=2000;
 					LearningPredatorPolicy policy;
 					policy = new EpsilonGreedyPredatorPolicy(epsilon);
 					Simulator sim = new Simulator();
@@ -417,6 +428,41 @@ public class ScriptsMenu {
 				}
 			}
 		}
+	}
+	private class MonteCarloCommand extends QGeneralCommand{
+		public String getCommand() {
+			return "mc";
+		}
+		
+		private String policyId = "";
+		
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int policyIndex = argList.indexOf("-policy") + 1;
+			if (policyIndex > 0 && policyIndex < argList.size()) {
+				policyId = argList.get(policyIndex);
+			}
+			LearningPredatorPolicy policy;
+			if (policyId.equals("softmax")) {
+				policy = new SoftmaxPredatorPolicy(0.1);
+			} else {
+				policy = new EpsilonGreedyPredatorPolicy(0.1);
+			}
+			 
+//			LearningPredatorPolicy policy = new SoftmaxPredatorPolicy(0.1);
+//			policy.setProbabilities(new TemporalRandomPredatorPolicy().getProbabilities());
+			
+			Simulator sim = new Simulator();
+			sim.setPredatorPolicy(policy);
+			sim.setPrey(new RandomPrey());
+//			sim.setStartState(new RelativeState(new Position(5,5)));
+			
+			double gamma=0.1;
+			MonteCarlo mc = new MonteCarlo(policy,sim,gamma,0,0);
+			super.executeQ(mc, 10000,"montecarlo"+policyId);
+//			mc.runEpisode();
+		}
+
 	}
 }
 
