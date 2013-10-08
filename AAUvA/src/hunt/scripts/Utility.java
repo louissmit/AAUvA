@@ -1,5 +1,12 @@
 package hunt.scripts;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.Map;
 
 import hunt.model.board.Position;
@@ -13,7 +20,18 @@ import hunt.model.RelativeState;
  */
 public class Utility {
 
-	public static void printStates(Map<HuntState, Double> result, boolean smartMode){
+	private BufferedWriter writer;
+
+
+	/**
+	 * 
+	 */
+	public Utility() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void printStates(Map<HuntState, Double> result, boolean smartMode){
 		Position preyPos=new Position(5,5);
 		for(int i=0;i<Position.BWIDTH;i++)
 		{
@@ -32,4 +50,39 @@ public class Utility {
 		}
 
 	}
+
+	public void setupSerializer(String fileName) {
+		try {
+			writer = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(fileName + ".csv"), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+	}
+
+	public void serializeEpisode(int episodeNr, double iterations){
+		try {
+			writer.append(episodeNr +", " + iterations);
+			writer.newLine();
+		} catch (IOException ex){
+			// report
+		} 
+	}
+	
+	
+	
+	public void closeSerializer() {
+		try {
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
 }
