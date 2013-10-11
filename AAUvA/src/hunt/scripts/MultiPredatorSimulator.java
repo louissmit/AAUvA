@@ -72,21 +72,16 @@ public class MultiPredatorSimulator {
 	 */
 	public MultiPredatorState transition(MultiPredatorState state) {
 		// Get predator actions
-		List<Position> predatorActions = new ArrayList<Position>();
-		for (int i = 0; i < this.predators.size(); i++) {
-			predatorActions.add(this.predators.get(i).getAction(state));
-		}
-		// Get prey action
-		Position preyAction = preyPolicy.getAction(state);
-		
-		// Apply predator actions
-		for (int i = 0; i < predatorActions.size(); i++) {
-			Predator actingPredator = this.predators.get(i);
-			state = state.movePredator(actingPredator.getName(), predatorActions.get(i));
-		}
-		// Apply prey action
+		MultiPredatorState oldState = state;
+
+		Position action;
+		Position preyAction = preyPolicy.getAction(oldState);
 		state = state.movePrey(preyAction);
-		
+		for (Predator pred : this.predators) {
+			action = pred.getAction(oldState);
+			state = state.movePredator(pred.getName(), action);
+		}
+
 		// Check for end state
 		if (state.isTerminal()) {
 			running = false;
@@ -94,8 +89,8 @@ public class MultiPredatorSimulator {
 		
 		// TODO: calculate rewards and new states
 		StateAndRewardObservation predatorObservation = null;
-		for (int i = 0; i < this.predators.size(); i++) {
-			this.predators.get(i).giveObservation(predatorObservation);
+		for (Predator pred : this.predators) {
+			pred.giveObservation(predatorObservation);
 		}
 		StateAndRewardObservation preyObservation = null;
 		this.preyPolicy.giveObservation(preyObservation);
