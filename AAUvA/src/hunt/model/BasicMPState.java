@@ -58,7 +58,7 @@ public class BasicMPState extends MultiPredatorState {
 			BasicMPState newState=new BasicMPState();
 			for(String name:this.predatorPositions.keySet())
 			{
-				newState.replacePredator(name, this.predatorPositions.get(name).copy().subtract(action));
+				newState.putPredator(name, this.predatorPositions.get(name).copy().subtract(action));
 			}
 			return newState;
 		}	
@@ -71,7 +71,7 @@ public class BasicMPState extends MultiPredatorState {
 		BasicMPState newState=new BasicMPState();
 		for(String name:this.predatorPositions.keySet())
 		{
-			newState.replacePredator(name, this.predatorPositions.get(name).copy());
+			newState.putPredator(name, this.predatorPositions.get(name).copy());
 		}
 		return newState;
 
@@ -97,14 +97,14 @@ public class BasicMPState extends MultiPredatorState {
 	public BasicMPState movePredator(String name, Position action) {
 		
 		BasicMPState newState=(BasicMPState)this.copy();
-		newState.replacePredator(name, this.predatorPositions.get(name).copy().add(action));	
+		newState.putPredator(name, this.predatorPositions.get(name).copy().add(action));	
 		return newState;
 	}
 	
 	/*
 	 * the same behavior as addPredator, only for clear and intuitive name
 	 */
-	public void replacePredator(String name, Position position) {
+	public void putPredator(String name, Position position) {
 		this.predatorPositions.put(name, position);
 	}
 

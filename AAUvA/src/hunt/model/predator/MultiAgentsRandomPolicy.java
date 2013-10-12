@@ -43,7 +43,7 @@ public class MultiAgentsRandomPolicy extends RandomPredatorPolicy {
 			for (int j = 0; j < Position.BHEIGHT; j++) {
 				allPositions.add(new Position(i,j));
 				BasicMPState state=new BasicMPState();
-				state.addPredator("1", new Position(i,j));
+				state.putPredator("1", new Position(i,j));
 				allStates.add(state);
 			}
 		}
@@ -57,7 +57,7 @@ public class MultiAgentsRandomPolicy extends RandomPredatorPolicy {
 				for(HuntState state:allStates)
 				{
 					BasicMPState newState=(BasicMPState) state.copy();
-					newState.addPredator(Integer.toString(i), position);
+					newState.putPredator(Integer.toString(i), position);
 					currentListStates.add(newState);
 				}
 			}

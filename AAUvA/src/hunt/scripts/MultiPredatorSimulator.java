@@ -96,7 +96,6 @@ public class MultiPredatorSimulator {
 			}
 		}
 		
-		// TODO: calculate rewards and new states
 		StateAndRewardObservation predatorObservation = new StateAndRewardObservation(state, predatorreward);
 		for (Predator pred : this.predators) {
 			pred.giveObservation(predatorObservation);

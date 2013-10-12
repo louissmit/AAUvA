@@ -49,7 +49,6 @@ public class Predator {
 	 * @return
 	 */
 	public Position getAction(BasicMPState state) {
-		// TODO store local state and returned action
 		PredatorInternalState localState = this.convertState(state);
 		return policy.getAction(localState);
 	}
@@ -60,7 +59,7 @@ public class Predator {
 	 */
 	public void giveObservation(StateAndRewardObservation observation) {
 		if (this.learningAlg != null && lastStateActionPair != null) {
-			// TODO: convert returned state to local state
+			// TODO: convert returned state to local state ??
 			QTable qtable = this.learningAlg.update(lastStateActionPair, observation);
 			if (this.policy instanceof LearningPredatorPolicy) {
 				((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);
@@ -74,7 +73,6 @@ public class Predator {
 	 * @return
 	 */
 	public PredatorInternalState convertState(BasicMPState relativeState) {
-		// TODO implement
 		Map<String, Position> predators = relativeState.getPredatorPositions();
 		Position myPos = predators.get(this.name);
 		Position prey = myPos;  
