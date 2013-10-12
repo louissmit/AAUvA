@@ -2,6 +2,7 @@ package hunt.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
@@ -47,10 +48,10 @@ public class Predator {
 	 * @param state
 	 * @return
 	 */
-	public Position getAction(MultiPredatorState state) {
+	public Position getAction(BasicMPState state) {
 		// TODO store local state and returned action
-		MultiPredatorState localState = this.convertState(state);
-		return policy.getAction(state);
+		PredatorInternalState localState = this.convertState(state);
+		return policy.getAction(localState);
 	}
 	
 	/**
@@ -69,12 +70,22 @@ public class Predator {
 	
 	/**
 	 * Convert a global state to a state from this predator's point of view
-	 * @param absoluteState
+	 * @param relativeState "Positions of predators relative to prey"
 	 * @return
 	 */
-	public MultiPredatorState convertState(MultiPredatorState absoluteState) {
+	public PredatorInternalState convertState(BasicMPState relativeState) {
 		// TODO implement
-		return null;
+		Map<String, Position> predators = relativeState.getPredatorPositions();
+		Position myPos = predators.get(this.name);
+		Position prey = myPos;  
+
+		for(Map.Entry<String, Position> pred : predators.entrySet()) {
+			Position newPos = myPos.subtract(pred.getValue());
+			pred.setValue(newPos);
+		}
+		predators.put(this.name, new Position(0, 0));
+		PredatorInternalState state = new PredatorInternalState(prey, new ArrayList<Position>(predators.values()));
+		return state;
 	}
 
 	public String getName() {

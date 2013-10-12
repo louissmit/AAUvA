@@ -1,6 +1,7 @@
 package hunt.scripts;
 
 import hunt.model.AbstractPrey;
+import hunt.model.BasicMPState;
 import hunt.model.HuntState;
 import hunt.model.MultiPredatorState;
 import hunt.model.Predator;
@@ -20,7 +21,7 @@ public class MultiPredatorSimulator {
 	/**
 	 * The current state of the grid world
 	 */
-	protected MultiPredatorState currentState, startState;
+	protected BasicMPState currentState, startState;
 	
 	/**
 	 * The deciding policy for the predator
@@ -70,9 +71,9 @@ public class MultiPredatorSimulator {
 	 * @param state - the current state
 	 * @return - the new state
 	 */
-	public MultiPredatorState transition(MultiPredatorState state) {
+	public BasicMPState transition(BasicMPState state) {
 		// Get predator actions
-		MultiPredatorState oldState = state;
+		BasicMPState oldState = state;
 
 		Position action;
 		Position preyAction = preyPolicy.getAction(oldState);
@@ -110,7 +111,7 @@ public class MultiPredatorSimulator {
 	 * Update the state
 	 * @param state - the new state 
 	 */
-	public void setStartState(MultiPredatorState state) {
+	public void setStartState(BasicMPState state) {
 		this.startState = state;
 		this.reset();
 	}

@@ -12,15 +12,23 @@ public class BasicMPState extends MultiPredatorState {
 	
 	private Map<String, Position> predatorPositions;
 	private final double randomChanceForWait=0.2;
+
 	
 	public BasicMPState() {
 		predatorPositions = new HashMap<String, Position>();
 	}
-	
-	public void addPredator(String name, Position position) {
-		this.predatorPositions.put(name, position);
+
+	/**
+	 * @return the predatorPositions
+	 */
+	public Map<String, Position> getPredatorPositions() {
+		return predatorPositions;
 	}
 	
+	public Position getPredatorPosition(String name){
+		return this.predatorPositions.get(name);
+	}
+
 	public Map<String, Position> getPositions()
 	{
 		return this.predatorPositions;
@@ -42,7 +50,7 @@ public class BasicMPState extends MultiPredatorState {
 	}
 
 	@Override
-	public MultiPredatorState movePrey(Position action) {
+	public BasicMPState movePrey(Position action) {
 		Random random=new Random();
 		double randomNumber=random.nextDouble();
 		if(randomNumber>=randomChanceForWait)
@@ -50,12 +58,12 @@ public class BasicMPState extends MultiPredatorState {
 			BasicMPState newState=new BasicMPState();
 			for(String name:this.predatorPositions.keySet())
 			{
-				newState.addPredator(name, this.predatorPositions.get(name).copy().subtract(action));
+				newState.replacePredator(name, this.predatorPositions.get(name).copy().subtract(action));
 			}
 			return newState;
 		}	
 		else
-			return this.copy();
+			return (BasicMPState) this.copy();
 	}
 
 	@Override
@@ -63,7 +71,7 @@ public class BasicMPState extends MultiPredatorState {
 		BasicMPState newState=new BasicMPState();
 		for(String name:this.predatorPositions.keySet())
 		{
-			newState.addPredator(name, this.predatorPositions.get(name).copy());
+			newState.replacePredator(name, this.predatorPositions.get(name).copy());
 		}
 		return newState;
 
@@ -86,7 +94,7 @@ public class BasicMPState extends MultiPredatorState {
 	}
 
 	@Override
-	public MultiPredatorState movePredator(String name, Position action) {
+	public BasicMPState movePredator(String name, Position action) {
 		
 		BasicMPState newState=(BasicMPState)this.copy();
 		newState.replacePredator(name, this.predatorPositions.get(name).copy().add(action));	
