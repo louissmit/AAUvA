@@ -39,4 +39,12 @@ public abstract class MultiPredatorState implements HuntState {
 	 */
 	public abstract boolean predatorWins();
 
+	/**
+	 * @return
+	 */
+	public boolean predatorsCollide() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

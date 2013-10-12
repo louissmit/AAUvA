@@ -83,16 +83,24 @@ public class MultiPredatorSimulator {
 		}
 
 		// Check for end state
+		double predatorreward = 0;
+		double preyreward = 0;
 		if (state.isTerminal()) {
 			running = false;
+			//TODO: what happens if both win & collide
+			if(state.predatorWins()) predatorreward = 10;
+			if(state.predatorsCollide()) {
+				predatorreward = -10;
+				preyreward = 10;
+			}
 		}
 		
 		// TODO: calculate rewards and new states
-		StateAndRewardObservation predatorObservation = null;
+		StateAndRewardObservation predatorObservation = new StateAndRewardObservation(state, predatorreward);
 		for (Predator pred : this.predators) {
 			pred.giveObservation(predatorObservation);
 		}
-		StateAndRewardObservation preyObservation = null;
+		StateAndRewardObservation preyObservation = new StateAndRewardObservation(state, preyreward);;
 		this.preyPolicy.giveObservation(preyObservation);
 		
 		return state;
