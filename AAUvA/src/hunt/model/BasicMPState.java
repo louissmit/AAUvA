@@ -166,5 +166,14 @@ public class BasicMPState extends MultiPredatorState {
 			return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "BasicMPState [predatorPositions=" + predatorPositions + "]";
+	}
+
+
 
 }

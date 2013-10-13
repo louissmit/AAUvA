@@ -75,13 +75,14 @@ public class Predator {
 	public PredatorInternalState convertState(BasicMPState relativeState) {
 		Map<String, Position> predators = relativeState.getPredatorPositions();
 		Position myPos = predators.get(this.name);
-		Position prey = myPos;  
+		predators.remove(this.name);
+		Position prey = myPos.copy().negate();  
 
 		for(Map.Entry<String, Position> pred : predators.entrySet()) {
 			Position newPos = myPos.subtract(pred.getValue());
+			newPos.negate();
 			pred.setValue(newPos);
 		}
-		predators.put(this.name, new Position(0, 0));
 		PredatorInternalState state = new PredatorInternalState(prey, new ArrayList<Position>(predators.values()));
 		return state;
 	}
@@ -94,7 +95,7 @@ public class Predator {
 	 * Internal state representation for the predator.
 	 * Only used as index, so lacks most function implementations. 
 	 */
-	private class PredatorInternalState extends MultiPredatorState {
+	public class PredatorInternalState extends MultiPredatorState {
 		
 		private Position prey;
 		private List<Position> predators;
@@ -145,6 +146,60 @@ public class Predator {
 		@Override
 		public boolean predatorWins() {
 			return false;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return "PredatorInternalState [prey=" + prey + ", predators="
+					+ predators + "]";
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result
+					+ ((predators == null) ? 0 : predators.hashCode());
+			result = prime * result + ((prey == null) ? 0 : prey.hashCode());
+			return result;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof PredatorInternalState))
+				return false;
+			PredatorInternalState other = (PredatorInternalState) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (predators == null) {
+				if (other.predators != null)
+					return false;
+			} else if (!predators.equals(other.predators))
+				return false;
+			if (prey == null) {
+				if (other.prey != null)
+					return false;
+			} else if (!prey.equals(other.prey))
+				return false;
+			return true;
+		}
+
+		private Predator getOuterType() {
+			return Predator.this;
 		}
 		
 	}
