@@ -1,6 +1,6 @@
 package hunt.model;
 
-import java.awt.List;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,9 +29,10 @@ public class BasicMPState extends MultiPredatorState {
 		return this.predatorPositions.get(name);
 	}
 
-	public Map<String, Position> getPositions()
+	@Override
+	public List<Position> getPositions()
 	{
-		return this.predatorPositions;
+		return new ArrayList<Position>(this.predatorPositions.values());
 	}
 
 	@Override
@@ -108,23 +109,7 @@ public class BasicMPState extends MultiPredatorState {
 		this.predatorPositions.put(name, position);
 	}
 
-	/**
-	 * @deprecated
-	 */
-	@Override
-	public HuntState movePredator(Position action) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * @deprecated
-	 */
-	@Override
-	public Position getPreyAction(HuntState oldState) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -150,20 +135,38 @@ public class BasicMPState extends MultiPredatorState {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof RelativeState))
+		if (!(obj instanceof MultiPredatorState))
 			return false;
-		BasicMPState other = (BasicMPState) obj;
+		MultiPredatorState other = (MultiPredatorState) obj;
 		int counter=0;
 		for(Position localPos:this.predatorPositions.values())
-			for(Position otherPos:other.getPositions().values())
+			for(Position otherPos:other.getPositions())
 			{
 				if(localPos.equals(otherPos))
 					counter++;
 			}
-		if(counter==this.predatorPositions.size())
+		if(counter>=this.predatorPositions.size())
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * @deprecated
+	 */
+	@Override
+	public HuntState movePredator(Position action) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @deprecated
+	 */
+	@Override
+	public Position getPreyAction(HuntState oldState) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/* (non-Javadoc)

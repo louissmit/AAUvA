@@ -147,7 +147,6 @@ public class Predator {
 		public boolean predatorWins() {
 			return false;
 		}
-
 		/* (non-Javadoc)
 		 * @see java.lang.Object#toString()
 		 */
@@ -164,10 +163,11 @@ public class Predator {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + getOuterType().hashCode();
-			result = prime * result
-					+ ((predators == null) ? 0 : predators.hashCode());
-			result = prime * result + ((prey == null) ? 0 : prey.hashCode());
+			for(Position distance:this.predators)
+			{
+				result = prime * result
+					+ ((distance == null) ? 0 : distance.hashCode());
+			}
 			return result;
 		}
 
@@ -180,27 +180,25 @@ public class Predator {
 				return true;
 			if (obj == null)
 				return false;
-			if (!(obj instanceof PredatorInternalState))
+			if (!(obj instanceof MultiPredatorState))
 				return false;
-			PredatorInternalState other = (PredatorInternalState) obj;
-			if (!getOuterType().equals(other.getOuterType()))
+			MultiPredatorState other = (MultiPredatorState) obj;
+			int counter=0;
+			for(Position localPos:this.predators)
+				for(Position otherPos:other.getPositions())
+				{
+					if(localPos.equals(otherPos))
+						counter++;
+				}
+			if(counter>=this.predators.size())
+				return true;
+			else
 				return false;
-			if (predators == null) {
-				if (other.predators != null)
-					return false;
-			} else if (!predators.equals(other.predators))
-				return false;
-			if (prey == null) {
-				if (other.prey != null)
-					return false;
-			} else if (!prey.equals(other.prey))
-				return false;
-			return true;
 		}
 
-		private Predator getOuterType() {
-			return Predator.this;
-		}
+		@Override
+		public List<Position> getPositions() {
+			return this.predators;		}
 		
 	}
 	
