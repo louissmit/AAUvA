@@ -146,6 +146,50 @@ public class Predator {
 		public boolean predatorWins() {
 			return false;
 		}
+		/* (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			for(Position distance:this.predators)
+			{
+				result = prime * result
+					+ ((distance == null) ? 0 : distance.hashCode());
+			}
+			return result;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (!(obj instanceof MultiPredatorState))
+				return false;
+			MultiPredatorState other = (MultiPredatorState) obj;
+			int counter=0;
+			for(Position localPos:this.predators)
+				for(Position otherPos:other.getPositions())
+				{
+					if(localPos.equals(otherPos))
+						counter++;
+				}
+			if(counter>=this.predators.size())
+				return true;
+			else
+				return false;
+		}
+
+		@Override
+		public List<Position> getPositions() {
+			return this.predators;
+		}
 		
 	}
 	

@@ -1,5 +1,8 @@
 package hunt.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hunt.model.board.Position;
 
 /**
@@ -46,5 +49,7 @@ public abstract class MultiPredatorState implements HuntState {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public abstract List<Position> getPositions();
 
 }
