@@ -40,6 +40,7 @@ public class PredatorTest {
 		MultiAgentsRandomPolicy policy = new MultiAgentsRandomPolicy();
 		this.p1 = new Predator("1", policy);
 		Predator p2 = new Predator("2", policy);
+		Predator p3 = new Predator("3", policy);
 
 		this.startState = new BasicMPState();
 		startState.putPredator("1", new Position(2, 0));
@@ -68,4 +69,21 @@ public class PredatorTest {
 		assertEquals(desired, internalState);
 	}
 
+	/**
+	 * Test method for {@link hunt.model.Predator#convertState(hunt.model.BasicMPState)}.
+	 */
+	@Test
+	public void testConvertState3Predators() {
+		startState.putPredator("3", new Position(1, 5));
+
+		Position prey = new Position(9, 0);
+		List<Position> predators = new ArrayList<Position>();
+		predators.add(new Position(1, 5));
+		predators.add(new Position(10, 5));
+
+		PredatorInternalState desired = new PredatorInternalState(prey, predators);
+		PredatorInternalState internalState = p1.convertState(startState);
+
+		assertEquals(desired, internalState);
+	}
 }
