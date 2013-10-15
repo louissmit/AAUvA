@@ -12,6 +12,21 @@ public class QTable {
 	
 	/** Q-table object */
 	private Map<HuntState, HashMap<Position, Double>> table;
+	/** Initial value for new state-action pairs */
+	private double initialization = 0;
+	
+	public QTable() {
+		this.table = new HashMap<HuntState, HashMap<Position, Double>>();
+	}
+	
+	/**
+	 * QTable with custom initialization
+	 * @param initialization
+	 */
+	public QTable(double initialization) {
+		this();
+		this.initialization = initialization;
+	}
 
 	/** Update the Q-table for a certain state */
 	public void update(HuntState state, HashMap<Position, Double> values) {
@@ -47,7 +62,7 @@ public class QTable {
 	protected void assertStateActionPresent(HuntState state, Position action) {
 		this.assertStatePresent(state);
 		if (!this.table.get(state).containsKey(action)) {
-			this.table.get(state).put(action, 0.0);
+			this.table.get(state).put(action, this.initialization);
 		}
 	}
 	

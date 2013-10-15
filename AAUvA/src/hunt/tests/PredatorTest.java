@@ -2,7 +2,7 @@
  * 
  */
 package hunt.tests;
-
+import hunt.model.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import java.util.Map;
 import hunt.model.BasicMPState;
 import hunt.model.HuntState;
 import hunt.model.Predator;
+import hunt.model.PredatorInternalState;
 import hunt.model.QTable;
-import hunt.model.Predator.PredatorInternalState;
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
 import hunt.model.predator.MultiAgentsRandomPolicy;
@@ -62,7 +62,7 @@ public class PredatorTest {
 		List<Position> predators = new ArrayList<Position>();
 		predators.add(new Position(10, 5));
 
-		PredatorInternalState desired = p1.new PredatorInternalState(prey, predators);
+		PredatorInternalState desired = new PredatorInternalState(prey, predators);
 		PredatorInternalState internalState = p1.convertState(startState);
 
 		assertEquals(desired, internalState);

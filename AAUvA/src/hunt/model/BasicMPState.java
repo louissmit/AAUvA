@@ -135,9 +135,9 @@ public class BasicMPState extends MultiPredatorState {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof MultiPredatorState))
+		if (!(obj instanceof BasicMPState))
 			return false;
-		MultiPredatorState other = (MultiPredatorState) obj;
+		BasicMPState other = (BasicMPState) obj;
 		int counter=0;
 		for(Position localPos:this.predatorPositions.values())
 			for(Position otherPos:other.getPositions())

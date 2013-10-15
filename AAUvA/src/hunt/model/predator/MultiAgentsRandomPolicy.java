@@ -2,6 +2,7 @@ package hunt.model.predator;
 
 import hunt.model.BasicMPState;
 import hunt.model.HuntState;
+import hunt.model.PredatorInternalState;
 import hunt.model.RelativeState;
 import hunt.model.board.Position;
 
@@ -42,13 +43,12 @@ public class MultiAgentsRandomPolicy extends RandomPredatorPolicy {
 		for (int i = 0; i < Position.BWIDTH; i++) {
 			for (int j = 0; j < Position.BHEIGHT; j++) {
 				allPositions.add(new Position(i,j));
-				BasicMPState state=new BasicMPState();
-				state.putPredator("1", new Position(i,j));
+				PredatorInternalState state=new PredatorInternalState(new Position(i,j));
 				allStates.add(state);
 			}
 		}
 		
-		
+		ArrayList<Position> predators=new ArrayList<Position>();
 		for(int i=1;i<numberOfPredators;i++)
 		{
 			ArrayList<HuntState> currentListStates=new ArrayList<HuntState>();
@@ -56,8 +56,10 @@ public class MultiAgentsRandomPolicy extends RandomPredatorPolicy {
 			{
 				for(HuntState state:allStates)
 				{
-					BasicMPState newState=(BasicMPState) state.copy();
-					newState.putPredator(Integer.toString(i+1), position);
+					//BasicMPState newState=(BasicMPState) state.copy();
+					//newState.putPredator(Integer.toString(i+1), position);
+					PredatorInternalState newState=(PredatorInternalState)state.copy();
+					newState.AddPredator(position);
 					currentListStates.add(newState);
 				}
 			}
