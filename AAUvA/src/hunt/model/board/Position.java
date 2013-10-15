@@ -141,8 +141,8 @@ public class Position {
 	 * 
 	 */
 	public Position negate() {
-		this.x = -this.x;
-		this.y = -this.y;
+		this.x = this.mod(-this.x, BWIDTH);
+		this.y = this.mod(-this.y, BHEIGHT);
 		return this;
 	}
 	
