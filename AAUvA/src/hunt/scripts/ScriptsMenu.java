@@ -52,6 +52,7 @@ public class ScriptsMenu {
 		util = new Utility();
 		commands.add(new MonteCarloCommand());
 		commands.add(new MultiPredatorSimulatorCommand());
+		commands.add(new MultiPredatorQLearnSimulatorCommand());
 		
 	}
 
@@ -109,22 +110,86 @@ public class ScriptsMenu {
 			return "multipred";
 		}
 
+
+
 		@Override
 		public void execute(String[] args) {
-			MultiAgentsRandomPolicy asPolicy = new MultiAgentsRandomPolicy(2);
-			Predator pred = new Predator("1", asPolicy);
-			Predator pred2 = new Predator("2", asPolicy);
-			
-			MultiPredatorSimulator sim = new MultiPredatorSimulator();
-			sim.addPredator(pred);
-			sim.addPredator(pred2);
-			sim.setPrey(new RandomPrey());
-			
-			BasicMPState startState=new BasicMPState();
-			startState.putPredator("1", new Position(5, 5));
-			startState.putPredator("2", new Position(6, 6));
-			sim.setStartState(startState);
-			sim.run(100);
+			List<String> argList = Arrays.asList(args);
+			int numberOfAgents=1;
+			if(argList.size()>1)
+				numberOfAgents= argList.indexOf("-numberofagents") + 1;
+			if(numberOfAgents>0&&numberOfAgents<=4)
+			{
+				MultiAgentsRandomPolicy asPolicy = new MultiAgentsRandomPolicy(numberOfAgents);
+				MultiPredatorSimulator sim = new MultiPredatorSimulator();
+				BasicMPState startState=new BasicMPState();
+				for(int i=0;i<numberOfAgents;i++)
+				{
+					Predator pred = new Predator(Integer.toString(i+1), asPolicy);
+					sim.addPredator(pred);
+				}
+		
+				startState.putPredator(Integer.toString(1), new Position(5, 5));
+				if(numberOfAgents>1)
+					startState.putPredator(Integer.toString(2), new Position(6, 6));
+				if(numberOfAgents>2)
+					startState.putPredator(Integer.toString(3), new Position(5, 6));
+				if(numberOfAgents>3)
+					startState.putPredator(Integer.toString(4), new Position(6, 5));
+				
+				sim.setPrey(new RandomPrey());
+				sim.setStartState(startState);
+				sim.run(100);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Simulator with multiple predators
+	 */
+	private class MultiPredatorQLearnSimulatorCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "multipredqlearn";
+		}
+		
+		private double epsilon=0.1;
+		private double gamma=0.9;
+		private double alpha=0.5;
+
+		@Override
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int numberOfAgents=1;
+			if(argList.size()>1)
+				numberOfAgents= argList.indexOf("-numberofagents") + 1;
+			if(numberOfAgents>0&&numberOfAgents<=4)
+			{
+				MultiAgentsLearningPolicy asPolicy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon);
+				MultiPredatorSimulator sim = new MultiPredatorSimulator();
+				BasicMPState startState=new BasicMPState();
+				QTable qtable=new QTable();
+				QLearnAlgorithm qlearn=new QLearnAlgorithm(asPolicy, qtable, gamma, alpha);
+				for(int i=0;i<numberOfAgents;i++)
+				{
+					Predator pred = new Predator(Integer.toString(i+1), asPolicy,qlearn);
+					sim.addPredator(pred);
+				}
+		
+				startState.putPredator(Integer.toString(1), new Position(5, 5));
+				if(numberOfAgents>1)
+					startState.putPredator(Integer.toString(2), new Position(6, 6));
+				if(numberOfAgents>2)
+					startState.putPredator(Integer.toString(3), new Position(5, 6));
+				if(numberOfAgents>3)
+					startState.putPredator(Integer.toString(4), new Position(6, 5));
+				
+				sim.setPrey(new RandomPrey());
+				sim.setStartState(startState);
+				sim.run(100);
+			}
 		}
 		
 	}
