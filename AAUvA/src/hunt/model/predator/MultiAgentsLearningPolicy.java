@@ -1,26 +1,29 @@
 package hunt.model.predator;
 
+import hunt.controller.Move;
 import hunt.model.BasicMPState;
 import hunt.model.HuntState;
 import hunt.model.PredatorInternalState;
+import hunt.model.QTable;
 import hunt.model.RelativeState;
 import hunt.model.board.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
-public class MultiAgentsRandomPolicy extends PlannerPredatorPolicy {
+public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 	
 	private int numberOfPredators;
+	private double epsilon;
 	
-	public MultiAgentsRandomPolicy()
-	{}
-	
-	public MultiAgentsRandomPolicy(int _numberOfPredators)
+	public MultiAgentsLearningPolicy(int _numberOfPredators,double __epsilon)
 	{
 		this.numberOfPredators=_numberOfPredators;
+		this.epsilon=__epsilon;
 		this.probabilities = new HashMap<HuntState, HashMap<Position, Double>>();
 		for (HuntState state : this.getAllStates()) {
 			HashMap<Position, Double> distribution = new HashMap<Position, Double>();
@@ -57,8 +60,6 @@ public class MultiAgentsRandomPolicy extends PlannerPredatorPolicy {
 			{
 				for(HuntState state:allStates)
 				{
-					//BasicMPState newState=(BasicMPState) state.copy();
-					//newState.putPredator(Integer.toString(i+1), position);
 					PredatorInternalState newState=(PredatorInternalState)state.copy();
 					newState.AddPredator(position);
 					currentListStates.add(newState);
@@ -68,5 +69,50 @@ public class MultiAgentsRandomPolicy extends PlannerPredatorPolicy {
 		}
 		
 		return allStates;
+	}
+
+	@Override
+	public void setProbabilitiesWithQ(HuntState state,
+			Map<Position, Double> QValues) {
+		
+		Set<Position> actions=QValues.keySet();
+		Position bestAction=Move.WAIT;
+		double max=-10000;
+		for(Position action: actions)
+		{
+			double Qval=QValues.get(action);
+			if(Qval>max)
+			{
+				bestAction=action;
+				max=Qval;
+			}
+		}
+		this.setAction(state, bestAction);
+		
+	}
+	
+
+	@Override
+	public void setProbabilitiesWithQ(QTable qtable) {
+		List<HuntState> states = this.getAllStates();
+		for (HuntState state : states) {
+			this.setProbabilitiesWithQ(state, qtable.getQValues(state));
+		}
+		
+	}
+	
+	/**
+	 * Sets the epsilon-greedy action in a certain state
+	 */
+	public void setAction(HuntState state, Position action){
+		HashMap<Position, Double> dist = this.probabilities.get(state);
+		
+		int countActions = dist.size();
+		for (Position key: dist.keySet()) {
+			// Divide epsilon over all actions minus the greedy action
+			dist.put(key, epsilon / (countActions - 1));
+		}
+		dist.put(action, 1.0 - epsilon);
+		this.probabilities.put(state, dist);
 	}
 }

@@ -37,7 +37,7 @@ public class PredatorTest {
 	private BasicMPState startState;
 	@Before
 	public void setUp() throws Exception {
-		RandomPredatorPolicy policy = new MultiAgentsRandomPolicy();
+		MultiAgentsRandomPolicy policy = new MultiAgentsRandomPolicy();
 		this.p1 = new Predator("1", policy);
 		Predator p2 = new Predator("2", policy);
 
