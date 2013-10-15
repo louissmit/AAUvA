@@ -100,7 +100,7 @@ public class MultiPredatorSimulator {
 		for (Predator pred : this.predators) {
 			pred.giveObservation(predatorObservation);
 		}
-		StateAndRewardObservation preyObservation = new StateAndRewardObservation(state, preyreward);;
+		StateAndRewardObservation preyObservation = new StateAndRewardObservation(state, preyreward);
 		this.preyPolicy.giveObservation(preyObservation);
 		
 		return state;

@@ -43,7 +43,7 @@ public class PredatorTest {
 
 		this.startState = new BasicMPState();
 		startState.putPredator("1", new Position(2, 0));
-		startState.putPredator("2", new Position(1, 5));
+		startState.putPredator("2", new Position(10, 5));
 	}
 
 	/**
