@@ -52,6 +52,7 @@ public class ScriptsMenu {
 		util = new Utility();
 		commands.add(new MonteCarloCommand());
 		commands.add(new MultiPredatorSimulatorCommand());
+		commands.add(new EvolutionCommand());
 		
 	}
 
@@ -125,6 +126,28 @@ public class ScriptsMenu {
 			startState.putPredator("2", new Position(5, 5));
 			sim.setStartState(startState);
 			sim.run(10);
+		}
+		
+	}
+	
+	/**
+	 * Evolutionary algorithms
+	 */
+	private class EvolutionCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "evolve";
+		}
+
+		@Override
+		public void execute(String[] args) {
+			int amountOfGenerations = 20;
+			int episodeLength = 30;
+			int populationSize = 10;
+			int selectionSize = 5;
+			int predatorCount = 1;
+			new EvolutionaryAlgorithmScript(amountOfGenerations, episodeLength, populationSize, selectionSize, predatorCount).run();
 		}
 		
 	}
