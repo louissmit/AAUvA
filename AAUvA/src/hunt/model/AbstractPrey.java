@@ -24,15 +24,11 @@ public abstract class AbstractPrey {
 		moves.add(Move.EAST);
 		moves.add(Move.WAIT);
 		
-		// Take only moves that do not lead to predators
 		List<Position> result = new ArrayList<Position>();
 		for (Position move : moves) {
 			HuntState newState = s.movePrey(move);
-			if (!newState.predatorWins()) {
 				result.add(move);
-			}
 		}
-		
 		return result;
 	}
 	

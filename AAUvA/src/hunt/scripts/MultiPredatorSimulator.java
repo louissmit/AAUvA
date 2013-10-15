@@ -1,5 +1,6 @@
 package hunt.scripts;
 
+import hunt.controller.Move;
 import hunt.model.AbstractPrey;
 import hunt.model.HuntState;
 import hunt.model.MultiPredatorState;
@@ -10,8 +11,18 @@ import hunt.model.predator.PredatorPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MultiPredatorSimulator {
+	
+	/**
+	 * Random number generator
+	 */
+	private Random generator;
+
+	{
+		generator=new Random();
+	}
 	
 	/**
 	 * Is the simulator still running
@@ -76,7 +87,12 @@ public class MultiPredatorSimulator {
 
 		Position action;
 		Position preyAction = preyPolicy.getAction(oldState);
-		state = state.movePrey(preyAction);
+		
+		// Prey trip function
+		double randomNumber = generator.nextDouble();
+		if (randomNumber < 0.8) {
+			state = state.movePrey(preyAction);
+		}
 		for (Predator pred : this.predators) {
 			action = pred.getAction(oldState);
 			state = state.movePredator(pred.getName(), action);
