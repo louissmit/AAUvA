@@ -11,15 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-public class MultiAgentsRandomPolicy extends RandomPredatorPolicy {
+public class MultiAgentsRandomPolicy extends PlannerPredatorPolicy {
 	
-	public static int numberOfPredators=2;
+	private int numberOfPredators;
 	
 	public MultiAgentsRandomPolicy()
+	{}
+	
+	public MultiAgentsRandomPolicy(int _numberOfPredators)
 	{
-		//this.numberOfPredators=_numberOfPredators;
-		//*** Copied from the super() because calling super() is not possible after setting this variable
-		generator = new Random();
+		this.numberOfPredators=_numberOfPredators;
 		this.probabilities = new HashMap<HuntState, HashMap<Position, Double>>();
 		for (HuntState state : this.getAllStates()) {
 			HashMap<Position, Double> distribution = new HashMap<Position, Double>();

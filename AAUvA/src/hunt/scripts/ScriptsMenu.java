@@ -111,7 +111,7 @@ public class ScriptsMenu {
 
 		@Override
 		public void execute(String[] args) {
-			RandomPredatorPolicy asPolicy = new MultiAgentsRandomPolicy();
+			MultiAgentsRandomPolicy asPolicy = new MultiAgentsRandomPolicy(2);
 			Predator pred = new Predator("1", asPolicy);
 			Predator pred2 = new Predator("2", asPolicy);
 			
@@ -124,7 +124,7 @@ public class ScriptsMenu {
 			startState.putPredator("1", new Position(5, 5));
 			startState.putPredator("2", new Position(6, 6));
 			sim.setStartState(startState);
-			sim.run(10);
+			sim.run(100);
 		}
 		
 	}
