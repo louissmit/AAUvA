@@ -1,6 +1,7 @@
 package hunt.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,18 +73,20 @@ public class Predator {
 	 * @param relativeState "Positions of predators relative to prey"
 	 * @return
 	 */
-	public PredatorInternalState convertState(BasicMPState relativeState) {
+	public hunt.model.PredatorInternalState convertState(BasicMPState relativeState) {
 		Map<String, Position> predators = relativeState.getPredatorPositions();
 		Position myPos = predators.get(this.name);
-		predators.remove(this.name);
 		Position prey = myPos.copy().negate();  
 
+
+		ArrayList<Position> res = new ArrayList<Position>();
 		for(Map.Entry<String, Position> pred : predators.entrySet()) {
+			if(pred.getKey() == this.name) continue;
 			Position newPos = myPos.subtract(pred.getValue());
 			newPos.negate();
-			pred.setValue(newPos);
+			res.add(pred.getValue());
 		}
-		PredatorInternalState state = new PredatorInternalState(prey, new ArrayList<Position>(predators.values()));
+		PredatorInternalState state = new PredatorInternalState(prey, res);
 		return state;
 	}
 
@@ -91,4 +94,5 @@ public class Predator {
 		return this.name;
 	}
 	
+
 }
