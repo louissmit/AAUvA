@@ -121,8 +121,8 @@ public class ScriptsMenu {
 			sim.setPrey(new RandomPrey());
 			
 			BasicMPState startState=new BasicMPState();
-			startState.putPredator("1", new Position(-5, -5));
-			startState.putPredator("2", new Position(5, 5));
+			startState.putPredator("1", new Position(5, 5));
+			startState.putPredator("2", new Position(6, 6));
 			sim.setStartState(startState);
 			sim.run(10);
 		}
