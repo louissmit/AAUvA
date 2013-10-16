@@ -61,7 +61,7 @@ public class PredatorTest {
 	public void testConvertState() {
 		Position prey = new Position(9, 0);
 		List<Position> predators = new ArrayList<Position>();
-		predators.add(new Position(10, 5));
+		predators.add(new Position(8, 5));
 
 		PredatorInternalState desired = new PredatorInternalState(prey, predators);
 		PredatorInternalState internalState = p1.convertState(startState);
@@ -78,7 +78,7 @@ public class PredatorTest {
 
 		Position prey = new Position(9, 0);
 		List<Position> predators = new ArrayList<Position>();
-		predators.add(new Position(1, 5));
+		predators.add(new Position(8, 5));
 		predators.add(new Position(10, 5));
 
 		PredatorInternalState desired = new PredatorInternalState(prey, predators);

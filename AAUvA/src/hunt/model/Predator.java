@@ -82,7 +82,7 @@ public class Predator {
 		ArrayList<Position> res = new ArrayList<Position>();
 		for(Map.Entry<String, Position> pred : predators.entrySet()) {
 			if(pred.getKey().equals(this.name)) continue;
-			Position newPos = myPos.subtract(pred.getValue());
+			Position newPos = pred.getValue().subtract(myPos);
 			res.add(newPos);
 		}
 		PredatorInternalState state = new PredatorInternalState(prey, res);

@@ -191,7 +191,7 @@ public class ScriptsMenu {
 				
 				QTable qTable = new QTable();
 				QLearnAlgorithm q = new QLearnAlgorithm(qTable, asPolicy, gamma, alpha);
-				sim.setPrey(new SmartPrey(asPolicy, q));
+				sim.setPrey(new RandomPrey());
 				sim.setStartState(startState);
 				sim.run(100);
 			}
