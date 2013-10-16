@@ -190,7 +190,7 @@ public class ScriptsMenu {
 					startState.putPredator(Integer.toString(4), new Position(6, 5));
 				
 				QTable qTable = new QTable();
-				QLearnAlgorithm q = new QLearnAlgorithm(qTable, asPolicy, 0.2, 0.7);
+				QLearnAlgorithm q = new QLearnAlgorithm(qTable, asPolicy, gamma, alpha);
 				sim.setPrey(new SmartPrey(asPolicy, q));
 				sim.setStartState(startState);
 				sim.run(100);
