@@ -3,7 +3,10 @@ package hunt.model;
 import hunt.controller.Move;
 import hunt.model.board.Position;
 import hunt.model.predator.LearningPredatorPolicy;
+import hunt.model.predator.MultiAgentsLearningPolicy;
+import hunt.model.predator.MultiAgentsRandomPolicy;
 import hunt.scripts.Simulator;
+
 import java.util.List;
 
 /**
@@ -18,7 +21,7 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 	/**
 	 * Policy used for probability and reward distributions
 	 */
-	protected LearningPredatorPolicy policy;
+	protected MultiAgentsLearningPolicy policy;
 	
 	/**
 	 * simulator of environment
@@ -37,13 +40,13 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 	
 
 	
-	public QLearnAlgorithm(LearningPredatorPolicy _policy, QTable qtable,
+	public QLearnAlgorithm(QTable qTable, MultiAgentsLearningPolicy asPolicy,
 			double _gamma, double _alpha) 
 	{
-		this.policy=_policy;
+		this.policy= asPolicy;
 		this.gamma=_gamma;
 		this.alpha=_alpha;
-		this.qtable = qtable;
+		this.qtable = qTable;
 	}
 
 		

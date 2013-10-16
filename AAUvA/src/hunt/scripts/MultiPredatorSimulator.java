@@ -30,7 +30,7 @@ public class MultiPredatorSimulator {
 	/**
 	 * The acting agent for the prey
 	 */
-	protected AbstractPrey preyPolicy;
+	protected AbstractPrey prey;
 	
 	public MultiPredatorSimulator() {
 		predators = new ArrayList<Predator>();
@@ -76,7 +76,7 @@ public class MultiPredatorSimulator {
 		BasicMPState oldState = state;
 
 		Position action;
-		Position preyAction = preyPolicy.getAction(oldState);
+		Position preyAction = prey.getAction(oldState);
 		state = state.movePrey(preyAction);
 		for (Predator pred : this.predators) {
 			action = pred.getAction(oldState);
@@ -88,7 +88,6 @@ public class MultiPredatorSimulator {
 		double preyreward = 0;
 		if (state.isTerminal()) {
 			running = false;
-			//TODO: what happens if both win & collide
 			if(state.predatorWins()) predatorreward = 10;
 			if(state.predatorsCollide()) {
 				predatorreward = -10;
@@ -101,7 +100,7 @@ public class MultiPredatorSimulator {
 			pred.giveObservation(predatorObservation);
 		}
 		StateAndRewardObservation preyObservation = new StateAndRewardObservation(state, preyreward);
-		this.preyPolicy.giveObservation(preyObservation);
+		this.prey.giveObservation(preyObservation);
 		
 		return state;
 	}
@@ -132,7 +131,7 @@ public class MultiPredatorSimulator {
 	 * @param randomPrey - the agent
 	 */
 	public void setPrey(AbstractPrey prey) {
-		this.preyPolicy = prey;
+		this.prey= prey;
 	}
 
 }

@@ -8,6 +8,7 @@ import hunt.model.Predator;
 import hunt.model.QTable;
 import hunt.model.RandomPrey;
 import hunt.model.RelativeState;
+import hunt.model.SmartPrey;
 import hunt.model.board.Position;
 import hunt.model.predator.*;
 import hunt.model.QLearnAlgorithm;
@@ -137,6 +138,8 @@ public class ScriptsMenu {
 				if(numberOfAgents>3)
 					startState.putPredator(Integer.toString(4), new Position(6, 5));
 				
+
+
 				sim.setPrey(new RandomPrey());
 				sim.setStartState(startState);
 				sim.run(100);
@@ -171,7 +174,7 @@ public class ScriptsMenu {
 				MultiPredatorSimulator sim = new MultiPredatorSimulator();
 				BasicMPState startState=new BasicMPState();
 				QTable qtable=new QTable();
-				QLearnAlgorithm qlearn=new QLearnAlgorithm(asPolicy, qtable, gamma, alpha);
+				QLearnAlgorithm qlearn=new QLearnAlgorithm(qtable, asPolicy, gamma, alpha);
 				for(int i=0;i<numberOfAgents;i++)
 				{
 					Predator pred = new Predator(Integer.toString(i+1), asPolicy,qlearn);
@@ -186,7 +189,9 @@ public class ScriptsMenu {
 				if(numberOfAgents>3)
 					startState.putPredator(Integer.toString(4), new Position(6, 5));
 				
-				sim.setPrey(new RandomPrey());
+				QTable qTable = new QTable();
+				QLearnAlgorithm q = new QLearnAlgorithm(qTable, asPolicy, 0.2, 0.7);
+				sim.setPrey(new SmartPrey(asPolicy, q));
 				sim.setStartState(startState);
 				sim.run(100);
 			}
