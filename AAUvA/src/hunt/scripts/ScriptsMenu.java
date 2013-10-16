@@ -191,7 +191,8 @@ public class ScriptsMenu {
 				
 				QTable qTable = new QTable();
 				QLearnAlgorithm q = new QLearnAlgorithm(qTable, asPolicy, gamma, alpha);
-				sim.setPrey(new RandomPrey());
+				//TODO: need get rid of dependency of policy on internal predator state
+				sim.setPrey(new SmartPrey(asPolicy, q));
 				sim.setStartState(startState);
 				sim.run(100);
 			}
