@@ -19,13 +19,15 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 	
 	private int numberOfPredators;
 	private double epsilon;
+	private List<HuntState> allStates;
 	
-	public MultiAgentsLearningPolicy(int _numberOfPredators,double __epsilon)
+	public MultiAgentsLearningPolicy(int _numberOfPredators,double __epsilon,List<HuntState> _allStates)
 	{
 		this.numberOfPredators=_numberOfPredators;
 		this.epsilon=__epsilon;
+		this.allStates=_allStates;
 		this.probabilities = new HashMap<HuntState, HashMap<Position, Double>>();
-		for (HuntState state : this.getAllStates()) {
+		for (HuntState state : allStates) {
 			HashMap<Position, Double> distribution = new HashMap<Position, Double>();
 			
 			List<Position> actions = this.getActions(state);
@@ -38,7 +40,7 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 		//****
 			
 	}
-
+	/*
 	@Override
 	public List<HuntState> getAllStates() {
 		
@@ -52,7 +54,6 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 			}
 		}
 		
-		ArrayList<Position> predators=new ArrayList<Position>();
 		for(int i=1;i<numberOfPredators;i++)
 		{
 			ArrayList<HuntState> currentListStates=new ArrayList<HuntState>();
@@ -70,7 +71,7 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 		
 		return allStates;
 	}
-
+	*/
 	@Override
 	public void setProbabilitiesWithQ(HuntState state,
 			Map<Position, Double> QValues) {
@@ -94,9 +95,11 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 
 	@Override
 	public void setProbabilitiesWithQ(QTable qtable) {
-		List<HuntState> states = this.getAllStates();
+		List<HuntState> states = this.allStates;
 		for (HuntState state : states) {
-			this.setProbabilitiesWithQ(state, qtable.getQValues(state));
+			HashMap<Position, Double> result=qtable.getQValues(state);
+			if(result.size()>0) 
+				this.setProbabilitiesWithQ(state,result );
 		}
 		
 	}

@@ -25,6 +25,12 @@ public class Predator {
 	/** Most recently seen state and the action taken in that state */
 	private StateActionPair lastStateActionPair;
 	
+	public void UpdateLastStateActionPair(StateActionPair state)
+	{
+		PredatorInternalState localState = this.convertState((BasicMPState)state.getState());
+		this.lastStateActionPair=new StateActionPair(localState,state.getAction());
+	}
+	
 	/**
 	 * Create a predator
 	 * @param name - predator identifier

@@ -5,12 +5,14 @@ import hunt.model.BasicMPState;
 import hunt.model.HuntState;
 import hunt.model.MultiPredatorState;
 import hunt.model.Predator;
+import hunt.model.StateActionPair;
 import hunt.model.StateAndRewardObservation;
 import hunt.model.board.Position;
 import hunt.model.predator.PredatorPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MultiPredatorSimulator {
 	
@@ -31,8 +33,10 @@ public class MultiPredatorSimulator {
 	 * The acting agent for the prey
 	 */
 	protected AbstractPrey prey;
+	protected boolean randomInitializationEachEpisode;
 	
-	public MultiPredatorSimulator() {
+	public MultiPredatorSimulator(boolean _randomInitForEachEpisode) {
+		this.randomInitializationEachEpisode=_randomInitForEachEpisode;
 		predators = new ArrayList<Predator>();
 	}
 	
@@ -80,6 +84,7 @@ public class MultiPredatorSimulator {
 		state = state.movePrey(preyAction);
 		for (Predator pred : this.predators) {
 			action = pred.getAction(oldState);
+			pred.UpdateLastStateActionPair(new StateActionPair(state.copy(), action.copy()));
 			state = state.movePredator(pred.getName(), action);
 		}
 
@@ -115,7 +120,17 @@ public class MultiPredatorSimulator {
 	}
 	
 	public void reset(){
-		this.currentState = this.startState;
+		if(this.randomInitializationEachEpisode)
+		{
+			Random random=new Random();
+			List<BasicMPState> allstates=BasicMPState.getAllStatesInThisType(this.predators.size());
+			int stateNumber=random.nextInt(allstates.size());
+			this.currentState=allstates.get(stateNumber);
+		}
+		else
+		{
+			this.currentState = this.startState;
+		}
 	}
 
 	/**

@@ -151,6 +151,72 @@ public class BasicMPState extends MultiPredatorState {
 			return false;
 	}
 	
+	public static List<BasicMPState> getAllStatesInThisType(int numberOfPredators) {
+		
+		 ArrayList<Position> allPositions=new ArrayList<Position>();
+         ArrayList<BasicMPState> allStates=new ArrayList<BasicMPState>();
+         for (int i = 0; i < Position.BWIDTH; i++) {
+                 for (int j = 0; j < Position.BHEIGHT; j++) {
+                         allPositions.add(new Position(i,j));
+                         BasicMPState state=new BasicMPState();
+                         state.putPredator("1", new Position(i,j));
+                         allStates.add(state);
+                 }
+         }
+         
+         
+         for(int i=1;i<numberOfPredators;i++)
+         {
+                 ArrayList<BasicMPState> currentListStates=new ArrayList<BasicMPState>();
+                 for(Position position:allPositions)
+                 {
+                         for(HuntState state:allStates)
+                         {
+                                 BasicMPState newState=(BasicMPState) state.copy();
+                                 newState.putPredator(Integer.toString(i+1), position);
+                                 currentListStates.add(newState);
+                         }
+                 }
+                 allStates=currentListStates;
+         }
+         
+         return allStates;
+		
+	}
+	
+	public static List<HuntState> getAllStates(int numberOfPredators) {
+		
+		 ArrayList<Position> allPositions=new ArrayList<Position>();
+        ArrayList<HuntState> allStates=new ArrayList<HuntState>();
+        for (int i = 0; i < Position.BWIDTH; i++) {
+                for (int j = 0; j < Position.BHEIGHT; j++) {
+                        allPositions.add(new Position(i,j));
+                        BasicMPState state=new BasicMPState();
+                        state.putPredator("1", new Position(i,j));
+                        allStates.add(state);
+                }
+        }
+        
+        
+        for(int i=1;i<numberOfPredators;i++)
+        {
+                ArrayList<HuntState> currentListStates=new ArrayList<HuntState>();
+                for(Position position:allPositions)
+                {
+                        for(HuntState state:allStates)
+                        {
+                                BasicMPState newState=(BasicMPState) state.copy();
+                                newState.putPredator(Integer.toString(i+1), position);
+                                currentListStates.add(newState);
+                        }
+                }
+                allStates=currentListStates;
+        }
+        
+        return allStates;
+		
+	}
+	
 	/**
 	 * @deprecated
 	 */

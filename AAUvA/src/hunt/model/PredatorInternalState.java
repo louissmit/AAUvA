@@ -123,6 +123,36 @@ public class PredatorInternalState extends MultiPredatorState {
 		else
 			return false;
 	}
+	
+	public static List<HuntState> getAllStates(int numberOfPredators) {
+		
+		ArrayList<Position> allPositions=new ArrayList<Position>();
+		ArrayList<HuntState> allStates=new ArrayList<HuntState>();
+		for (int i = 0; i < Position.BWIDTH; i++) {
+			for (int j = 0; j < Position.BHEIGHT; j++) {
+				allPositions.add(new Position(i,j));
+				PredatorInternalState state=new PredatorInternalState(new Position(i,j));
+				allStates.add(state);
+			}
+		}
+		
+		for(int i=1;i<numberOfPredators;i++)
+		{
+			ArrayList<HuntState> currentListStates=new ArrayList<HuntState>();
+			for(Position position:allPositions)
+			{
+				for(HuntState state:allStates)
+				{
+					PredatorInternalState newState=(PredatorInternalState)state.copy();
+					newState.AddPredator(position);
+					currentListStates.add(newState);
+				}
+			}
+			allStates=currentListStates;
+		}
+		
+		return allStates;
+	}
 
 	@Override
 	public List<Position> getPositions() {
