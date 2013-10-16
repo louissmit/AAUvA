@@ -7,7 +7,9 @@ import hunt.model.predator.MultiAgentsLearningPolicy;
 import hunt.model.predator.MultiAgentsRandomPolicy;
 import hunt.scripts.Simulator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Q-learning
@@ -81,6 +83,17 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 		double currentValue=this.qtable.getQValue(currectState, action);
 		double newValue=currentValue+this.alpha*(reward+this.gamma*maxNextValue-currentValue);
 		this.qtable.update(currectState, action, newValue); 
+		
+		/*
+		List<Position> possibleActions=policy.getActions(currectState);
+		Map<Position,Double> QValues=new HashMap<Position, Double>();
+		for(Position possibleAction:possibleActions)
+		{
+			double value=this.qtable.getQValue(currectState, possibleAction);
+			QValues.put(possibleAction, value);
+		}
+		policy.setProbabilitiesWithQ(currectState, QValues);
+		*/
 		
 		return qtable;
 	}
