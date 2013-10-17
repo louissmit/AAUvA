@@ -77,7 +77,7 @@ public class MultiAgentsLearningPolicy extends LearningPredatorPolicy {
 			Map<Position, Double> QValues) {
 		
 		Set<Position> actions=QValues.keySet();
-		Position bestAction=Move.WAIT;
+		Position bestAction=Move.NORTH;
 		double max=-10000;
 		for(Position action: actions)
 		{

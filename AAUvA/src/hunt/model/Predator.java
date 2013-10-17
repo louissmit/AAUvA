@@ -71,7 +71,9 @@ public class Predator {
 	public void giveObservation(StateAndRewardObservation observation) {
 		if (this.learningAlg != null && lastStateActionPair != null) {
 			// TODO: convert returned state to local state ??
-			QTable qtable = this.learningAlg.update(lastStateActionPair, observation);
+			PredatorInternalState observedState=this.convertState((BasicMPState)observation.getState());
+			StateAndRewardObservation newObservation=new StateAndRewardObservation(observedState, observation.getReward());
+			QTable qtable = this.learningAlg.update(lastStateActionPair, newObservation);
 			this.latestQtable=qtable;
 			//if (this.policy instanceof LearningPredatorPolicy) {
 			//	((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);

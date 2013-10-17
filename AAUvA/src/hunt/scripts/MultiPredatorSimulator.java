@@ -34,6 +34,8 @@ public class MultiPredatorSimulator {
 	 */
 	protected AbstractPrey prey;
 	protected boolean randomInitializationEachEpisode;
+	protected double lastPredatorReward;
+	protected List<BasicMPState>  allstates;
 	private Utility util;
 	
 	public MultiPredatorSimulator(boolean _randomInitForEachEpisode) {
@@ -52,7 +54,8 @@ public class MultiPredatorSimulator {
 		int i = 0;
 		int x = 0;
 		int lastOnes = 0;
-		int stepSize = 100;
+		int rewards=0;
+		double stepSize = 100;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
 		util.setupSerializer("test");
 		while(i < runs) {
@@ -69,11 +72,13 @@ public class MultiPredatorSimulator {
 				lastOnes=0;
 
 			lastOnes+=x;
-
+			rewards+=this.lastPredatorReward;
 			if(i%stepSize==(stepSize-1))
 			{
 				lastOnes/=stepSize;
-				util.serializeEpisode(i+1, lastOnes);
+				rewards/=stepSize;
+				//util.serializeEpisode(i+1, lastOnes);
+				util.serializeEpisode(i+1, lastOnes,rewards);
 				// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 			}
 			avg += x;
@@ -118,6 +123,7 @@ public class MultiPredatorSimulator {
 				predatorreward = -10;
 				preyreward = 10;
 			}
+			this.lastPredatorReward=predatorreward;
 		}
 		
 		StateAndRewardObservation predatorObservation = new StateAndRewardObservation(state, predatorreward);
@@ -143,9 +149,10 @@ public class MultiPredatorSimulator {
 		if(this.randomInitializationEachEpisode)
 		{
 			Random random=new Random();
-			List<BasicMPState> allstates=BasicMPState.getAllStatesInThisType(this.predators.size());
+			if(allstates==null)
+				allstates=BasicMPState.getAllStatesInThisType(this.predators.size());
 			int stateNumber=random.nextInt(allstates.size());
-			this.currentState=allstates.get(stateNumber);
+			this.currentState=(BasicMPState)allstates.get(stateNumber).copy();
 		}
 		else
 		{

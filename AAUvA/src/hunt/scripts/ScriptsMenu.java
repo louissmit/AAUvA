@@ -120,7 +120,8 @@ public class ScriptsMenu {
 			if(argList.size()>1)
 			{
 				int index=argList.indexOf("-numberofagents") + 1;
-				numberOfAgents= Integer.parseInt(argList.get(index));
+				if(index>0)
+					numberOfAgents= Integer.parseInt(argList.get(index));
 			}
 			if(numberOfAgents>0&&numberOfAgents<=4)
 			{
@@ -145,7 +146,7 @@ public class ScriptsMenu {
 
 				sim.setPrey(new RandomPrey());
 				sim.setStartState(startState);
-				sim.run(100);
+				sim.run(1000);
 			}
 		}
 		
@@ -172,7 +173,8 @@ public class ScriptsMenu {
 			if(argList.size()>1)
 			{
 				int index=argList.indexOf("-numberofagents") + 1;
-				numberOfAgents= Integer.parseInt(argList.get(index));
+				if(index>0)
+					numberOfAgents= Integer.parseInt(argList.get(index));
 			}
 			if(numberOfAgents>0&&numberOfAgents<=4)
 			{
@@ -200,7 +202,7 @@ public class ScriptsMenu {
 				sim.setPrey(new RandomPrey());
 				//sim.setPrey(new SmartPrey(asPolicy, q));
 				sim.setStartState(startState);
-				sim.run(10000);
+				sim.run(1000);
 			}
 		}
 		
