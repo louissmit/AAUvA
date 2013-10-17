@@ -21,6 +21,10 @@ public class Predator {
 	protected LearningAlgorithm learningAlg;
 	/** Predator identifier */
 	protected String name;
+	/**
+	 * Latest version of qtable from learning algorithm
+	 */
+	protected QTable latestQtable;
 
 	/** Most recently seen state and the action taken in that state */
 	private StateActionPair lastStateActionPair;
@@ -68,9 +72,17 @@ public class Predator {
 		if (this.learningAlg != null && lastStateActionPair != null) {
 			// TODO: convert returned state to local state ??
 			QTable qtable = this.learningAlg.update(lastStateActionPair, observation);
-			if (this.policy instanceof LearningPredatorPolicy) {
-				((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);
-			}
+			this.latestQtable=qtable;
+			//if (this.policy instanceof LearningPredatorPolicy) {
+			//	((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);
+			//}
+		}
+	}
+	
+	public void updatePolicy()
+	{
+		if (this.policy instanceof LearningPredatorPolicy) {
+			((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(this.latestQtable);
 		}
 	}
 	

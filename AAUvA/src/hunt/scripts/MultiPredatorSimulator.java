@@ -57,6 +57,9 @@ public class MultiPredatorSimulator {
 				currentState = transition(currentState);
 				x++;
 			}
+			for (Predator pred : this.predators) {
+				pred.updatePolicy();
+			}
 			avg += x;
 			runlist.add(x);
 			running = true;

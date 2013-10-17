@@ -84,7 +84,7 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 		double newValue=currentValue+this.alpha*(reward+this.gamma*maxNextValue-currentValue);
 		this.qtable.update(currectState, action, newValue); 
 		
-		/*
+		
 		List<Position> possibleActions=policy.getActions(currectState);
 		Map<Position,Double> QValues=new HashMap<Position, Double>();
 		for(Position possibleAction:possibleActions)
@@ -93,7 +93,7 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 			QValues.put(possibleAction, value);
 		}
 		policy.setProbabilitiesWithQ(currectState, QValues);
-		*/
+		
 		
 		return qtable;
 	}
