@@ -34,10 +34,12 @@ public class MultiPredatorSimulator {
 	 */
 	protected AbstractPrey prey;
 	protected boolean randomInitializationEachEpisode;
+	private Utility util;
 	
 	public MultiPredatorSimulator(boolean _randomInitForEachEpisode) {
 		this.randomInitializationEachEpisode=_randomInitForEachEpisode;
 		predators = new ArrayList<Predator>();
+		this.util = new Utility();
 	}
 	
 	/**
@@ -49,7 +51,10 @@ public class MultiPredatorSimulator {
 		double avg = 0.0;
 		int i = 0;
 		int x = 0;
+		int lastOnes = 0;
+		int stepSize = 100;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
+		util.setupSerializer("test");
 		while(i < runs) {
 			x = 0;
 			this.reset();
@@ -60,11 +65,23 @@ public class MultiPredatorSimulator {
 			for (Predator pred : this.predators) {
 				pred.updatePolicy();
 			}
+			if(i%stepSize==0)
+				lastOnes=0;
+
+			lastOnes+=x;
+
+			if(i%stepSize==(stepSize-1))
+			{
+				lastOnes/=stepSize;
+				util.serializeEpisode(i+1, lastOnes);
+				// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+			}
 			avg += x;
 			runlist.add(x);
 			running = true;
 			i++;
 		}
+		util.closeSerializer();
 		avg = avg / runs;
 		double temp = 0;
 		for(double run: runlist){
