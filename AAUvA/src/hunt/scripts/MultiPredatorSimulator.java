@@ -1,5 +1,6 @@
 package hunt.scripts;
 
+import hunt.controller.Move;
 import hunt.model.AbstractPrey;
 import hunt.model.BasicMPState;
 import hunt.model.HuntState;
@@ -37,11 +38,13 @@ public class MultiPredatorSimulator {
 	protected double lastPredatorReward;
 	protected List<BasicMPState>  allstates;
 	private Utility util;
+	private Random generator;
 	
 	public MultiPredatorSimulator(boolean _randomInitForEachEpisode) {
 		this.randomInitializationEachEpisode=_randomInitForEachEpisode;
 		predators = new ArrayList<Predator>();
 		this.util = new Utility();
+		this.generator = new Random();
 	}
 	
 	/**
@@ -106,6 +109,9 @@ public class MultiPredatorSimulator {
 
 		Position action;
 		Position preyAction = prey.getAction(oldState);
+		if(generator.nextDouble() < 0.2) {
+			preyAction = Move.WAIT;
+		}
 		state = state.movePrey(preyAction);
 		prey.UpdateLastStateActionPair(new StateActionPair(oldState.copy(), preyAction.copy()));
 		for (Predator pred : this.predators) {
