@@ -207,7 +207,7 @@ public class ScriptsMenu {
 				sim.setPrey(new RandomPrey());
 				//sim.setPrey(new SmartPrey(policy, q));
 				sim.setStartState(startState);
-				sim.run(5000);
+				sim.run(3000);
 			}
 		}
 		
