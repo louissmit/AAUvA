@@ -163,6 +163,19 @@ public class BasicMPState extends MultiPredatorState {
 			return false;
 	}
 	
+	public static BasicMPState generateRandomState(int numberOfPredators)
+	{
+		BasicMPState state=new BasicMPState();
+		Random random=new Random();
+		for(int i=1;i<=numberOfPredators;i++)
+	    {
+			int a=random.nextInt(Position.BWIDTH);
+			int b=random.nextInt(Position.BHEIGHT);
+			state.putPredator(Integer.toString(i), new Position(a, b));
+	    }
+		return state;
+	}
+	
 	public static List<BasicMPState> getAllStatesInThisType(int numberOfPredators) {
 		
 		 ArrayList<Position> allPositions=new ArrayList<Position>();

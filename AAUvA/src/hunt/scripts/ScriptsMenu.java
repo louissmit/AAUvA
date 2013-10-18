@@ -148,7 +148,7 @@ public class ScriptsMenu {
 
 				sim.setPrey(new RandomPrey());
 				sim.setStartState(startState);
-				sim.run(1000);
+				sim.run(100);
 			}
 		}
 		
@@ -181,7 +181,7 @@ public class ScriptsMenu {
 			}
 			if(numberOfAgents>0&&numberOfAgents<=4)
 			{
-				MultiAgentsLearningPolicy asPolicy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon,PredatorInternalState.getAllStates(numberOfAgents));
+				MultiAgentsLearningPolicy asPolicy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon);
 				MultiPredatorSimulator sim = new MultiPredatorSimulator(true);
 				BasicMPState startState=new BasicMPState();
 				QTable qtable=new QTable();
@@ -200,14 +200,14 @@ public class ScriptsMenu {
 				if(numberOfAgents>3)
 					startState.putPredator(Integer.toString(4), new Position(6, 5));
 				
-				MultiAgentsLearningPolicy policy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon,BasicMPState.getAllStates(numberOfAgents));
+				MultiAgentsLearningPolicy policy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon);
 				QTable qTable=new QTable();
 				QLearnAlgorithm q = new QLearnAlgorithm(qTable, policy, gamma, alpha);
 				//TODO: need get rid of dependency of policy on internal predator state
 				sim.setPrey(new RandomPrey());
 				//sim.setPrey(new SmartPrey(policy, q));
 				sim.setStartState(startState);
-				sim.run(10000);
+				sim.run(1000);
 			}
 		}
 		

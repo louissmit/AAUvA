@@ -72,16 +72,20 @@ public class MultiPredatorSimulator {
 			//predators.get(0).updatePolicy();
 			
 			if(i%stepSize==0)
+			{
+				rewards=0;
 				lastOnes=0;
+			}
 
 			lastOnes+=x;
 			rewards+=this.lastPredatorReward;
 			if(i%stepSize==(stepSize-1))
 			{
-				lastOnes/=stepSize;
-				rewards/=stepSize;
+				lastOnes/=(stepSize);
+				rewards/=(stepSize);
 				//util.serializeEpisode(i+1, lastOnes);
 				util.serializeEpisode(i+1, lastOnes,rewards);
+				
 				// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 			}
 			avg += x;
@@ -156,11 +160,14 @@ public class MultiPredatorSimulator {
 	public void reset(){
 		if(this.randomInitializationEachEpisode)
 		{
+			/*
 			Random random=new Random();
 			if(allstates==null)
 				allstates=BasicMPState.getAllStatesInThisType(this.predators.size());
 			int stateNumber=random.nextInt(allstates.size());
 			this.currentState=(BasicMPState)allstates.get(stateNumber).copy();
+			*/
+			this.currentState=BasicMPState.generateRandomState(this.predators.size());
 		}
 		else
 		{
