@@ -119,9 +119,10 @@ public class ScriptsMenu {
 			int numberOfAgents=1;
 			if(argList.size()>1)
 			{
-				int index=argList.indexOf("-numberofagents") + 1;
-				if(index>0)
-					numberOfAgents= Integer.parseInt(argList.get(index));
+				int index=1;
+				//int index=argList.indexOf("-numberofagents") + 1;
+				//if(index>0)
+				numberOfAgents= Integer.parseInt(argList.get(index));
 			}
 			if(numberOfAgents>0&&numberOfAgents<=4)
 			{
@@ -172,9 +173,10 @@ public class ScriptsMenu {
 			int numberOfAgents=1;
 			if(argList.size()>1)
 			{
-				int index=argList.indexOf("-numberofagents") + 1;
-				if(index>0)
-					numberOfAgents= Integer.parseInt(argList.get(index));
+				int index=1;
+				//int index=argList.indexOf("-numberofagents") + 1;
+				//if(index>0)
+				numberOfAgents= Integer.parseInt(argList.get(index));
 			}
 			if(numberOfAgents>0&&numberOfAgents<=4)
 			{
