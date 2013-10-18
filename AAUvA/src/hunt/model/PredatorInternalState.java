@@ -148,7 +148,8 @@ public class PredatorInternalState extends MultiPredatorState {
 				{
 					PredatorInternalState newState=(PredatorInternalState)state.copy();
 					newState.AddPredator(position);
-					currentListStates.add(newState);
+					if(!currentListStates.contains(newState))
+						currentListStates.add(newState);
 				}
 			}
 			allStates=currentListStates;
