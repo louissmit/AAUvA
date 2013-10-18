@@ -23,13 +23,13 @@ public class EvolutionaryAlgorithmScript {
 	// Intermediate storage for improved efficiency
 	private List<Double> predatorEvaluations;
 	private List<Double> preyEvaluations;
-	private double averagePredatorEvaluation;
-	private double averagePreyEvaluation;
+	private double totalPredatorEvaluation;
+	private double totalPreyEvaluation;
 	private List<EvolutionaryPolicy> intermediatePredatorPopulation;
 	private List<EvolutionaryPolicy> intermediatePreyPopulation;
 	private double mutationRate;
 	
-	public EvolutionaryAlgorithmScript(int amountOfGenerations, int episodeLength, int populationSize, int selectionSize, int predatorCount) {
+	public EvolutionaryAlgorithmScript(int amountOfGenerations, int episodeLength, int populationSize, int selectionSize, int predatorCount, double mutationRate) {
 		// Order in which predators are added
 		this.predatorPositions = new ArrayList<Position>();
 		predatorPositions.add(new Position(5,5));
@@ -42,6 +42,7 @@ public class EvolutionaryAlgorithmScript {
 		this.populationSize = populationSize;
 		this.selectionSize = selectionSize;
 		this.predatorCount = predatorCount;
+		this.mutationRate = mutationRate;
 		
 		this.predatorPopulation=new ArrayList<EvolutionaryPolicy>();
 		this.preyPopulation=new ArrayList<EvolutionaryPolicy>();
@@ -49,7 +50,6 @@ public class EvolutionaryAlgorithmScript {
 		this.preyEvaluations=new ArrayList<Double>();
 		this.intermediatePredatorPopulation=new ArrayList<EvolutionaryPolicy>();
 		this.intermediatePreyPopulation=new ArrayList<EvolutionaryPolicy>();
-		
 	}
 
 	public void run() {
@@ -57,10 +57,11 @@ public class EvolutionaryAlgorithmScript {
 		
 		for (int i = 0; i < amountOfGenerations; i++) {
 			this.runEvaluation();
-			this.runSelection(predatorPopulation, predatorEvaluations, averagePredatorEvaluation, intermediatePredatorPopulation);
-			this.runSelection(preyPopulation, preyEvaluations, averagePreyEvaluation, intermediatePreyPopulation);
+			this.runSelection(predatorPopulation, predatorEvaluations, totalPredatorEvaluation, intermediatePredatorPopulation);
+			this.runSelection(preyPopulation, preyEvaluations, totalPreyEvaluation, intermediatePreyPopulation);
 			this.runCrossoverAndMutation(intermediatePredatorPopulation, populationSize, predatorPopulation);
 			this.runCrossoverAndMutation(intermediatePreyPopulation, populationSize, preyPopulation);
+			System.out.println(totalPredatorEvaluation / predatorPopulation.size());
 		}
 	}
 
@@ -83,13 +84,15 @@ public class EvolutionaryAlgorithmScript {
 		// Initialization, empty previous values
 		predatorEvaluations.clear();
 		preyEvaluations.clear();
+		totalPredatorEvaluation = 0;
+		totalPreyEvaluation = 0;
 		
 		for (int i = 0; i < populationSize; i++) {
 			EvolutionaryPredatorPolicy predatorPolicy = (EvolutionaryPredatorPolicy) predatorPopulation.get(i);
 			EvolutionaryPreyPolicy preyPolicy = (EvolutionaryPreyPolicy) preyPopulation.get(i);
 			
 			// Set up simulator
-			MultiPredatorSimulator simulator = new MultiPredatorSimulator(true);
+			MultiPredatorSimulator simulator = new MultiPredatorSimulator(false);
 			BasicMPState startState = new BasicMPState();
 			for (int j = 0; j < this.predatorCount; j++) {
 				String predatorName=Integer.toString(j+1);
@@ -102,7 +105,7 @@ public class EvolutionaryAlgorithmScript {
 			int episodeLength = 0;
 			while (episodeLength < maxEpisodeLength && !simulator.currentState.isTerminal()) {
 				episodeLength++;
-				simulator.transition(simulator.currentState);
+				simulator.currentState = simulator.transition(simulator.currentState);
 			}
 			
 			// Returns for the episode
@@ -119,30 +122,30 @@ public class EvolutionaryAlgorithmScript {
 			}
 			
 			// Predator evaluation
-			double predatorEvaluation = predatorEpisodeReturn / episodeLength;
+			double predatorEvaluation = predatorEpisodeReturn / episodeLength + 20;
 			predatorEvaluations.add(predatorEvaluation);
-			averagePredatorEvaluation += predatorEvaluation / populationSize;
+			totalPredatorEvaluation += predatorEvaluation;
 			// Prey evaluation
-			double preyEvaluation = preyEpisodeReturn / episodeLength;
+			double preyEvaluation = preyEpisodeReturn / episodeLength + 20;
 			preyEvaluations.add(preyEvaluation);
-			averagePreyEvaluation += preyEvaluation / populationSize;
+			totalPreyEvaluation += preyEvaluation / populationSize;
 		}
 		
 	}
 
 	private void runSelection(List<EvolutionaryPolicy> population,
 			List<Double> evaluations,
-			double averageEvaluation,
+			double totalEvaluation,
 			List<EvolutionaryPolicy> intermediatePopulation) {
 		intermediatePopulation.clear();
 		
-		double selectionInterval = ((double) population.size()) / selectionSize;
+		double selectionInterval = totalEvaluation / selectionSize;
 		double stochasticSelection = Math.random() * selectionInterval;
 		double selectionRemainder = stochasticSelection;
 		
 		for (int i = 0; i < population.size(); i++) {
 			// Fitness value
-			double fitness = evaluations.get(i) / averageEvaluation;
+			double fitness = evaluations.get(i);
 			
 			// Add individuals while there are selectionIntervals inside the fitness region
 			while (fitness > selectionInterval) {

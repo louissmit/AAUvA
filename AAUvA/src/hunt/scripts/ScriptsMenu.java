@@ -226,12 +226,13 @@ public class ScriptsMenu {
 
 		@Override
 		public void execute(String[] args) {
-			int amountOfGenerations = 20;
-			int episodeLength = 30;
-			int populationSize = 10;
-			int selectionSize = 5;
+			int amountOfGenerations = 100;
+			int episodeLength = 100;
+			int populationSize = 100;
+			int selectionSize = 90;
 			int predatorCount = 1;
-			new EvolutionaryAlgorithmScript(amountOfGenerations, episodeLength, populationSize, selectionSize, predatorCount).run();
+			double mutationRate = 0.01;
+			new EvolutionaryAlgorithmScript(amountOfGenerations, episodeLength, populationSize, selectionSize, predatorCount, mutationRate).run();
 		}
 		
 	}
