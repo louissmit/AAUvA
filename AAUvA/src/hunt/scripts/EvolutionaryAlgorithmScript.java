@@ -32,16 +32,24 @@ public class EvolutionaryAlgorithmScript {
 	public EvolutionaryAlgorithmScript(int amountOfGenerations, int episodeLength, int populationSize, int selectionSize, int predatorCount) {
 		// Order in which predators are added
 		this.predatorPositions = new ArrayList<Position>();
-		predatorPositions.add(new Position(-5,-5));
 		predatorPositions.add(new Position(5,5));
-		predatorPositions.add(new Position(-5,5));
-		predatorPositions.add(new Position(5,-5));
+		predatorPositions.add(new Position(6,6));
+		//predatorPositions.add(new Position(-5,5));
+		//predatorPositions.add(new Position(5,-5));
 		
 		this.amountOfGenerations = amountOfGenerations;
 		this.maxEpisodeLength = episodeLength;
 		this.populationSize = populationSize;
 		this.selectionSize = selectionSize;
 		this.predatorCount = predatorCount;
+		
+		this.predatorPopulation=new ArrayList<EvolutionaryPolicy>();
+		this.preyPopulation=new ArrayList<EvolutionaryPolicy>();
+		this.predatorEvaluations=new ArrayList<Double>();
+		this.preyEvaluations=new ArrayList<Double>();
+		this.intermediatePredatorPopulation=new ArrayList<EvolutionaryPolicy>();
+		this.intermediatePreyPopulation=new ArrayList<EvolutionaryPolicy>();
+		
 	}
 
 	public void run() {
@@ -81,15 +89,15 @@ public class EvolutionaryAlgorithmScript {
 			EvolutionaryPreyPolicy preyPolicy = (EvolutionaryPreyPolicy) preyPopulation.get(i);
 			
 			// Set up simulator
-			MultiPredatorSimulator simulator = new MultiPredatorSimulator();
+			MultiPredatorSimulator simulator = new MultiPredatorSimulator(true);
 			BasicMPState startState = new BasicMPState();
 			for (int j = 0; j < this.predatorCount; j++) {
-				String predatorName = "Predator " + j;
+				String predatorName=Integer.toString(j+1);
 				simulator.addPredator(new Predator(predatorName, predatorPolicy));
 				startState.putPredator(predatorName, predatorPositions.get(j));
 			}
 			simulator.setPrey(preyPolicy);
-			
+			simulator.setStartState(startState);
 			// Run simulator
 			int episodeLength = 0;
 			while (episodeLength < maxEpisodeLength && !simulator.currentState.isTerminal()) {

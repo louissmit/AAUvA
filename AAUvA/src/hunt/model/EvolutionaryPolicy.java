@@ -1,4 +1,7 @@
 package hunt.model;
+import hunt.model.board.Position;
+
+import java.util.Map;
 
 public interface EvolutionaryPolicy {
 
@@ -7,5 +10,7 @@ public interface EvolutionaryPolicy {
 	void randomizeActions();
 
 	EvolutionaryPolicy breed(EvolutionaryPolicy mother, double mutationRate);
+	
+	Map<HuntState, Position> getPolicy();
 
 }
