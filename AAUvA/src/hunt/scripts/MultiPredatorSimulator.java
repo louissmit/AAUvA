@@ -56,8 +56,8 @@ public class MultiPredatorSimulator {
 		double avg = 0.0;
 		int i = 0;
 		int x = 0;
-		int lastOnes = 0;
-		int rewards=0;
+		double lastOnes = 0;
+		double rewards=0;
 		double stepSize = 100;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
 		util.setupSerializer("test");
@@ -68,9 +68,9 @@ public class MultiPredatorSimulator {
 				currentState = transition(currentState);
 				x++;
 			}
-			//for (Predator pred : this.predators) {
+			
 			//predators.get(0).updatePolicy();
-			//}
+			
 			if(i%stepSize==0)
 				lastOnes=0;
 
