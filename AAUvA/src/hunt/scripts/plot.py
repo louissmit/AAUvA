@@ -4,8 +4,10 @@ import matplotlib.pyplot as plt
 
 
 def plotTest():
-    data = np.genfromtxt('../../../test.csv', delimiter=',', names=['x', 'y'])
+    data = np.genfromtxt('../../../test2.csv', delimiter=',', names=['x', 'y',
+    'z'])
     plt.plot(data['x'], data['y'], label='qlearnmulti')
+    plt.plot(data['x'], data['z'], label='rewards')
     plt.legend()
     plt.show()
 
