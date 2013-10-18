@@ -99,7 +99,7 @@ public class BasicMPState extends MultiPredatorState {
 		{
 			for(Position position2: predatorPositions.values())
 			{
-				if(position.getX()==position2.getX() && position.getY()==position2.getY())
+				if(position.getX()==position2.getX() && position.getY()==position2.getY() && position!=position2)
 					return true;
 			}
 		}
@@ -161,6 +161,19 @@ public class BasicMPState extends MultiPredatorState {
 			return true;
 		else
 			return false;
+	}
+	
+	public static BasicMPState generateRandomState(int numberOfPredators)
+	{
+		BasicMPState state=new BasicMPState();
+		Random random=new Random();
+		for(int i=1;i<=numberOfPredators;i++)
+	    {
+			int a=random.nextInt(Position.BWIDTH);
+			int b=random.nextInt(Position.BHEIGHT);
+			state.putPredator(Integer.toString(i), new Position(a, b));
+	    }
+		return state;
 	}
 	
 	public static List<BasicMPState> getAllStatesInThisType(int numberOfPredators) {
