@@ -9,6 +9,7 @@ import hunt.model.PredatorInternalState;
 import hunt.model.QTable;
 import hunt.model.RandomPrey;
 import hunt.model.RelativeState;
+import hunt.model.SmartPrey;
 import hunt.model.board.Position;
 import hunt.model.predator.*;
 import hunt.model.QLearnAlgorithm;
@@ -199,12 +200,14 @@ public class ScriptsMenu {
 				if(numberOfAgents>3)
 					startState.putPredator(Integer.toString(4), new Position(6, 5));
 				
-
+				MultiAgentsLearningPolicy policy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon,BasicMPState.getAllStates(numberOfAgents));
+				QTable qTable=new QTable();
+				QLearnAlgorithm q = new QLearnAlgorithm(qTable, policy, gamma, alpha);
 				//TODO: need get rid of dependency of policy on internal predator state
-				sim.setPrey(new RandomPrey());
-				//sim.setPrey(new SmartPrey(asPolicy, q));
+//				sim.setPrey(new RandomPrey());
+				sim.setPrey(new SmartPrey(policy, q));
 				sim.setStartState(startState);
-				sim.run(100000);
+				sim.run(200000);
 			}
 		}
 		
