@@ -136,5 +136,14 @@ public class Position {
 		Position posInverse = new Position(-pos.x, -pos.y);
 		return this.add(posInverse);
 	}
+
+	/**
+	 * 
+	 */
+	public Position negate() {
+		this.x = this.mod(-this.x, BWIDTH);
+		this.y = this.mod(-this.y, BHEIGHT);
+		return this;
+	}
 	
 }

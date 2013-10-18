@@ -3,6 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def plotTest():
+    data = np.genfromtxt('../../../test.csv', delimiter=',', names=['x', 'y',
+    'z'])
+    plt.plot(data['x'], data['y'], label='qlearnmulti')
+    plt.plot(data['x'], data['z'], label='rewards')
+    plt.legend()
+    plt.show()
+
 def plotAlphaGamma():
     alphas = [0.1, 0.2, 0.3, 0.4, 0.5]
     gammas = [0.1, 0.5, 0.7, 0.9]
@@ -85,8 +93,9 @@ def plotMonteCarloCompareEpsilonGreedySoftmax():
     plt.legend()
     plt.show()
 
+plotTest()
 #plotQLearnCompareEpsilonGreedySoftmax()
 #plotAlphaGamma()
-plotSarsa()
+# plotSarsa()
 #plotMonteCarloCompareEpsilonGreedySoftmax()
 
