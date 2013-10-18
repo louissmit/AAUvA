@@ -149,7 +149,7 @@ public class ScriptsMenu {
 
 				sim.setPrey(new RandomPrey());
 				sim.setStartState(startState);
-				sim.run(100);
+				sim.run(3000);
 			}
 		}
 		
@@ -206,9 +206,10 @@ public class ScriptsMenu {
 				QLearnAlgorithm q = new QLearnAlgorithm(qTable, policy, gamma, alpha);
 				//TODO: need get rid of dependency of policy on internal predator state
 				sim.setPrey(new RandomPrey());
-				sim.setPrey(new SmartPrey(policy, q));
-				//sim.setStartState(startState);
+				//sim.setPrey(new SmartPrey(policy, q));
+				sim.setStartState(startState);
 				sim.run(4000);
+
 			}
 		}
 		

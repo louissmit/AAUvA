@@ -21,6 +21,7 @@ public class MultiPredatorSimulator {
 	 * Is the simulator still running
 	 */
 	private boolean running = true;
+	private double wins = 0;
 	/**
 	 * The current state of the grid world
 	 */
@@ -58,7 +59,7 @@ public class MultiPredatorSimulator {
 		int x = 0;
 		double lastOnes = 0;
 		double rewards=0;
-		double stepSize = 100;
+		double stepSize = 10;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
 		util.setupSerializer("test"+this.predators.size());
 		while(i < runs) {
@@ -84,9 +85,13 @@ public class MultiPredatorSimulator {
 				lastOnes/=(stepSize);
 				rewards/=(stepSize);
 				//util.serializeEpisode(i+1, lastOnes);
-				util.serializeEpisode(i+1, lastOnes,rewards);
+				double winrate = this.wins / (i + 1);
+				util.serializeEpisode(i+1, winrate ,rewards);
 				
-				System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+//				System.out.println(this.wins);
+//				System.out.println(i+1);
+//				System.out.println("winrate = " + this.wins / (i + 1));
+//				System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 			}
 			avg += x;
 			runlist.add(x);
@@ -129,7 +134,10 @@ public class MultiPredatorSimulator {
 		double preyreward = 0;
 		if (state.isTerminal()) {
 			running = false;
-			if(state.predatorWins()) predatorreward = 10;
+			if(state.predatorWins()){
+				this.wins += 1;
+				predatorreward = 10;
+			}
 			if(state.predatorsCollide()) {
 				predatorreward = -10;
 				preyreward = 10;

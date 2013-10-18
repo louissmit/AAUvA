@@ -4,10 +4,23 @@ import matplotlib.pyplot as plt
 
 
 def plotTest():
-    data = np.genfromtxt('../../../test.csv', delimiter=',', names=['x', 'y',
-    'z'])
-    plt.plot(data['x'], data['y'], label='qlearnmulti')
-    plt.plot(data['x'], data['z'], label='rewards')
+    for i in xrange(2,3):
+        data = np.genfromtxt('../../../smarttest'+str(i)+'.csv', delimiter=',', names=['x', 'y',
+        'z'])
+        plt.plot(data['x'], data['y'], label='vs. smart prey')
+        data = np.genfromtxt('../../../test'+str(i)+'.csv', delimiter=',',
+                names=['x', 'y', 'z'])
+        plt.plot(data['x'], data['y'], label='vs. random prey')
+    plt.title("Predator winrate of 2 predators")
+    plt.legend()
+    plt.show()
+
+def plotPredatorWinrates():
+    for i in xrange(1,3):
+        data = np.genfromtxt('../../../smarttest'+str(i)+'.csv', delimiter=',',
+                names=['x', 'y', 'z'])
+        plt.plot(data['x'], data['y'], label=str(i) + ' predators')
+    plt.title("Predator winrates")
     plt.legend()
     plt.show()
 
@@ -93,7 +106,8 @@ def plotMonteCarloCompareEpsilonGreedySoftmax():
     plt.legend()
     plt.show()
 
-plotTest()
+# plotTest()
+plotPredatorWinrates()
 #plotQLearnCompareEpsilonGreedySoftmax()
 #plotAlphaGamma()
 # plotSarsa()
