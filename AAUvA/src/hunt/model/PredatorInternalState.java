@@ -70,6 +70,9 @@ public class PredatorInternalState extends MultiPredatorState {
 	public boolean predatorWins() {
 		return false;
 	}
+	public boolean predatorsCollide() {
+		return false;
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

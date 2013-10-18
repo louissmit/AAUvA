@@ -102,14 +102,14 @@ public class MultiPredatorSimulator {
 	 */
 	public BasicMPState transition(BasicMPState state) {
 		// Get predator actions
-		BasicMPState oldState = state;
+		BasicMPState oldState = (BasicMPState)state.copy();
 
 		Position action;
 		Position preyAction = prey.getAction(oldState);
 		state = state.movePrey(preyAction);
 		for (Predator pred : this.predators) {
 			action = pred.getAction(oldState);
-			pred.UpdateLastStateActionPair(new StateActionPair(state.copy(), action.copy()));
+			pred.UpdateLastStateActionPair(new StateActionPair(oldState.copy(), action.copy()));
 			state = state.movePredator(pred.getName(), action);
 		}
 
@@ -119,10 +119,11 @@ public class MultiPredatorSimulator {
 		if (state.isTerminal()) {
 			running = false;
 			if(state.predatorWins()) predatorreward = 10;
-			if(state.predatorsCollide()) {
+			else if(state.predatorsCollide()) {
 				predatorreward = -10;
 				preyreward = 10;
 			}
+		
 			this.lastPredatorReward=predatorreward;
 		}
 		

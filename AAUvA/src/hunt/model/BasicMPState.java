@@ -93,6 +93,18 @@ public class BasicMPState extends MultiPredatorState {
 		}
 		return preyCatched;
 	}
+	@Override
+	public boolean predatorsCollide() {
+		for(Position position: predatorPositions.values())
+		{
+			for(Position position2: predatorPositions.values())
+			{
+				if(position.getX()==position2.getX() && position.getY()==position2.getY())
+					return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public BasicMPState movePredator(String name, Position action) {
