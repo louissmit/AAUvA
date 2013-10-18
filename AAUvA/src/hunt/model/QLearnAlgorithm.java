@@ -85,13 +85,14 @@ public class QLearnAlgorithm extends LearningAlgorithm {
 		this.qtable.update(currectState, action, newValue); 
 		
 		
-		List<Position> possibleActions=policy.getActions(currectState);
+//		List<Position> possibleActions=policy.getActions(currectState);
 		Map<Position,Double> QValues=new HashMap<Position, Double>();
-		for(Position possibleAction:possibleActions)
-		{
-			double value=this.qtable.getQValue(currectState, possibleAction);
-			QValues.put(possibleAction, value);
-		}
+//		for(Position possibleAction:possibleActions)
+//		{
+//			double value=this.qtable.getQValue(currectState, possibleAction);
+//			QValues.put(possibleAction, value);
+//		}
+		QValues = this.qtable.getQValues(currectState);
 		policy.setProbabilitiesWithQ(currectState, QValues);
 		
 		
