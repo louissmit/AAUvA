@@ -55,7 +55,7 @@ public class MultiPredatorSimulator {
 		int x = 0;
 		int lastOnes = 0;
 		int rewards=0;
-		double stepSize = 10;
+		double stepSize = 100;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
 		util.setupSerializer("test");
 		while(i < runs) {
