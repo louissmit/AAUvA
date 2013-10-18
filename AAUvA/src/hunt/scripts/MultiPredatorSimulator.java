@@ -60,7 +60,7 @@ public class MultiPredatorSimulator {
 		double rewards=0;
 		double stepSize = 100;
 		ArrayList<Integer> runlist = new ArrayList<Integer>();
-		util.setupSerializer("test");
+		util.setupSerializer("test"+this.predators.size());
 		while(i < runs) {
 			x = 0;
 			this.reset();
@@ -86,7 +86,7 @@ public class MultiPredatorSimulator {
 				//util.serializeEpisode(i+1, lastOnes);
 				util.serializeEpisode(i+1, lastOnes,rewards);
 				
-				// System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
+				System.out.println("Episode: "+(i+1)+" number of steps needed to catch the prey: "+lastOnes);
 			}
 			avg += x;
 			runlist.add(x);
