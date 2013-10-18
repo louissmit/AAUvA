@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import hunt.model.HuntState;
+import hunt.model.QTable;
 import hunt.model.board.Position;
 
 /**
@@ -52,6 +53,14 @@ public class SoftmaxPredatorPolicy extends LearningPredatorPolicy {
 		}
 		
 		this.probabilities.put(state, probabilities);
+	}
+
+	@Override
+	public void setProbabilitiesWithQ(QTable qtable) {
+		List<HuntState> states = this.getAllStates();
+		for (HuntState state : states) {
+			this.setProbabilitiesWithQ(state, qtable.getQValues(state));
+		}
 	}
 
 }

@@ -3,6 +3,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def plotTest():
+    for i in xrange(2,3):
+        data = np.genfromtxt('../../../smarttest'+str(i)+'.csv', delimiter=',', names=['x', 'y',
+        'z'])
+        plt.plot(data['x'], data['y'], label='vs. smart prey')
+        data = np.genfromtxt('../../../test'+str(i)+'.csv', delimiter=',',
+                names=['x', 'y', 'z'])
+        plt.plot(data['x'], data['y'], label='vs. random prey')
+    plt.title("Predator winrate of 2 predators")
+    plt.legend()
+    plt.show()
+
+def plotPredatorWinrates():
+    for i in xrange(1,3):
+        data = np.genfromtxt('../../../smarttest'+str(i)+'.csv', delimiter=',',
+                names=['x', 'y', 'z'])
+        plt.plot(data['x'], data['y'], label=str(i) + ' predators')
+    plt.title("Predator winrates")
+    plt.legend()
+    plt.show()
+
 def plotAlphaGamma():
     alphas = [0.1, 0.2, 0.3, 0.4, 0.5]
     gammas = [0.1, 0.5, 0.7, 0.9]
@@ -85,8 +106,10 @@ def plotMonteCarloCompareEpsilonGreedySoftmax():
     plt.legend()
     plt.show()
 
+# plotTest()
+plotPredatorWinrates()
 #plotQLearnCompareEpsilonGreedySoftmax()
 #plotAlphaGamma()
-plotSarsa()
+# plotSarsa()
 #plotMonteCarloCompareEpsilonGreedySoftmax()
 
