@@ -33,7 +33,8 @@ public abstract class AbstractPrey {
 			}
 		}
 		
-		return result;
+		//return result;
+		return moves;
 	}
 	
 	/**
