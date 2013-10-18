@@ -99,7 +99,7 @@ public class BasicMPState extends MultiPredatorState {
 		{
 			for(Position position2: predatorPositions.values())
 			{
-				if(position.getX()==position2.getX() && position.getY()==position2.getY())
+				if(position.getX()==position2.getX() && position.getY()==position2.getY() && position!=position2)
 					return true;
 			}
 		}
