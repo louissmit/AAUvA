@@ -1,11 +1,18 @@
 package hunt.scripts;
 
 import hunt.model.AbsoluteState;
+import hunt.model.BasicMPState;
 import hunt.model.HuntState;
+import hunt.model.MultiPredatorState;
+import hunt.model.Predator;
+import hunt.model.PredatorInternalState;
+import hunt.model.QTable;
 import hunt.model.RandomPrey;
 import hunt.model.RelativeState;
+import hunt.model.SmartPrey;
 import hunt.model.board.Position;
 import hunt.model.predator.*;
+import hunt.model.QLearnAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +53,9 @@ public class ScriptsMenu {
 //		commands.add(new MonteCarloCommand());
 		util = new Utility();
 		commands.add(new MonteCarloCommand());
+		commands.add(new MultiPredatorSimulatorCommand());
+		commands.add(new MultiPredatorQLearnSimulatorCommand());
+		commands.add(new EvolutionCommand());
 		
 	}
 
@@ -91,6 +101,140 @@ public class ScriptsMenu {
 		 * @param args user-inputted arguments for the command. args[0] is equal to getCommand
 		 */
 		public void execute(String[] args);
+	}
+	
+	/**
+	 * Simulator with multiple predators
+	 */
+	private class MultiPredatorSimulatorCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "multipred";
+		}
+
+
+
+		@Override
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int numberOfAgents=1;
+			if(argList.size()>1)
+			{
+				int index=1;
+				//int index=argList.indexOf("-numberofagents") + 1;
+				//if(index>0)
+				numberOfAgents= Integer.parseInt(argList.get(index));
+			}
+			if(numberOfAgents>0&&numberOfAgents<=4)
+			{
+				MultiAgentsRandomPolicy asPolicy = new MultiAgentsRandomPolicy(numberOfAgents);
+				MultiPredatorSimulator sim = new MultiPredatorSimulator(false);
+				BasicMPState startState=new BasicMPState();
+				for(int i=0;i<numberOfAgents;i++)
+				{
+					Predator pred = new Predator(Integer.toString(i+1), asPolicy);
+					sim.addPredator(pred);
+				}
+		
+				startState.putPredator(Integer.toString(1), new Position(5, 5));
+				if(numberOfAgents>1)
+					startState.putPredator(Integer.toString(2), new Position(6, 6));
+				if(numberOfAgents>2)
+					startState.putPredator(Integer.toString(3), new Position(5, 6));
+				if(numberOfAgents>3)
+					startState.putPredator(Integer.toString(4), new Position(6, 5));
+				
+
+
+				sim.setPrey(new RandomPrey());
+				sim.setStartState(startState);
+				sim.run(100);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Simulator with multiple predators
+	 */
+	private class MultiPredatorQLearnSimulatorCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "multipredqlearn";
+		}
+		
+		private double epsilon=0.1;
+		private double gamma=0.9;
+		private double alpha=0.5;
+
+		@Override
+		public void execute(String[] args) {
+			List<String> argList = Arrays.asList(args);
+			int numberOfAgents=1;
+			if(argList.size()>1)
+			{
+				int index=1;
+				//int index=argList.indexOf("-numberofagents") + 1;
+				//if(index>0)
+				numberOfAgents= Integer.parseInt(argList.get(index));
+			}
+			if(numberOfAgents>0&&numberOfAgents<=4)
+			{
+				MultiAgentsLearningPolicy asPolicy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon);
+				MultiPredatorSimulator sim = new MultiPredatorSimulator(true);
+				BasicMPState startState=new BasicMPState();
+				QTable qtable=new QTable();
+				QLearnAlgorithm qlearn=new QLearnAlgorithm(qtable, asPolicy, gamma, alpha);
+				for(int i=0;i<numberOfAgents;i++)
+				{
+					Predator pred = new Predator(Integer.toString(i+1), asPolicy,qlearn);
+					sim.addPredator(pred);
+				}
+		
+				startState.putPredator(Integer.toString(1), new Position(5, 5));
+				if(numberOfAgents>1)
+					startState.putPredator(Integer.toString(2), new Position(6, 6));
+				if(numberOfAgents>2)
+					startState.putPredator(Integer.toString(3), new Position(5, 6));
+				if(numberOfAgents>3)
+					startState.putPredator(Integer.toString(4), new Position(6, 5));
+				
+				MultiAgentsLearningPolicy policy = new MultiAgentsLearningPolicy(numberOfAgents,epsilon);
+				QTable qTable=new QTable();
+				QLearnAlgorithm q = new QLearnAlgorithm(qTable, policy, gamma, alpha);
+				//TODO: need get rid of dependency of policy on internal predator state
+				//sim.setPrey(new RandomPrey());
+				sim.setPrey(new SmartPrey(policy, q));
+				sim.setStartState(startState);
+				sim.run(3000);
+			}
+		}
+		
+	}
+	
+	/**
+	 * Evolutionary algorithms
+	 */
+	private class EvolutionCommand implements Command {
+
+		@Override
+		public String getCommand() {
+			return "evolve";
+		}
+
+		@Override
+		public void execute(String[] args) {
+			int amountOfGenerations = 100;
+			int episodeLength = 100;
+			int populationSize = 100;
+			int selectionSize = 90;
+			int predatorCount = 1;
+			double mutationRate = 0.01;
+			new EvolutionaryAlgorithmScript(amountOfGenerations, episodeLength, populationSize, selectionSize, predatorCount, mutationRate).run();
+		}
+		
 	}
 
 	/**

@@ -72,6 +72,14 @@ public class Utility {
 			// report
 		} 
 	}
+	public void serializeEpisode(int episodeNr, double iterations,double averagePredReward){
+		try {
+			writer.append(episodeNr +", " + iterations +", " + averagePredReward);
+			writer.newLine();
+		} catch (IOException ex){
+			// report
+		} 
+	}
 	
 	
 	

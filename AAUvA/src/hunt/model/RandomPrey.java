@@ -59,8 +59,7 @@ public class RandomPrey extends AbstractPrey {
 	}
 	@Override
 	public void giveObservation(StateAndRewardObservation preyObservation) {
-		// TODO Auto-generated method stub
-		
+		// Do nothing
 	}
 
 }
