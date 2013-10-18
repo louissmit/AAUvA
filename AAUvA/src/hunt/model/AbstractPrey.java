@@ -16,6 +16,9 @@ public abstract class AbstractPrey {
 	 * @param s - the current state
 	 * @return the actions the prey may take
 	 */
+	/** Most recently seen state and the action taken in that state */
+	protected StateActionPair lastStateActionPair;
+
 	public List<Position> getActions(HuntState s) {
 		List<Position> moves = new ArrayList<Position>();
 		moves.add(Move.SOUTH);
@@ -53,5 +56,13 @@ public abstract class AbstractPrey {
 			Position action);
 
 	public abstract void giveObservation(StateAndRewardObservation preyObservation);
+
+	/**
+	 * @param stateActionPair
+	 */
+	public void UpdateLastStateActionPair(StateActionPair stateActionPair) {
+		this.lastStateActionPair=new StateActionPair(stateActionPair.getState(), stateActionPair.getAction());
+	}
+
 
 }

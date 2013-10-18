@@ -107,6 +107,7 @@ public class MultiPredatorSimulator {
 		Position action;
 		Position preyAction = prey.getAction(oldState);
 		state = state.movePrey(preyAction);
+		prey.UpdateLastStateActionPair(new StateActionPair(oldState.copy(), preyAction.copy()));
 		for (Predator pred : this.predators) {
 			action = pred.getAction(oldState);
 			pred.UpdateLastStateActionPair(new StateActionPair(oldState.copy(), action.copy()));
@@ -119,7 +120,7 @@ public class MultiPredatorSimulator {
 		if (state.isTerminal()) {
 			running = false;
 			if(state.predatorWins()) predatorreward = 10;
-			else if(state.predatorsCollide()) {
+			if(state.predatorsCollide()) {
 				predatorreward = -10;
 				preyreward = 10;
 			}

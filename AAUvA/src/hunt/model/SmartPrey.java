@@ -27,8 +27,7 @@ public class SmartPrey extends AbstractPrey {
 		this.learningAlg = learningAlg;
 	}
 
-	/** Most recently seen state and the action taken in that state */
-	private StateActionPair lastStateActionPair;
+
 
 	/* (non-Javadoc)
 	 * @see hunt.model.AbstractPrey#getAction(hunt.model.HuntState)
@@ -56,10 +55,11 @@ public class SmartPrey extends AbstractPrey {
 		if (this.learningAlg != null && lastStateActionPair != null) {
 			// TODO: convert returned state to local state ??
 			QTable qtable = this.learningAlg.update(lastStateActionPair, preyObservation);
-			if (this.policy instanceof LearningPredatorPolicy) {
-				((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);
-			}
+//			if (this.policy instanceof LearningPredatorPolicy) {
+//				((LearningPredatorPolicy) this.policy).setProbabilitiesWithQ(qtable);
+//			}
 		}
 	}
+	
 
 }
